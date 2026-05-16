@@ -1,19 +1,19 @@
 const DEFAULT_IMAGE =
-  'https://source.unsplash.com/1200x800/?japan,university,campus'
+  'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80'
 
 export const UNIVERSITY_IMAGE_FALLBACKS = {
   'University of Tokyo':
-    'https://source.unsplash.com/1200x800/?tokyo,university,campus',
+    'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80',
   'Kyoto University':
-    'https://source.unsplash.com/1200x800/?kyoto,university,campus',
+    'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1200&q=80',
   'Osaka University':
-    'https://source.unsplash.com/1200x800/?osaka,university,campus',
+    'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80',
   'Waseda University':
-    'https://source.unsplash.com/1200x800/?waseda,university,campus',
+    'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80',
   'Keio University':
-    'https://source.unsplash.com/1200x800/?keio,university,campus',
+    'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80',
   'Tokyo Institute of Technology':
-    'https://source.unsplash.com/1200x800/?technology,university,laboratory',
+    'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80',
 }
 
 export function getUniversityImage(university) {
