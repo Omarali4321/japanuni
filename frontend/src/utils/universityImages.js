@@ -3,7 +3,7 @@ const DEFAULT_IMAGE =
 
 export const UNIVERSITY_IMAGE_FALLBACKS = {
   'University of Tokyo':
-    'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80',
   'Kyoto University':
     'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1200&q=80',
   'Osaka University':
