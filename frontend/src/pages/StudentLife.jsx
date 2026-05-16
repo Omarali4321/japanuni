@@ -5,6 +5,10 @@ import LoadingSpinner from '../components/LoadingSpinner'
 import ScrollReveal from '../components/ScrollReveal'
 import { guideApi } from '../api/services'
 
+const fallbackImages = {
+  Culture: 'https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=1200&q=80',
+}
+
 export default function StudentLife() {
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(true)
@@ -26,7 +30,14 @@ export default function StudentLife() {
               <ScrollReveal key={a.id} delay={i * 0.1}>
                 <article className="glass-card overflow-hidden p-0">
                   {a.imageUrl && (
-                    <img src={a.imageUrl} alt={a.title} className="w-full h-40 object-cover" />
+                    <img
+                      src={fallbackImages[a.category] || a.imageUrl}
+                      alt={a.title}
+                      className="w-full h-40 object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=1200&q=80'
+                      }}
+                    />
                   )}
                   <div className="p-6">
                     <span className="text-xs text-sakura-500 font-medium">{a.category}</span>
