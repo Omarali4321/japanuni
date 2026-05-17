@@ -56,7 +56,6 @@ export default function Login() {
           <p className="mt-6 text-center text-sm text-white/70">
             No account? <Link to="/register" className="text-sakura-300 hover:underline">Register</Link>
           </p>
-          <p className="mt-4 text-xs text-white/50 text-center">Demo: student@japanuni.com / student123</p>
         </motion.form>
       </div>
     </>

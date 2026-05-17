@@ -24,10 +24,6 @@ export default function JapanBackdrop() {
   const { pathname } = useLocation()
   const backdrop = getBackdrop(pathname)
 
-  if (pathname.startsWith('/universities/')) {
-    return null
-  }
-
   useEffect(() => {
     let frame = 0
 

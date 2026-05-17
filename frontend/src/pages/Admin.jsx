@@ -47,15 +47,6 @@ export default function Admin() {
             ))}
           </div>
         )}
-        <ScrollReveal className="mt-10">
-          <div className="glass-card">
-            <h2 className="font-display font-semibold mb-2">Demo accounts</h2>
-            <ul className="text-sm space-y-1 text-ink-800/70 dark:text-ink-50/70">
-              <li>Admin: admin@japanuni.com / admin123</li>
-              <li>Student: student@japanuni.com / student123</li>
-            </ul>
-          </div>
-        </ScrollReveal>
       </div>
     </>
   )
