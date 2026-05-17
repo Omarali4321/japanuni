@@ -7,6 +7,51 @@ import { universityApi, favoriteApi } from '../api/services'
 import { useAuth } from '../context/AuthContext'
 import { getUniversityImage, getUniversityImageFallback } from '../utils/universityImages'
 
+function DetailBackdrop({ src, alt }) {
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    let frame = 0
+
+    const updateProgress = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight
+        const next = scrollable > 0 ? window.scrollY / scrollable : 0
+        setProgress(Math.min(1, Math.max(0, next)))
+      })
+    }
+
+    updateProgress()
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    window.addEventListener('resize', updateProgress)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', updateProgress)
+      window.removeEventListener('resize', updateProgress)
+    }
+  }, [])
+
+  return (
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-ink-950">
+      <img
+        src={src}
+        alt={alt}
+        className="absolute inset-x-[-4%] top-[-7%] h-[114%] w-[108%] object-cover object-center transition-[filter,transform] duration-500 ease-out"
+        style={{
+          filter: `blur(${progress * 10}px) saturate(${1.08 - progress * 0.22})`,
+          transform: `translate3d(0, ${progress * -56}px, 0) scale(${1.05 + progress * 0.05})`,
+        }}
+      />
+      <div
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,7,16,0.22),rgba(5,7,16,0.44)_42%,rgba(5,7,16,0.86)_100%),linear-gradient(90deg,rgba(5,7,16,0.34),rgba(5,7,16,0.10)_48%,rgba(5,7,16,0.34))]"
+        style={{ opacity: 0.92 + progress * 0.2 }}
+      />
+    </div>
+  )
+}
+
 export default function UniversityDetail() {
   const { id } = useParams()
   const { user } = useAuth()
@@ -57,17 +102,18 @@ export default function UniversityDetail() {
   return (
     <>
       <SEO title={uni.name} description={uni.description?.slice(0, 160)} />
-      <div className="relative h-64 md:h-80 overflow-hidden bg-ink-800/20">
-        <img
-          src={imgSrc || getUniversityImage(uni)}
-          alt={uni.name}
-          className="w-full h-full object-cover"
-          onError={() => setImgSrc(getUniversityImageFallback(uni.name))}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/50 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 max-w-7xl mx-auto px-4 pb-8 text-white">
+      <DetailBackdrop src={imgSrc || getUniversityImage(uni)} alt={uni.name} />
+      <img
+        src={imgSrc || getUniversityImage(uni)}
+        alt=""
+        className="hidden"
+        onError={() => setImgSrc(getUniversityImageFallback(uni.name))}
+      />
+      <div className="relative min-h-[48vh] md:min-h-[56vh] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-ink-950/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 max-w-7xl mx-auto px-4 pb-10 md:pb-12 text-white">
           <Link to="/universities" className="text-sm text-white/70 hover:text-white">← Universities</Link>
-          <h1 className="font-display text-3xl md:text-4xl font-bold mt-2">{uni.name}</h1>
+          <h1 className="font-display text-4xl md:text-6xl font-bold mt-2 drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]">{uni.name}</h1>
           <p className="text-white/80">{uni.cityName} · Rank #{uni.ranking}</p>
         </div>
       </div>
