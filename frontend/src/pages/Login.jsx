@@ -36,7 +36,7 @@ export default function Login() {
   return (
     <>
       <SEO title="Login" />
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 bg-hero-gradient">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12">
         <motion.form
           onSubmit={handleSubmit}
           className="glass w-full max-w-md p-8 rounded-2xl"

@@ -45,11 +45,11 @@ export default function Universities() {
       .finally(() => setLoading(false))
   }, [search, cityId, page])
 
-  const updateParam = (key, value) => {
+  const updateParam = (key, value, resetPage = true) => {
     const next = new URLSearchParams(searchParams)
     if (value) next.set(key, value)
     else next.delete(key)
-    next.set('page', '0')
+    if (resetPage) next.set('page', '0')
     setSearchParams(next)
   }
 
@@ -124,9 +124,9 @@ export default function Universities() {
             </div>
             {totalPages > 1 && (
               <div className="flex justify-center gap-2 mt-10">
-                <button type="button" disabled={page === 0} className="btn-secondary" onClick={() => updateParam('page', String(page - 1))}>Prev</button>
+                <button type="button" disabled={page === 0} className="btn-secondary" onClick={() => updateParam('page', String(page - 1), false)}>Prev</button>
                 <span className="px-4 py-2 glass rounded-xl">Page {page + 1} / {totalPages}</span>
-                <button type="button" disabled={page >= totalPages - 1} className="btn-secondary" onClick={() => updateParam('page', String(page + 1))}>Next</button>
+                <button type="button" disabled={page >= totalPages - 1} className="btn-secondary" onClick={() => updateParam('page', String(page + 1), false)}>Next</button>
               </div>
             )}
           </>

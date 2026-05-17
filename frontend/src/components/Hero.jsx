@@ -3,15 +3,17 @@ import { motion } from 'framer-motion'
 
 export default function Hero({ title, subtitle, cta, ctaLink = '/universities', badge }) {
   return (
-    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-hero-gradient">
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sakura-500/20 rounded-full blur-3xl" />
-        <motion.div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 8, repeat: Infinity }} />
-      </div>
-      <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white py-24">
+    <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,13,26,0.02),rgba(10,13,26,0.16)_44%,rgba(10,13,26,0.46)_100%)]" />
+      <motion.div
+        className="absolute inset-0 bg-[linear-gradient(120deg,rgba(224,75,111,0.10),transparent_48%,rgba(67,90,180,0.12))]"
+        animate={{ opacity: [0.35, 0.62, 0.35] }}
+        transition={{ duration: 9, repeat: Infinity }}
+      />
+      <div className="relative z-10 max-w-5xl mx-auto px-4 text-center text-white py-20 md:py-24">
         {badge && (
           <motion.span
-            className="inline-block px-4 py-1.5 rounded-full glass text-sm mb-6"
+            className="inline-block px-4 py-1.5 rounded-full bg-white/12 border border-white/20 backdrop-blur-xl text-sm font-medium mb-6 shadow-lg"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
           >
@@ -19,7 +21,7 @@ export default function Hero({ title, subtitle, cta, ctaLink = '/universities', 
           </motion.span>
         )}
         <motion.h1
-          className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight"
+          className="font-display text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight drop-shadow-[0_4px_28px_rgba(0,0,0,0.52)]"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -28,7 +30,7 @@ export default function Hero({ title, subtitle, cta, ctaLink = '/universities', 
         </motion.h1>
         {subtitle && (
           <motion.p
-            className="mt-6 text-lg sm:text-xl text-white/80 max-w-2xl mx-auto"
+            className="mt-6 text-lg sm:text-xl md:text-2xl text-white/92 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-[0_3px_18px_rgba(0,0,0,0.48)]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}

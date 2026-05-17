@@ -13,6 +13,7 @@ import Admin from './pages/Admin'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Compare from './pages/Compare'
+import Match from './pages/Match'
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="universities" element={<Universities />} />
         <Route path="universities/:id" element={<UniversityDetail />} />
         <Route path="compare" element={<Compare />} />
+        <Route path="match" element={<Match />} />
         <Route path="scholarships" element={<Scholarships />} />
         <Route path="admission" element={<Admission />} />
         <Route path="visa" element={<Visa />} />

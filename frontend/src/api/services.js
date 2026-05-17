@@ -14,6 +14,7 @@ export const universityApi = {
   search: (params) => api.get('/universities', { params }),
   getById: (id) => api.get(`/universities/${id}`),
   compare: (universityIds) => api.post('/universities/compare', { universityIds }),
+  match: (data) => api.post('/universities/match', data),
   getReviews: (id) => api.get(`/universities/${id}/reviews`),
   addReview: (id, data) => api.post(`/universities/${id}/reviews`, data),
 }

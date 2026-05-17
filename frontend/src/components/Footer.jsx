@@ -15,6 +15,7 @@ export default function Footer() {
             <h4 className="font-semibold mb-3">Explore</h4>
             <ul className="space-y-2 text-sm text-ink-800/60 dark:text-ink-50/60">
               <li><Link to="/universities" className="hover:text-sakura-500">Universities</Link></li>
+              <li><Link to="/match" className="hover:text-sakura-500">Smart Match</Link></li>
               <li><Link to="/scholarships" className="hover:text-sakura-500">Scholarships</Link></li>
               <li><Link to="/admission" className="hover:text-sakura-500">Admission Guide</Link></li>
             </ul>

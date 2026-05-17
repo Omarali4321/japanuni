@@ -2,6 +2,8 @@ package com.japanuni.controller;
 
 import com.japanuni.dto.CompareRequest;
 import com.japanuni.dto.CreateReviewRequest;
+import com.japanuni.dto.MatchRequest;
+import com.japanuni.dto.MatchResultDto;
 import com.japanuni.dto.PageResponse;
 import com.japanuni.dto.ReviewDto;
 import com.japanuni.dto.UniversityDto;
@@ -58,6 +60,13 @@ public class UniversityController {
             @Valid @RequestBody CompareRequest request,
             @AuthenticationPrincipal UserDetails authUser) {
         return ResponseEntity.ok(universityService.compare(request.getUniversityIds(), resolveUserId(authUser)));
+    }
+
+    @PostMapping("/match")
+    public ResponseEntity<List<MatchResultDto>> match(
+            @Valid @RequestBody MatchRequest request,
+            @AuthenticationPrincipal UserDetails authUser) {
+        return ResponseEntity.ok(universityService.match(request, resolveUserId(authUser)));
     }
 
     @GetMapping("/{id}/reviews")

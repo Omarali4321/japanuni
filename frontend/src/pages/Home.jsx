@@ -74,6 +74,7 @@ export default function Home() {
           <p className="mt-4 text-ink-800/60 dark:text-ink-50/60">Create an account to save favorites and compare universities.</p>
           <div className="mt-8 flex gap-4 justify-center flex-wrap">
             <Link to="/register" className="btn-primary">Get started free</Link>
+            <Link to="/match" className="btn-secondary">Find my match</Link>
             <Link to="/admission" className="btn-secondary">Read admission guide</Link>
           </div>
         </ScrollReveal>

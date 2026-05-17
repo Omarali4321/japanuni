@@ -6,6 +6,7 @@ import { useTheme } from '../context/ThemeContext'
 
 const links = [
   { to: '/universities', label: 'Universities' },
+  { to: '/match', label: 'Smart Match' },
   { to: '/scholarships', label: 'Scholarships' },
   { to: '/admission', label: 'Admission' },
   { to: '/visa', label: 'Visa' },

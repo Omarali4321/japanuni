@@ -51,6 +51,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         if (universityRepository.count() > 0) {
             patchUniversityImages();
+            seedUsers();
             return;
         }
 
