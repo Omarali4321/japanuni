@@ -24,6 +24,10 @@ export function jsonError(
   )
 }
 
+export function unauthorized() {
+  return jsonError(401, 'UNAUTHORIZED', 'Authentication is required')
+}
+
 export function handleRouteError(error: unknown) {
   if (error instanceof ZodError) {
     return jsonError(400, 'VALIDATION_ERROR', 'Request validation failed', error.flatten())

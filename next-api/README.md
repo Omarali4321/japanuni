@@ -40,7 +40,24 @@ The migration foundation exposes these read-only catalog routes:
 
 List filters include `search`, `cityId`, `maxTuition`, `minRanking`, `institutionType`, `mediumOfInstruction`, `preArrivalAdmission`, and `intake`. `size` is limited to 50 and `page` is non-negative. Search covers the imported school name, programs, faculty, degree, speciality, and description fields.
 
-Successful responses use `{ "data": ... }`; list responses additionally include `{ "meta": { "page", "size", "totalElements", "totalPages" } }`. Errors use `{ "error": { "code", "message", "details" } }`. Compare requires 2–4 unique IDs and returns 404 with `missingIds` if any requested university does not exist. This stage does not implement authentication, favorites, reviews, matching, or admin routes.
+Successful responses use `{ "data": ... }`; list responses additionally include `{ "meta": { "page", "size", "totalElements", "totalPages" } }`. Errors use `{ "error": { "code", "message", "details" } }`. Compare requires 2–4 unique IDs and returns 404 with `missingIds` if any requested university does not exist. ## Authenticated user API
+
+Authentication uses a signed JWT in a secure `HttpOnly` cookie named `japanuni_session`; tokens are never returned to JavaScript or stored in `localStorage`. Set `JWT_SECRET` locally and in Vercel environment variables.
+
+- `POST /api/auth/register` with `{ "email", "password", "fullName" }`
+- `POST /api/auth/login` with `{ "email", "password" }`
+- `POST /api/auth/logout`
+- `GET /api/users/me`
+- `PUT /api/users/me` with optional `fullName`, `bio`, `nationality`, `avatarUrl`
+- `GET /api/favorites`
+- `POST /api/favorites/:universityId`
+- `DELETE /api/favorites/:universityId`
+- `GET /api/universities/:id/reviews`
+- `POST /api/universities/:id/reviews` with `rating` and optional `comment`
+- `PUT /api/reviews/:reviewId` (owner only)
+- `DELETE /api/reviews/:reviewId` (owner only)
+
+Passwords are hashed with bcrypt. Registration always creates `USER`; no demo users or seed accounts are created. Auth errors, validation errors, missing resources, and ownership failures use the same `{ "error": { "code", "message", "details" } }` contract.
 
 ## School CSV importer
 
