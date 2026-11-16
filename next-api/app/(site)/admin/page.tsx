@@ -1,2 +1,2 @@
-import { RoutePlaceholder } from '@/components/route-placeholder'
-export default function Page() { return <RoutePlaceholder title="Admin Panel" /> }
+import AdminContent from './admin-content'
+export default function Page() { return <AdminContent /> }

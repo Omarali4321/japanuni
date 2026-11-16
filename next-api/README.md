@@ -70,6 +70,8 @@ Passwords are hashed with bcrypt. Registration always creates `USER`; no demo us
 
 Content list endpoints use the same `{ data, meta }` response format as the university catalog. `size` is limited to 50 and `page` is non-negative. Empty Neon tables return `data: []`, `totalElements: 0`, and `totalPages: 0`; no placeholder content is generated.
 
+The admin surface is intentionally read-only at `GET /api/admin/stats` and `/admin`. It requires an authenticated user with `role: ADMIN` and reports users, universities, scholarships, reviews, and favorites counts. No content-management endpoints are included.
+
 ## Vercel production deployment
 
 For the current repository layout, create the Vercel project with **Root Directory** set to `next-api`. Vercel will detect the Next.js framework from `next-api/vercel.json`; use the default install/build settings (`npm install`/`npm run build`) and do not deploy the legacy `frontend/` directory as the same project.
