@@ -8,11 +8,12 @@ export function AuthProvider({ children }) {
     const saved = localStorage.getItem('user')
     return saved ? JSON.parse(saved) : null
   })
-  const [loading, setLoading] = useState(!!localStorage.getItem('token'))
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const apiMode = import.meta.env.VITE_API_MODE || 'next'
     const token = localStorage.getItem('token')
-    if (!token) {
+    if (apiMode === 'spring' && !token) {
       setLoading(false)
       return
     }
@@ -22,7 +23,7 @@ export function AuthProvider({ children }) {
         localStorage.setItem('user', JSON.stringify(res.data))
       })
       .catch(() => {
-        localStorage.removeItem('token')
+        if (apiMode === 'spring') localStorage.removeItem('token')
         localStorage.removeItem('user')
         setUser(null)
       })
@@ -31,7 +32,8 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const { data } = await authApi.login({ email, password })
-    localStorage.setItem('token', data.token)
+    const apiMode = import.meta.env.VITE_API_MODE || 'next'
+    if (apiMode === 'spring' && data.token) localStorage.setItem('token', data.token)
     const profile = { id: data.id, email: data.email, fullName: data.fullName, role: data.role }
     localStorage.setItem('user', JSON.stringify(profile))
     setUser(profile)
@@ -40,14 +42,17 @@ export function AuthProvider({ children }) {
 
   const register = async (email, password, fullName) => {
     const { data } = await authApi.register({ email, password, fullName })
-    localStorage.setItem('token', data.token)
+    const apiMode = import.meta.env.VITE_API_MODE || 'next'
+    if (apiMode === 'spring' && data.token) localStorage.setItem('token', data.token)
     const profile = { id: data.id, email: data.email, fullName: data.fullName, role: data.role }
     localStorage.setItem('user', JSON.stringify(profile))
     setUser(profile)
     return data
   }
 
-  const logout = () => {
+  const logout = async () => {
+    const apiMode = import.meta.env.VITE_API_MODE || 'next'
+    if (apiMode === 'next') await authApi.logout()
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     setUser(null)
