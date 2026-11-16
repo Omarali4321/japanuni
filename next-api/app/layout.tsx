@@ -1,18 +1,12 @@
 import type { Metadata } from 'next'
+import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
-  title: 'JapanUni API',
-  description: 'Next.js API foundation for JapanUni',
+  title: 'JapanUni',
+  description: 'Explore Japanese universities, scholarships, and study abroad resources.',
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  )
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <html lang="en"><body><ThemeProvider>{children}</ThemeProvider></body></html>
 }
