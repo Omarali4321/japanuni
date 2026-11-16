@@ -70,6 +70,33 @@ Passwords are hashed with bcrypt. Registration always creates `USER`; no demo us
 
 Content list endpoints use the same `{ data, meta }` response format as the university catalog. `size` is limited to 50 and `page` is non-negative. Empty Neon tables return `data: []`, `totalElements: 0`, and `totalPages: 0`; no placeholder content is generated.
 
+## Vercel production deployment
+
+For the current repository layout, create the Vercel project with **Root Directory** set to `next-api`. Vercel will detect the Next.js framework from `next-api/vercel.json`; use the default install/build settings (`npm install`/`npm run build`) and do not deploy the legacy `frontend/` directory as the same project.
+
+The existing Vite SPA can still be built and hosted separately, but its production `VITE_API_URL` must point to the API deployment. Because authentication uses an HttpOnly host cookie, a separate frontend hostname cannot share the session cookie with the API. The supported production path for cookie auth is therefore to serve the UI from the same Next.js deployment/origin (a future UI migration), or place both behind one custom domain/reverse proxy. Do not treat two unrelated `*.vercel.app` projects as a cookie-compatible production setup.
+
+Required Vercel environment variables for the `next-api` project:
+
+```text
+DATABASE_URL=Neon pooled connection string with sslmode=require
+JWT_SECRET=random production secret, at least 32 characters
+```
+
+Set them for Production, Preview, and Development as appropriate. Never commit `.env.local`, Neon credentials, JWT secrets, CSV data, or generated `.next` output. `DIRECT_URL` is not required by the current read-only/runtime code and should remain unset unless a separately approved migration workflow needs it.
+
+Before creating an external deployment, validate locally:
+
+```bash
+cd next-api
+npm ci
+npm run build
+```
+
+The deployment target is intentionally limited to the Next API project in this phase; no Vercel deployment or external resource is created by the repository.
+
+If the legacy Vite SPA is deployed as a separate project, use `npm install && npm run build` in `frontend/` because that package currently has no committed lockfile. Prefer the Next API project as the production source of truth until the UI is moved to the same origin.
+
 ## School CSV importer
 
 The supplied `School_Search_Result.csv` must be read as CP932/Shift-JIS. The inspected file contains 3,888 data rows and 233 unique school names. The importer expects these exact headers: `Major of Study 1`, `Major of Study 2`, `School Name`, `Type`, `Faculty`, `Web site(faculty/department)`, `Major /Speciality  Division` (two spaces before `Division`), `Degree`, `Begins in(1)`, `Begins in(2)`, `Medium of Instruction`, and `Pre-arrival admission`.
