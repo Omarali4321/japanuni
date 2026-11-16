@@ -1,2 +1,2 @@
-import { RoutePlaceholder } from '@/components/route-placeholder'
-export default function Page() { return <RoutePlaceholder title="Scholarships in Japan" /> }
+import ScholarshipsContent from './scholarships-content'
+export default function Page() { return <ScholarshipsContent /> }

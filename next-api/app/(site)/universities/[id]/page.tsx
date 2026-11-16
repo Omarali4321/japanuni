@@ -1,2 +1,2 @@
-import { RoutePlaceholder } from '@/components/route-placeholder'
-export default function Page() { return <RoutePlaceholder title="University details" /> }
+import DetailContent from './detail-content'
+export default function Page({ params }: { params: { id: string } }) { return <DetailContent id={params.id} /> }

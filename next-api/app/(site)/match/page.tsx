@@ -1,2 +1,2 @@
-import { RoutePlaceholder } from '@/components/route-placeholder'
-export default function Page() { return <RoutePlaceholder title="Smart Match" /> }
+import MatchContent from './match-content'
+export default function Page() { return <MatchContent /> }
