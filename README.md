@@ -128,6 +128,10 @@ App runs at **http://localhost:5173** (Vite proxies `/api` to the backend).
 3. Build frontend: `cd frontend && npm run build`
 4. Serve `frontend/dist` with Nginx; proxy `/api` to the backend.
 
+### Vercel + Neon migration
+
+The migration API is in `next-api/`. Create a Vercel project with **Root Directory** set to `next-api`, then configure `DATABASE_URL` (Neon pooled URL with `sslmode=require`) and `JWT_SECRET` (a random secret of at least 32 characters). The legacy `frontend/` Vite SPA is not automatically part of that Next.js project. Its production `VITE_API_URL` must be `/api` only when the UI is served from the same origin; a separate Vercel hostname cannot share the Next API's HttpOnly auth cookie without a custom-domain reverse proxy or a future Next UI migration. See `next-api/README.md` for the exact deployment checklist.
+
 ## Environment variables
 
 See `.env.example`, `backend/.env.example`, and `frontend/.env.example`.
