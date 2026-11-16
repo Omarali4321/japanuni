@@ -64,7 +64,7 @@ model University {
   sourceRowHash      String?  @map("source_row_hash") @db.VarChar(64)
   sourceRowCount     Int?     @map("source_row_count")
   institutionType    String?  @map("institution_type") @db.VarChar(100)
-  faculty            String?  @db.VarChar(500)
+  faculty            String?
   degree             String?  @db.VarChar(500)
   intake             String?  @db.VarChar(200)
   mediumOfInstruction String? @map("medium_of_instruction") @db.VarChar(500)
