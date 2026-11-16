@@ -59,6 +59,17 @@ Authentication uses a signed JWT in a secure `HttpOnly` cookie named `japanuni_s
 
 Passwords are hashed with bcrypt. Registration always creates `USER`; no demo users or seed accounts are created. Auth errors, validation errors, missing resources, and ownership failures use the same `{ "error": { "code", "message", "details" } }` contract.
 
+## Public content API
+
+- `GET /api/scholarships?page=0&size=12&search=&universityId=`
+- `GET /api/scholarships/:id`
+- `GET /api/guides/admission?page=0&size=12`
+- `GET /api/guides/visa?page=0&size=12`
+- `GET /api/guides/student-life?page=0&size=12`
+- `GET /api/cities?page=0&size=12`
+
+Content list endpoints use the same `{ data, meta }` response format as the university catalog. `size` is limited to 50 and `page` is non-negative. Empty Neon tables return `data: []`, `totalElements: 0`, and `totalPages: 0`; no placeholder content is generated.
+
 ## School CSV importer
 
 The supplied `School_Search_Result.csv` must be read as CP932/Shift-JIS. The inspected file contains 3,888 data rows and 233 unique school names. The importer expects these exact headers: `Major of Study 1`, `Major of Study 2`, `School Name`, `Type`, `Faculty`, `Web site(faculty/department)`, `Major /Speciality  Division` (two spaces before `Division`), `Degree`, `Begins in(1)`, `Begins in(2)`, `Medium of Instruction`, and `Pre-arrival admission`.
