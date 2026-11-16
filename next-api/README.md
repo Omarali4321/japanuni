@@ -10,7 +10,7 @@ This is an isolated Next.js App Router foundation for the backend migration. The
 - Prisma tooling configured for read-only database introspection.
 - No Prisma migrations, seed execution, or application data writes.
 
-The Prisma schema is intentionally only a datasource/generator scaffold until the existing PostgreSQL database can be inspected with a real connection. The next database step should use Prisma introspection (`prisma db pull`) against the existing database and must not run `prisma migrate` or `prisma db push`.
+The Prisma schema is intentionally only a datasource/generator scaffold until the Neon PostgreSQL database can be inspected with a real connection. The next database step should use Prisma introspection (`prisma db pull`) against Neon and must not run `prisma migrate` or `prisma db push`.
 
 ## Local usage
 
@@ -22,6 +22,8 @@ npm run build
 npm run dev
 ```
 
-Before running the Prisma commands, replace the placeholder `DATABASE_URL` in `.env.local` with the locally stored Railway PostgreSQL connection string. `npm run db:validate` checks the local Prisma configuration without changing the database. `npm run db:pull` reads the existing schema and updates only `prisma/schema.prisma`; `npm run db:pull:print` prints the introspected schema without updating that file. Neither command writes to PostgreSQL.
+Before running the Prisma commands, replace the placeholder `DATABASE_URL` in `.env.local` with the pooled Neon connection string from the Neon dashboard. Use the pooled URL for application traffic and this read-only introspection phase. A direct Neon URL can be kept as a future `DIRECT_URL`, but it is intentionally unused until a separately approved schema-administration workflow exists.
 
-At this stage no Railway connection string is configured in this workspace, so introspection cannot be run yet. With PostgreSQL running, `GET http://localhost:3000/api/health` should return a JSON `status: "ok"` response. Without `DATABASE_URL` or a reachable database it returns HTTP 503; the route never changes the database.
+`npm run db:validate` checks the local Prisma configuration without changing the database. `npm run db:pull` reads the existing schema and updates only `prisma/schema.prisma`; `npm run db:pull:print` prints the introspected schema without updating that file. Neither command writes to PostgreSQL.
+
+No Neon connection string is configured in this workspace, so introspection cannot be run yet. Create the Neon project/database in the Neon dashboard and store its pooled connection string locally in `.env.local`; do not paste credentials into chat or commit them. With PostgreSQL reachable, `GET http://localhost:3000/api/health` should return JSON `status: "ok"`. Without `DATABASE_URL` or a reachable database it returns HTTP 503; the route never changes the database.

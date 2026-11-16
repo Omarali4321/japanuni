@@ -1,6 +1,6 @@
 // This schema is the introspection target for the existing JapanUni database.
-// Run `npm run db:pull` only after setting a local Railway DATABASE_URL.
-// Do not run `prisma migrate` or `prisma db push` against the existing database.
+// Run `npm run db:pull` only after setting a local Neon DATABASE_URL.
+// Do not run `prisma migrate` or `prisma db push` in this preparation phase.
 
 generator client {
   provider = "prisma-client-js"
@@ -9,4 +9,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  // Keep the pooled Neon URL for application/introspection traffic.
+  // A future migration workflow may add `directUrl = env("DIRECT_URL")`.
 }
