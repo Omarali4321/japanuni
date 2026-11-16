@@ -1,2 +1,2 @@
-import { RoutePlaceholder } from '@/components/route-placeholder'
-export default function Page() { return <RoutePlaceholder title="Welcome back" /> }
+import { AuthForm } from '@/components/auth-form'
+export default function Page() { return <AuthForm mode="login" /> }

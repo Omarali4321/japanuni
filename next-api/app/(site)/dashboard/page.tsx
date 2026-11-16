@@ -1,2 +1,2 @@
-import { RoutePlaceholder } from '@/components/route-placeholder'
-export default function Page() { return <RoutePlaceholder title="Dashboard" /> }
+import DashboardContent from './dashboard-content'
+export default function Page() { return <DashboardContent /> }

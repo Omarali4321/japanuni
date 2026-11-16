@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useTheme } from './theme-provider'
+import { useAuth } from './auth-provider'
 
 const links = [
   ['/universities', 'Universities'],
@@ -16,6 +17,7 @@ const links = [
 export function SiteNavbar() {
   const [open, setOpen] = useState(false)
   const { dark, toggle } = useTheme()
+  const { user, logout } = useAuth()
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 glass border-b border-white/10">
@@ -28,15 +30,13 @@ export function SiteNavbar() {
         </div>
         <div className="hidden items-center gap-3 md:flex">
           <button type="button" onClick={toggle} className="rounded-lg p-2 glass" aria-label="Toggle theme">{dark ? '☀️' : '🌙'}</button>
-          <Link href="/login" className="text-sm font-medium hover:text-sakura-500">Login</Link>
-          <Link href="/register" className="btn-primary px-4 py-2 text-sm">Sign up</Link>
+          {user ? <><Link href="/dashboard" className="btn-secondary px-4 py-2 text-sm">Dashboard</Link><button className="text-sm hover:text-sakura-500" onClick={() => void logout()}>Logout</button></> : <><Link href="/login" className="text-sm font-medium hover:text-sakura-500">Login</Link><Link href="/register" className="btn-primary px-4 py-2 text-sm">Sign up</Link></>}
         </div>
         <button type="button" className="p-2 text-2xl md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">{open ? '✕' : '☰'}</button>
       </nav>
       {open && <div className="flex flex-col gap-3 border-t border-white/10 p-4 glass md:hidden">
         {links.map(([href, label]) => <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>)}
-        <Link href="/login" onClick={() => setOpen(false)}>Login</Link>
-        <Link href="/register" className="btn-primary text-center" onClick={() => setOpen(false)}>Sign up</Link>
+        {user ? <><Link href="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link><button className="text-left" onClick={() => { setOpen(false); void logout() }}>Logout</button></> : <><Link href="/login" onClick={() => setOpen(false)}>Login</Link><Link href="/register" className="btn-primary text-center" onClick={() => setOpen(false)}>Sign up</Link></>}
       </div>}
     </header>
   )

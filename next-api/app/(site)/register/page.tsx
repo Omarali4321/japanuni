@@ -1,2 +1,5 @@
-import { RoutePlaceholder } from '@/components/route-placeholder'
-export default function Page() { return <RoutePlaceholder title="Create account" /> }
+import { AuthForm } from '@/components/auth-form'
+
+export default function Page() {
+  return <AuthForm mode="register" />
+}

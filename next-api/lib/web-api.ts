@@ -70,3 +70,46 @@ export function listScholarships(params: URLSearchParams) {
 export function listContent(path: string) {
   return get<Array<Record<string, unknown>>>(path)
 }
+
+export async function addFavorite(id: number) {
+  const response = await fetch(`/api/favorites/${id}`, { method: 'POST', credentials: 'include' })
+  if (!response.ok) throw new Error((await response.json()).error?.message || 'Could not save favorite')
+}
+
+export async function removeFavorite(id: number) {
+  const response = await fetch(`/api/favorites/${id}`, { method: 'DELETE', credentials: 'include' })
+  if (!response.ok) throw new Error((await response.json()).error?.message || 'Could not remove favorite')
+}
+
+export async function createReview(id: string, input: { rating: number; comment: string }) {
+  const response = await fetch(`/api/universities/${id}/reviews`, { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) })
+  const body = await response.json()
+  if (!response.ok) throw new Error(body.error?.message || 'Could not create review')
+  return body
+}
+
+export async function updateReview(id: number, input: { rating: number; comment: string }) {
+  const response = await fetch(`/api/reviews/${id}`, { method: 'PUT', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) })
+  const body = await response.json()
+  if (!response.ok) throw new Error(body.error?.message || 'Could not update review')
+  return body
+}
+
+export async function deleteReview(id: number) {
+  const response = await fetch(`/api/reviews/${id}`, { method: 'DELETE', credentials: 'include' })
+  if (!response.ok) throw new Error((await response.json()).error?.message || 'Could not delete review')
+}
+
+export async function getFavorites() {
+  const response = await fetch('/api/favorites', { credentials: 'include', cache: 'no-store' })
+  const body = await response.json()
+  if (!response.ok) throw new Error(body.error?.message || 'Could not load favorites')
+  return body as University[]
+}
+
+export async function updateProfile(input: Record<string, string | null>) {
+  const response = await fetch('/api/users/me', { method: 'PUT', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) })
+  const body = await response.json()
+  if (!response.ok) throw new Error(body.error?.message || 'Could not update profile')
+  return body
+}
