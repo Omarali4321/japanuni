@@ -30,6 +30,18 @@ Before running Prisma commands, set the pooled Neon connection string in `.env.l
 
 The schema models these tables: `users`, `cities`, `universities`, `university_images`, `scholarships`, `favorites`, `reviews`, `admission_guides`, `visa_guides`, and `student_life_articles`. `users.role` is represented by the `Role` enum with `USER` and `ADMIN`. `favorites` has a unique `(user_id, university_id)` constraint; `university_images` has a composite `(university_id, image_url)` key.
 
+## Public university API
+
+The migration foundation exposes these read-only catalog routes:
+
+- `GET /api/universities?page=0&size=12&search=Aichi`
+- `GET /api/universities/:id`
+- `POST /api/universities/compare` with `{ "universityIds": [1, 3] }`
+
+List filters include `search`, `cityId`, `maxTuition`, `minRanking`, `institutionType`, `mediumOfInstruction`, `preArrivalAdmission`, and `intake`. `size` is limited to 50 and `page` is non-negative. Search covers the imported school name, programs, faculty, degree, speciality, and description fields.
+
+Successful responses use `{ "data": ... }`; list responses additionally include `{ "meta": { "page", "size", "totalElements", "totalPages" } }`. Errors use `{ "error": { "code", "message", "details" } }`. Compare requires 2–4 unique IDs and returns 404 with `missingIds` if any requested university does not exist. This stage does not implement authentication, favorites, reviews, matching, or admin routes.
+
 ## School CSV importer
 
 The supplied `School_Search_Result.csv` must be read as CP932/Shift-JIS. The inspected file contains 3,888 data rows and 233 unique school names. The importer expects these exact headers: `Major of Study 1`, `Major of Study 2`, `School Name`, `Type`, `Faculty`, `Web site(faculty/department)`, `Major /Speciality  Division` (two spaces before `Division`), `Degree`, `Begins in(1)`, `Begins in(2)`, `Medium of Instruction`, and `Pre-arrival admission`.
