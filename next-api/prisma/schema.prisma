@@ -58,6 +58,18 @@ model University {
   programs           String?
   dormitoryInfo      String?  @map("dormitory_info")
   websiteUrl         String?  @map("website_url") @db.VarChar(500)
+  sourceDataset      String?  @map("source_dataset") @db.VarChar(100)
+  sourceKey          String?  @unique @map("source_key") @db.VarChar(255)
+  sourceUrl          String?  @map("source_url") @db.VarChar(1000)
+  sourceRowHash      String?  @map("source_row_hash") @db.VarChar(64)
+  sourceRowCount     Int?     @map("source_row_count")
+  institutionType    String?  @map("institution_type") @db.VarChar(100)
+  faculty            String?  @db.VarChar(500)
+  degree             String?  @db.VarChar(500)
+  intake             String?  @db.VarChar(200)
+  mediumOfInstruction String? @map("medium_of_instruction") @db.VarChar(500)
+  preArrivalAdmission String? @map("pre_arrival_admission") @db.VarChar(500)
+  majorSpeciality    String?  @map("major_speciality")
   cityId             BigInt?  @map("city_id") @db.BigInt
 
   city       City?           @relation(fields: [cityId], references: [id])

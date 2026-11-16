@@ -30,4 +30,24 @@ Before running Prisma commands, set the pooled Neon connection string in `.env.l
 
 The schema models these tables: `users`, `cities`, `universities`, `university_images`, `scholarships`, `favorites`, `reviews`, `admission_guides`, `visa_guides`, and `student_life_articles`. `users.role` is represented by the `Role` enum with `USER` and `ADMIN`. `favorites` has a unique `(user_id, university_id)` constraint; `university_images` has a composite `(university_id, image_url)` key.
 
+## School CSV importer
+
+The supplied `School_Search_Result.csv` must be read as CP932/Shift-JIS. The inspected file contains 3,888 data rows and 233 unique school names. The importer expects these exact headers: `Major of Study 1`, `Major of Study 2`, `School Name`, `Type`, `Faculty`, `Web site(faculty/department)`, `Major /Speciality  Division` (two spaces before `Division`), `Degree`, `Begins in(1)`, `Begins in(2)`, `Medium of Instruction`, and `Pre-arrival admission`.
+
+The importer groups rows by normalized `School Name`, collapsing the 3,888 rows into 233 university records while preserving faculty/degree/major/intake/medium/pre-arrival values as deduplicated pipe-separated fields. CSV rows do not provide a city, tuition, ranking, language requirements, or images, so those fields remain nullable and no city is fabricated. The faculty/department URL is retained in both `websiteUrl` (existing application field) and `sourceUrl`; `sourceDataset`, `sourceKey`, `sourceRowHash`, and `sourceRowCount` provide provenance and repeatability. Empty source values remain null/omitted rather than being replaced with invented data.
+
+Run a local dry run only:
+
+```bash
+npm run import:schools -- --file /path/to/School_Search_Result.csv
+```
+
+For the supplied local file, the command is:
+
+```bash
+npm run import:schools -- --file data/School_Search_Result.csv
+```
+
+The importer is idempotent through the unique normalized `sourceKey` and Prisma `upsert`. The `--apply` flag performs database writes and is intentionally not used in this phase. Do not run it against Neon until schema application and the write step are separately approved. The local `data/` directory is ignored and the CSV is not committed.
+
 With PostgreSQL reachable, `GET http://localhost:3000/api/health` should return JSON `status: "ok"`. Without `DATABASE_URL` or a reachable database it returns HTTP 503; the route never changes the database.
