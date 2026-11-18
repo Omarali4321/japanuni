@@ -11,7 +11,8 @@
     "db:pull": "prisma db pull",
     "db:pull:print": "prisma db pull --print",
     "import:schools": "tsx scripts/import-school-csv.ts",
-    "prebuild": "node scripts/build-data.mjs"
+    "prebuild": "node scripts/build-data.mjs",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
