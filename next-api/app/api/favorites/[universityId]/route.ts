@@ -3,6 +3,7 @@ import { getSessionUser } from '../../../../lib/auth'
 import { handleRouteError, jsonError, unauthorized } from '../../../../lib/http'
 import { prisma } from '../../../../lib/prisma'
 import { universityIdSchema } from '../../../../lib/university-validation'
+import { getUniversityById } from '../../../../lib/data'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -15,7 +16,7 @@ export async function POST(
     const user = await getSessionUser()
     if (!user) return unauthorized()
     const universityId = BigInt(universityIdSchema.parse(context.params.universityId))
-    const university = await prisma.university.findUnique({ where: { id: universityId } })
+    const university = getUniversityById(Number(universityId))
     if (!university) return jsonError(404, 'UNIVERSITY_NOT_FOUND', 'University not found')
     const exists = await prisma.favorite.findUnique({
       where: { userId_universityId: { userId: user.id, universityId } },
