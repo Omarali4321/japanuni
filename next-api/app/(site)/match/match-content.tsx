@@ -16,13 +16,10 @@ type MatchResult = {
 }
 
 export default function MatchContent() {
-  const [cities, setCities] = useState<Array<Record<string, unknown>>>([])
   const [results, setResults] = useState<MatchResult[]>([])
-  const [form, setForm] = useState({ field: 'Computer Science', budgetYearly: '700000', ieltsScore: '6.5', jlptLevel: '', cityId: '' })
+  const [form, setForm] = useState({ field: 'Computer Science', budgetYearly: '700000', ieltsScore: '6.5', jlptLevel: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-
-  useEffect(() => { listContent('/api/cities?page=0&size=50').then(setCities).catch(() => undefined) }, [])
 
   async function submit(event: React.FormEvent) {
     event.preventDefault()
@@ -37,7 +34,7 @@ export default function MatchContent() {
           budgetYearly: Number(form.budgetYearly) || null,
           ieltsScore: Number(form.ieltsScore) || null,
           jlptLevel: form.jlptLevel || null,
-          cityId: form.cityId ? Number(form.cityId) : null,
+          cityId: null, // City data not available in CSV
         }),
       })
       const body = await response.json()
@@ -64,10 +61,7 @@ export default function MatchContent() {
               <option value="">JLPT not sure</option>
               {['N1', 'N2', 'N3', 'N4', 'N5'].map((level) => <option key={level}>{level}</option>)}
             </select>
-            <select className="input-field" value={form.cityId} onChange={(e) => setForm({ ...form, cityId: e.target.value })}>
-              <option value="">Any city</option>
-              {cities.map((city) => <option key={String(city.id)} value={String(city.id)}>{String(city.name)}</option>)}
-            </select>
+            <p className="text-xs text-ink-800/40 dark:text-ink-50/40">City filter hidden — city data not available in source CSV.</p>
             <button className="btn-primary w-full" disabled={loading}>{loading ? 'Matching...' : 'Find matches'}</button>
           </form>
         </FadeIn>

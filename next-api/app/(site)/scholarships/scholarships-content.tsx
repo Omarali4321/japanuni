@@ -1,26 +1,44 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ErrorState } from '@/components/public-states'
-import { listScholarships } from '@/lib/web-api'
 import { FadeIn, SlideUp, StaggerContainer, StaggerItem, HoverLift } from '@/components/ui/Motion'
 import { ListItemSkeleton } from '@/components/ui/Skeleton'
 
-export default function ScholarshipsContent() {
-  const [search, setSearch] = useState('')
-  const [items, setItems] = useState<Array<Record<string, unknown>> | null>(null)
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
+interface Scholarship {
+  id: number
+  title: string
+  description: string | null
+  amountYearly: string | null
+  coverage: string | null
+  deadlineMonth: string | null
+  eligibility: string | null
+  universityId: number | null
+}
 
+interface ScholarshipsContentProps {
+  initialScholarships: Scholarship[]
+}
+
+export default function ScholarshipsContent({ initialScholarships }: ScholarshipsContentProps) {
+  const [search, setSearch] = useState('')
+  const [items, setItems] = useState<Scholarship[]>(initialScholarships)
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  // Client-side search filtering
   useEffect(() => {
-    const params = new URLSearchParams({ page: '0', size: '50' })
-    if (search) params.set('search', search)
-    setIsLoading(true)
-    listScholarships(params)
-      .then((result) => setItems(result.data))
-      .catch((reason) => setError(reason.message))
-      .finally(() => setIsLoading(false))
-  }, [search])
+    if (!search) {
+      setItems(initialScholarships)
+      return
+    }
+    const filtered = initialScholarships.filter((item) =>
+      item.title.toLowerCase().includes(search.toLowerCase()) ||
+      item.description?.toLowerCase().includes(search.toLowerCase()) ||
+      item.eligibility?.toLowerCase().includes(search.toLowerCase())
+    )
+    setItems(filtered)
+  }, [search, initialScholarships])
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -45,13 +63,13 @@ export default function ScholarshipsContent() {
               <StaggerItem key={String(item.id)} customDelay={index * 0.05}>
                 <HoverLift>
                   <article className="glass-card">
-                    <h2 className="font-display text-xl font-semibold text-sakura-500">{String(item.title)}</h2>
-                    {item.universityName ? <p className="mt-1 text-sm text-ink-800/60 dark:text-ink-50/60">{String(item.universityName)}</p> : null}
-                    <p className="mt-3 text-sm">{String(item.description || '')}</p>
+                    <h2 className="font-display text-xl font-semibold text-sakura-500">{item.title}</h2>
+                    {item.universityId ? <p className="mt-1 text-sm text-ink-800/60 dark:text-ink-50/60">University-specific</p> : null}
+                    <p className="mt-3 text-sm">{item.description || ''}</p>
                     <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                      <span className="rounded-md glass px-2 py-1">¥{String(item.amountYearly || '—')}/yr</span>
-                      <span className="rounded-md glass px-2 py-1">{String(item.coverage || 'Details pending')}</span>
-                      <span className="rounded-md glass px-2 py-1">Deadline: {String(item.deadlineMonth || '—')}</span>
+                      <span className="rounded-md glass px-2 py-1">¥{item.amountYearly || '—'}/yr</span>
+                      <span className="rounded-md glass px-2 py-1">{item.coverage || 'Details pending'}</span>
+                      <span className="rounded-md glass px-2 py-1">Deadline: {item.deadlineMonth || '—'}</span>
                     </div>
                   </article>
                 </HoverLift>
