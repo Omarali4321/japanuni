@@ -61,12 +61,6 @@ export function SiteFooter() {
           <motion.div className="lg:col-span-2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Link href="/" className="font-display text-xl font-bold text-sakura-500">JapanUni</Link>
             <p className="mt-3 max-w-md text-sm text-ink-800/60 dark:text-ink-50/60">Your gateway to studying in Japan. Explore universities, scholarships, visa guides, and student life.</p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass flex items-center justify-center text-sm hover:bg-sakura-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950" aria-label="Twitter">𝕏</a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass flex items-center justify-center text-sm hover:bg-sakura-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950" aria-label="GitHub">⌘</a>
-              <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass flex items-center justify-center text-sm hover:bg-sakura-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950" aria-label="Discord">💬</a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass flex items-center justify-center text-sm hover:bg-sakura-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950" aria-label="YouTube">▶️</a>
-            </div>
           </motion.div>
 
           <StaggerContainer staggerDelay={0.1} className="grid grid-cols-2 gap-8">

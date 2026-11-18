@@ -61,27 +61,6 @@ function HeroBackground() {
   )
 }
 
-const testimonials = [
-  {
-    quote: "JapanUni helped me find the perfect university in Tokyo. The comparison tool saved me weeks of research!",
-    author: "Sarah Chen",
-    role: "International Student, Waseda University",
-    avatar: "SC",
-  },
-  {
-    quote: "The scholarship database is incredible. I found 3 scholarships I qualified for and got one!",
-    author: "Kenji Tanaka",
-    role: "Graduate Student, University of Tokyo",
-    avatar: "KT",
-  },
-  {
-    quote: "Visa guide was a lifesaver. Step-by-step instructions made the COE application stress-free.",
-    author: "Maria Santos",
-    role: "Undergraduate, Kyoto University",
-    avatar: "MS",
-  },
-]
-
 const partners = [
   { name: "MEXT", logo: "🇯🇵" },
   { name: "JASSO", logo: "🎓" },
@@ -98,40 +77,16 @@ function SocialProof() {
     <section className="mt-24" aria-labelledby="social-proof-heading">
       <div className="text-center mb-12">
         <FadeIn>
-          <h2 id="social-proof-heading" className="section-title">Trusted by students worldwide</h2>
+          <h2 id="social-proof-heading" className="section-title">Data sources & references</h2>
         </FadeIn>
         <FadeIn delay={0.1}>
-          <p className="mt-3 max-w-2xl mx-auto text-ink-800/60 dark:text-ink-50/60">Join thousands of students who found their path to Japan through JapanUni.</p>
+          <p className="mt-3 max-w-2xl mx-auto text-ink-800/60 dark:text-ink-50/60">University data sourced from official Japanese government datasets. Scholarship information from public government and university sources.</p>
         </FadeIn>
-      </div>
-
-      <div className="mb-16">
-        <StaggerContainer staggerDelay={0.15} className="grid gap-6 md:grid-cols-3">
-          {testimonials.map((testimonial, index) => (
-            <StaggerItem key={index}>
-              <HoverLift className="glass-card p-6 h-full">
-                <div className="flex items-center gap-2 mb-4 text-sakura-500">
-                  ★★★★★
-                </div>
-                <p className="text-ink-800/80 dark:text-ink-50/80 italic mb-6">"{testimonial.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sakura-500 to-sakura-600 flex items-center justify-center text-white font-medium text-sm">
-                    {testimonial.avatar}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-ink-800 dark:text-ink-50">{testimonial.author}</p>
-                    <p className="text-sm text-ink-800/60 dark:text-ink-50/60">{testimonial.role}</p>
-                  </div>
-                </div>
-              </HoverLift>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
       </div>
 
       <div className="border-t border-white/10 pt-12">
         <FadeIn>
-          <h3 className="text-center text-lg font-semibold text-ink-800/60 dark:text-ink-50/60 mb-8">Partner institutions & organizations</h3>
+          <h3 className="text-center text-lg font-semibold text-ink-800/60 dark:text-ink-50/60 mb-8">Official sources & organizations</h3>
         </FadeIn>
         <StaggerContainer staggerDelay={0.05} className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
           {partners.map((partner, index) => (

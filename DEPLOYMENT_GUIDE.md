@@ -122,7 +122,7 @@ curl https://your-app.vercel.app/api/favorites \
 ## 5. Production Checklist
 
 - [ ] Neon database created and `DATABASE_URL` set in Vercel
-- [ ] `JWT_SECRET` set in Vercel (use generated: `mT1IunVtrAkL14PGn6MCwR6pW+RkIu81BMXNXV713Fs=`)
+- [ ] `JWT_SECRET` set in Vercel (generate your own: `openssl rand -base64 32`)
 - [ ] Vercel project Root Directory = `next-api`
 - [ ] First deployment successful
 - [ ] `prisma migrate deploy` executed

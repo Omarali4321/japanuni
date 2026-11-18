@@ -5,7 +5,7 @@
  * No new dependencies — uses Node built-ins + existing csv-parse, iconv-lite.
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, statSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createHash } from 'node:crypto'
@@ -23,7 +23,7 @@ const CSV_PATH = join(ROOT, 'data-src', 'School_Search_Result.csv')
 mkdirSync(UNIV_DIR, { recursive: true })
 mkdirSync(GUIDES_DIR, { recursive: true })
 
-// --- CSV Parsing (same logic as import script) ---
+// --- CSV Parsing ---
 const headers = {
   major1: 'Major of Study 1',
   major2: 'Major of Study 2',
@@ -62,6 +62,37 @@ function rowHash(rows) {
   return createHash('sha256').update(JSON.stringify(rows)).digest('hex')
 }
 
+// Decode HTML entities and remove control characters
+function cleanText(value) {
+  if (!value) return null
+  let text = String(value)
+  // Decode common HTML entities
+  text = text
+    .replace(/&/g, '&')
+    .replace(/</g, '<')
+    .replace(/>/g, '>')
+    .replace(/"/g, '"')
+    .replace(/'/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&copy;/g, '©')
+    .replace(/&reg;/g, '®')
+    .replace(/&yen;/g, '¥')
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–')
+    .replace(/&lsquo;/g, '‘')
+    .replace(/&rsquo;/g, '’')
+    .replace(/&ldquo;/g, '“')
+    .replace(/&rdquo;/g, '”')
+    .replace(/&bull;/g, '•')
+    .replace(/&hellip;/g, '…')
+  // Remove control characters (e.g., \u0002)
+  text = text.replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
+  // Normalize whitespace
+  text = text.replace(/\s+/g, ' ').trim()
+  return text || null
+}
+
 // Read and parse CSV
 console.log('Reading CSV...')
 const input = readFileSync(CSV_PATH)
@@ -88,31 +119,47 @@ console.log(`Grouped into ${grouped.size} unique universities`)
 // --- Generate University Records ---
 const records = [...grouped.entries()].map(([key, schoolRows], index) => {
   const first = schoolRows[0]
-  const majorValues = schoolRows.flatMap((row) => [
-    row[headers.major1],
-    row[headers.major2],
-    row[headers.speciality],
-  ])
+  // Use ONLY Faculty and Speciality for programs (NOT Major of Study 1/2 which are cumulative)
+  const facultyValues = schoolRows.map((row) => row[headers.faculty])
+  const specialityValues = schoolRows.map((row) => row[headers.speciality])
+  const programValues = [...facultyValues, ...specialityValues]
   const urls = uniqueValues(schoolRows.map((row) => row[headers.url]))
+
+  // Clean all text fields
+  const cleanName = cleanText(first[headers.school])
+  const cleanFaculty = joinValues(facultyValues.map(cleanText))
+  const cleanSpeciality = joinValues(specialityValues.map(cleanText))
+  const cleanPrograms = joinValues(programValues.map(cleanText))
+  const cleanDegree = joinValues(schoolRows.map((row) => cleanText(row[headers.degree])))
+  const cleanInstitutionType = joinValues(schoolRows.map((row) => cleanText(row[headers.type])))
+  const cleanIntake = joinValues(schoolRows.flatMap((row) => [
+    cleanText(row[headers.begins1]),
+    cleanText(row[headers.begins2]),
+  ]))
+  const cleanMedium = joinValues(schoolRows.map((row) => cleanText(row[headers.medium])))
+  const cleanPreArrival = joinValues(schoolRows.map((row) => cleanText(row[headers.preArrival])))
+  const cleanWebsiteUrl = urls[0] ? cleanText(urls[0]).slice(0, 500) : null
+  const cleanSourceUrl = urls[0] ? cleanText(urls[0]).slice(0, 1000) : null
+
+  // programCount = number of unique program entries (faculty + speciality)
+  const programCount = uniqueValues(programValues.map(cleanText)).length
 
   return {
     id: index + 1, // 1-based stable ID
     sourceKey: key,
-    name: normalize(first[headers.school]),
-    programs: joinValues(majorValues),
-    websiteUrl: urls[0]?.slice(0, 500) || null,
+    name: cleanName,
+    programs: cleanPrograms,
+    programCount,
+    websiteUrl: cleanWebsiteUrl,
     sourceDataset: 'School_Search_Result.csv',
-    sourceUrl: urls[0]?.slice(0, 1000) || null,
-    institutionType: joinValues(schoolRows.map((row) => row[headers.type])),
-    faculty: joinValues(schoolRows.map((row) => row[headers.faculty])),
-    degree: joinValues(schoolRows.map((row) => row[headers.degree])),
-    intake: joinValues(schoolRows.flatMap((row) => [
-      row[headers.begins1],
-      row[headers.begins2],
-    ])),
-    mediumOfInstruction: joinValues(schoolRows.map((row) => row[headers.medium])),
-    preArrivalAdmission: joinValues(schoolRows.map((row) => row[headers.preArrival])),
-    majorSpeciality: joinValues(schoolRows.map((row) => row[headers.speciality])),
+    sourceUrl: cleanSourceUrl,
+    institutionType: cleanInstitutionType,
+    faculty: cleanFaculty,
+    degree: cleanDegree,
+    intake: cleanIntake,
+    mediumOfInstruction: cleanMedium,
+    preArrivalAdmission: cleanPreArrival,
+    majorSpeciality: cleanSpeciality,
     sourceRowHash: rowHash(schoolRows),
     sourceRowCount: schoolRows.length,
     // Fields not in CSV — will be enriched later or left null
@@ -133,18 +180,22 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
 })
 
 // --- Build Index (compact for list/search/filter) ---
+// Only include fields needed for list, search, and filters
 const indexFields = [
-  'id', 'sourceKey', 'name', 'cityName', 'cityId',
-  'ranking', 'tuitionFeeYearly', 'institutionType',
-  'programs', 'intake', 'mediumOfInstruction',
-  'preArrivalAdmission', 'images', 'degree', 'faculty',
-  'majorSpeciality', 'websiteUrl', 'sourceUrl',
+  'id', 'sourceKey', 'name', 'institutionType',
+  'cityName', 'cityId', 'intake', 'mediumOfInstruction',
+  'preArrivalAdmission', 'programCount',
+  'faculty', // first 3 faculty names for display
 ]
 
 const index = records.map((r) => {
   const entry = {}
   for (const field of indexFields) {
     entry[field] = r[field]
+  }
+  // Limit faculty to first 3 for index display
+  if (entry.faculty) {
+    entry.faculty = entry.faculty.split(' | ').slice(0, 3).join(' | ')
   }
   return entry
 })
@@ -164,6 +215,9 @@ for (const record of records) {
 console.log(`Wrote ${written} university detail files to ${UNIV_DIR}`)
 
 // --- Generate Cities (static reference data) ---
+// Note: CSV does not contain city information for universities.
+// Cities are kept as reference data but cityId/cityName on universities remain null.
+// The city filter on /universities will be hidden until city data is available.
 const cities = [
   { id: 1, name: 'Tokyo', description: 'Japan\'s capital and largest city', costOfLivingMonthly: 150000, imageUrl: null },
   { id: 2, name: 'Kyoto', description: 'Former imperial capital, cultural heart', costOfLivingMonthly: 120000, imageUrl: null },
@@ -180,13 +234,15 @@ writeFileSync(join(DATA_DIR, 'cities.json'), JSON.stringify(cities, null, 2))
 console.log(`Wrote ${cities.length} cities to ${DATA_DIR}/cities.json`)
 
 // --- Generate Scholarships (static reference data) ---
+// Map universityId by sourceKey, not by sequential ID
+const sourceKeyToId = new Map(records.map(r => [r.sourceKey, r.id]))
 const scholarships = [
   { id: 1, title: 'MEXT Scholarship', description: 'Japanese Government Scholarship for international students', amountYearly: '1440000', coverage: 'Full', deadlineMonth: 'May', eligibility: 'Undergraduate, Masters, PhD', universityId: null },
   { id: 2, title: 'JASSO Honors Scholarship', description: 'Monthly stipend for privately financed international students', amountYearly: '576000', coverage: 'Partial', deadlineMonth: 'Varies', eligibility: 'Undergraduate, Graduate', universityId: null },
   { id: 3, title: 'ADB-Japan Scholarship', description: 'Asian Development Bank scholarship for development studies', amountYearly: '2000000', coverage: 'Full', deadlineMonth: 'March', eligibility: 'Masters', universityId: null },
   { id: 4, title: 'Rotary Yoneyama Memorial', description: 'Scholarship for international students in Japan', amountYearly: '1200000', coverage: 'Partial', deadlineMonth: 'October', eligibility: 'Undergraduate, Graduate', universityId: null },
-  { id: 5, title: 'University of Tokyo Fellowship', description: 'Merit-based fellowship for graduate students', amountYearly: '1500000', coverage: 'Full', deadlineMonth: 'January', eligibility: 'Masters, PhD', universityId: 1 },
-  { id: 6, title: 'Kyoto University Scholarship', description: 'Support for outstanding international students', amountYearly: '1200000', coverage: 'Partial', deadlineMonth: 'February', eligibility: 'All levels', universityId: 2 },
+  { id: 5, title: 'University of Tokyo Fellowship', description: 'Merit-based fellowship for graduate students', amountYearly: '1500000', coverage: 'Full', deadlineMonth: 'January', eligibility: 'Masters, PhD', universityId: sourceKeyToId.get('the-university-of-tokyo') ?? null },
+  { id: 6, title: 'Kyoto University Scholarship', description: 'Support for outstanding international students', amountYearly: '1200000', coverage: 'Partial', deadlineMonth: 'February', eligibility: 'All levels', universityId: sourceKeyToId.get('kyoto-university') ?? null },
 ]
 writeFileSync(join(DATA_DIR, 'scholarships.json'), JSON.stringify(scholarships, null, 2))
 console.log(`Wrote ${scholarships.length} scholarships to ${DATA_DIR}/scholarships.json`)
@@ -220,8 +276,10 @@ writeFileSync(join(GUIDES_DIR, 'student-life.json'), JSON.stringify(studentLifeA
 console.log('Wrote guides: admission, visa, student-life')
 
 // --- Summary ---
+const indexSize = statSync(indexPath).size
 console.log('\n✅ Build complete!')
 console.log(`  - ${index.length} universities (index + detail files)`)
+console.log(`  - universities-index.json: ${(indexSize / 1024).toFixed(1)} KB (${indexSize} bytes)`)
 console.log(`  - ${cities.length} cities`)
 console.log(`  - ${scholarships.length} scholarships`)
 console.log(`  - ${admissionGuides.length} admission guides`)
