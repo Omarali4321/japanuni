@@ -2,10 +2,18 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { ErrorState, LoadingState } from '@/components/public-states'
+import { ErrorState } from '@/components/public-states'
 import { listContent } from '@/lib/web-api'
+import { FadeIn, SlideUp, StaggerContainer, StaggerItem, HoverLift } from '@/components/ui/Motion'
+import { MatchResultSkeleton } from '@/components/ui/Skeleton'
 
-type MatchResult = { university: { id: number; name: string; cityName: string | null; ranking: number | null; tuitionFeeYearly: string | null; ieltsRequirement: number | null; jlptRequirement: string | null }; score: number; fitLevel: string; reasons: string[]; gaps: string[] }
+type MatchResult = {
+  university: { id: number; name: string; cityName: string | null; ranking: number | null; tuitionFeeYearly: string | null; ieltsRequirement: number | null; jlptRequirement: string | null }
+  score: number
+  fitLevel: string
+  reasons: string[]
+  gaps: string[]
+}
 
 export default function MatchContent() {
   const [cities, setCities] = useState<Array<Record<string, unknown>>>([])
@@ -13,10 +21,93 @@ export default function MatchContent() {
   const [form, setForm] = useState({ field: 'Computer Science', budgetYearly: '700000', ieltsScore: '6.5', jlptLevel: '', cityId: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
   useEffect(() => { listContent('/api/cities?page=0&size=50').then(setCities).catch(() => undefined) }, [])
+
   async function submit(event: React.FormEvent) {
-    event.preventDefault(); setLoading(true); setError('')
-    try { const response = await fetch('/api/universities/match', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ field: form.field, budgetYearly: Number(form.budgetYearly) || null, ieltsScore: Number(form.ieltsScore) || null, jlptLevel: form.jlptLevel || null, cityId: form.cityId ? Number(form.cityId) : null }) }); const body = await response.json(); if (!response.ok) throw new Error(body.error?.message || 'Could not calculate matches'); setResults(body.data) } catch (reason) { setError(reason instanceof Error ? reason.message : 'Could not calculate matches') } finally { setLoading(false) }
+    event.preventDefault()
+    setLoading(true)
+    setError('')
+    try {
+      const response = await fetch('/api/universities/match', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          field: form.field,
+          budgetYearly: Number(form.budgetYearly) || null,
+          ieltsScore: Number(form.ieltsScore) || null,
+          jlptLevel: form.jlptLevel || null,
+          cityId: form.cityId ? Number(form.cityId) : null,
+        }),
+      })
+      const body = await response.json()
+      if (!response.ok) throw new Error(body.error?.message || 'Could not calculate matches')
+      setResults(body.data)
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : 'Could not calculate matches')
+    } finally {
+      setLoading(false)
+    }
   }
-  return <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"><div className="grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr]"><form onSubmit={submit} className="glass-card space-y-4"><h1 className="font-display text-2xl font-semibold">Find your best-fit university</h1><p className="text-sm text-ink-800/60 dark:text-ink-50/60">Match your goals against the current catalog.</p><input className="input-field" value={form.field} onChange={(e) => setForm({ ...form, field: e.target.value })} placeholder="Study interest" /><input className="input-field" type="number" value={form.budgetYearly} onChange={(e) => setForm({ ...form, budgetYearly: e.target.value })} placeholder="Yearly tuition budget" /><input className="input-field" type="number" step="0.5" min="0" max="9" value={form.ieltsScore} onChange={(e) => setForm({ ...form, ieltsScore: e.target.value })} placeholder="IELTS score" /><select className="input-field" value={form.jlptLevel} onChange={(e) => setForm({ ...form, jlptLevel: e.target.value })}><option value="">JLPT not sure</option>{['N1', 'N2', 'N3', 'N4', 'N5'].map((level) => <option key={level}>{level}</option>)}</select><select className="input-field" value={form.cityId} onChange={(e) => setForm({ ...form, cityId: e.target.value })}><option value="">Any city</option>{cities.map((city) => <option key={String(city.id)} value={String(city.id)}>{String(city.name)}</option>)}</select><button className="btn-primary w-full" disabled={loading}>{loading ? 'Matching...' : 'Find matches'}</button></form><div className="space-y-4">{error && <ErrorState message={error} />}{loading && <LoadingState />}{!loading && !results.length && !error && <div className="glass-card text-ink-800/60 dark:text-ink-50/60">Your matches will appear here.</div>}{results.map((result) => <article className="glass-card" key={result.university.id}><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-wider text-sakura-500">{result.fitLevel}</p><h2 className="mt-2 font-display text-xl font-semibold">{result.university.name}</h2><p className="text-sm text-ink-800/60 dark:text-ink-50/60">{result.university.cityName || 'Japan'} · Score {result.score}</p></div><div className="grid h-14 w-14 place-items-center rounded-2xl bg-sakura-500/10 text-2xl font-bold text-sakura-500">{result.score}</div></div><div className="mt-4 grid gap-4 text-sm md:grid-cols-2"><div><h3 className="font-semibold">Why it fits</h3><ul className="mt-2 space-y-1 text-ink-800/70 dark:text-ink-50/70">{result.reasons.map((item) => <li key={item}>• {item}</li>)}</ul></div><div><h3 className="font-semibold">Watch points</h3><ul className="mt-2 space-y-1 text-ink-800/70 dark:text-ink-50/70">{result.gaps.map((item) => <li key={item}>• {item}</li>)}</ul></div></div><Link href={`/universities/${result.university.id}`} className="btn-secondary mt-5">View university</Link></article>)}</div></div></section>
+
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+        <FadeIn>
+          <form onSubmit={submit} className="glass-card space-y-4">
+            <h1 className="font-display text-2xl font-semibold">Find your best-fit university</h1>
+            <p className="text-sm text-ink-800/60 dark:text-ink-50/60">Match your goals against the current catalog.</p>
+            <input className="input-field" value={form.field} onChange={(e) => setForm({ ...form, field: e.target.value })} placeholder="Study interest" />
+            <input className="input-field" type="number" value={form.budgetYearly} onChange={(e) => setForm({ ...form, budgetYearly: e.target.value })} placeholder="Yearly tuition budget" />
+            <input className="input-field" type="number" step="0.5" min="0" max="9" value={form.ieltsScore} onChange={(e) => setForm({ ...form, ieltsScore: e.target.value })} placeholder="IELTS score" />
+            <select className="input-field" value={form.jlptLevel} onChange={(e) => setForm({ ...form, jlptLevel: e.target.value })}>
+              <option value="">JLPT not sure</option>
+              {['N1', 'N2', 'N3', 'N4', 'N5'].map((level) => <option key={level}>{level}</option>)}
+            </select>
+            <select className="input-field" value={form.cityId} onChange={(e) => setForm({ ...form, cityId: e.target.value })}>
+              <option value="">Any city</option>
+              {cities.map((city) => <option key={String(city.id)} value={String(city.id)}>{String(city.name)}</option>)}
+            </select>
+            <button className="btn-primary w-full" disabled={loading}>{loading ? 'Matching...' : 'Find matches'}</button>
+          </form>
+        </FadeIn>
+        <SlideUp delay={0.1}>
+          <div className="space-y-4">
+            {error && <FadeIn><ErrorState message={error} /></FadeIn>}
+            {loading && <FadeIn><div className="space-y-4">{Array.from({ length: 3 }).map((_, i) => <MatchResultSkeleton key={i} />)}</div></FadeIn>}
+            {!loading && !results.length && !error && <FadeIn><div className="glass-card text-ink-800/60 dark:text-ink-50/60">Your matches will appear here.</div></FadeIn>}
+            <StaggerContainer staggerDelay={0.08}>
+              {results.map((result, index) => (
+                <StaggerItem key={result.university.id} customDelay={index * 0.05}>
+                  <HoverLift>
+                    <article className="glass-card">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-sakura-500">{result.fitLevel}</p>
+                          <h2 className="mt-2 font-display text-xl font-semibold">{result.university.name}</h2>
+                          <p className="text-sm text-ink-800/60 dark:text-ink-50/60">{result.university.cityName || 'Japan'} · Score {result.score}</p>
+                        </div>
+                        <div className="grid h-14 w-14 place-items-center rounded-2xl bg-sakura-500/10 text-2xl font-bold text-sakura-500">{result.score}</div>
+                      </div>
+                      <div className="mt-4 grid gap-4 text-sm md:grid-cols-2">
+                        <div>
+                          <h3 className="font-semibold">Why it fits</h3>
+                          <ul className="mt-2 space-y-1 text-ink-800/70 dark:text-ink-50/70">{result.reasons.map((item) => <li key={item}>• {item}</li>)}</ul>
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">Watch points</h3>
+                          <ul className="mt-2 space-y-1 text-ink-800/70 dark:text-ink-50/70">{result.gaps.map((item) => <li key={item}>• {item}</li>)}</ul>
+                        </div>
+                      </div>
+                      <Link href={`/universities/${result.university.id}`} className="btn-secondary mt-5">View university</Link>
+                    </article>
+                  </HoverLift>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </SlideUp>
+      </div>
+    </section>
+  )
 }

@@ -12,7 +12,7 @@ export function UniversityCard({ university }: { university: University }) {
       <div className="p-5">
         <h2 className="font-display text-lg font-semibold hover:text-sakura-500">{university.name}</h2>
         <p className="mt-1 text-sm text-ink-800/60 dark:text-ink-50/60">{university.cityName || university.institutionType || 'Japan'}</p>
-        <p className="mt-3 line-clamp-2 text-sm text-ink-800/70 dark:text-ink-50/70">{university.programs || university.description || 'Explore programs and admissions information.'}</p>
+        <p className="mt-3 line-clamp-2 text-sm text-ink-800/70 dark:text-ink-50/70">{university.programs || university.majorSpeciality || 'Explore programs and admissions information.'}</p>
       </div>
     </Link>
   </article>

@@ -1,7 +1,6 @@
 import { NextRequest } from 'next/server'
 import { handleRouteError, jsonList } from '../../../lib/http'
-import { scholarshipDto, scholarshipInclude } from '../../../lib/content'
-import { prisma } from '../../../lib/prisma'
+import { getScholarships } from '../../../lib/data'
 import { scholarshipQuerySchema } from '../../../lib/content-validation'
 
 export const runtime = 'nodejs'
@@ -12,29 +11,23 @@ export async function GET(request: NextRequest) {
     const query = scholarshipQuerySchema.parse(
       Object.fromEntries(request.nextUrl.searchParams.entries()),
     )
-    const where = {
-      ...(query.search
-        ? { title: { contains: query.search, mode: 'insensitive' as const } }
-        : {}),
-      ...(query.universityId ? { universityId: BigInt(query.universityId) } : {}),
-    }
-    const [totalElements, scholarships] = await prisma.$transaction([
-      prisma.scholarship.count({ where }),
-      prisma.scholarship.findMany({
-        where,
-        include: scholarshipInclude,
-        orderBy: [{ title: 'asc' }, { id: 'asc' }],
-        skip: query.page * query.size,
-        take: query.size,
-      }),
-    ])
+    let scholarships = getScholarships() ?? []
 
-    return jsonList(scholarships.map(scholarshipDto), {
-      page: query.page,
-      size: query.size,
-      totalElements,
-      totalPages: Math.ceil(totalElements / query.size),
-    })
+    if (query.search) {
+      const search = query.search.toLowerCase()
+      scholarships = scholarships.filter((s: { title: string; description?: string | null }) =>
+        s.title.toLowerCase().includes(search) ||
+        s.description?.toLowerCase().includes(search)
+      )
+    }
+    if (query.universityId) {
+      scholarships = scholarships.filter((s: { universityId: number | null }) => s.universityId === query.universityId)
+    }
+
+    const totalElements = scholarships.length
+    const totalPages = Math.ceil(totalElements / query.size)
+    const data = scholarships.slice(query.page * query.size, (query.page + 1) * query.size)
+    return jsonList(data, { page: query.page, size: query.size, totalElements, totalPages })
   } catch (error) {
     return handleRouteError(error)
   }

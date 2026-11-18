@@ -1,8 +1,7 @@
 import { NextRequest } from 'next/server'
-import { admissionGuideDto } from '../../../../lib/content'
-import { paginationSchema } from '../../../../lib/content-validation'
 import { handleRouteError, jsonList } from '../../../../lib/http'
-import { prisma } from '../../../../lib/prisma'
+import { getGuides } from '../../../../lib/data'
+import { paginationSchema } from '../../../../lib/content-validation'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -10,20 +9,11 @@ export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest) {
   try {
     const query = paginationSchema.parse(Object.fromEntries(request.nextUrl.searchParams.entries()))
-    const [totalElements, guides] = await prisma.$transaction([
-      prisma.admissionGuide.count(),
-      prisma.admissionGuide.findMany({
-        orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
-        skip: query.page * query.size,
-        take: query.size,
-      }),
-    ])
-    return jsonList(guides.map(admissionGuideDto), {
-      page: query.page,
-      size: query.size,
-      totalElements,
-      totalPages: Math.ceil(totalElements / query.size),
-    })
+    const guides = getGuides('admission') ?? []
+    const totalElements = guides.length
+    const totalPages = Math.ceil(totalElements / query.size)
+    const data = guides.slice(query.page * query.size, (query.page + 1) * query.size)
+    return jsonList(data, { page: query.page, size: query.size, totalElements, totalPages })
   } catch (error) {
     return handleRouteError(error)
   }
