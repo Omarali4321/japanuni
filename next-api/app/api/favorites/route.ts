@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getSessionUser } from '../../../lib/auth'
 import { handleRouteError, unauthorized } from '../../../lib/http'
 import { prisma } from '../../../lib/prisma'
-import { toUniversityDto, universityInclude } from '../../../lib/universities'
+import { findUniversitiesByIds } from '../../../lib/data'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -13,11 +13,12 @@ export async function GET() {
     if (!user) return unauthorized()
     const favorites = await prisma.favorite.findMany({
       where: { userId: user.id },
-      include: { university: { include: universityInclude } },
       orderBy: { createdAt: 'desc' },
     })
-    return NextResponse.json(favorites.map((favorite) => ({
-      ...toUniversityDto(favorite.university),
+    const universityIds = favorites.map((f) => Number(f.universityId))
+    const universities = findUniversitiesByIds(universityIds)
+    return NextResponse.json(universities.map((university) => ({
+      ...university,
       favorited: true,
     })))
   } catch (error) {

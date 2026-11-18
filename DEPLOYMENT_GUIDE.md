@@ -38,9 +38,9 @@ Add in Vercel Dashboard → Settings → Environment Variables:
 | Name | Value | Environment |
 |------|-------|-------------|
 | `DATABASE_URL` | Your Neon pooled connection string | Production, Preview, Development |
-| `JWT_SECRET` | `mT1IunVtrAkL14PGn6MCwR6pW+RkIu81BMXNXV713Fs=` | Production, Preview, Development |
+| `JWT_SECRET` | **Generate your own** (see below) | Production, Preview, Development |
 
-> **Note**: The JWT_SECRET above is generated for you. Save it securely!
+> **Note**: Generate a secure JWT_SECRET: `openssl rand -base64 32`
 
 ---
 
@@ -179,16 +179,3 @@ vercel logs                # View deployment logs
 vercel env ls              # List environment variables
 ```
 
----
-
-## 8. Generated Secrets
-
-**JWT_SECRET** (save this!):
-```
-mT1IunVtrAkL14PGn6MCwR6pW+RkIu81BMXNXV713Fs=
-```
-
-**Generated at**: 2026-11-18T14:56:49+05:00
-**Project**: JapanUni Next.js API
-**Branch**: omarali4321-assess-project-state
-**PR**: #2
