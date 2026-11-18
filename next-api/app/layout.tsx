@@ -9,5 +9,11 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><ThemeProvider><ToastProvider />{children}</ThemeProvider></body></html>
+  return (
+    <html lang="en">
+      <body className="font-sans antialiased bg-ink-50 text-ink-900 dark:bg-ink-950 dark:text-ink-50 transition-colors duration-300">
+        <ThemeProvider><ToastProvider />{children}</ThemeProvider>
+      </body>
+    </html>
+  )
 }
