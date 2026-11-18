@@ -4,6 +4,7 @@ import { handleRouteError, jsonError, unauthorized } from '../../../../../lib/ht
 import { prisma } from '../../../../../lib/prisma'
 import { reviewSchema } from '../../../../../lib/user-validation'
 import { universityIdSchema } from '../../../../../lib/university-validation'
+import { getUniversityById } from '../../../../../lib/data'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -50,7 +51,7 @@ export async function POST(
     if (!user) return unauthorized()
     const universityId = BigInt(universityIdSchema.parse(context.params.id))
     const input = reviewSchema.parse(await request.json())
-    const university = await prisma.university.findUnique({ where: { id: universityId } })
+    const university = getUniversityById(Number(universityId))
     if (!university) return jsonError(404, 'UNIVERSITY_NOT_FOUND', 'University not found')
 
     const review = await prisma.review.create({
