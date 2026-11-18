@@ -17,7 +17,7 @@ const ROOT = join(__dirname, '..')
 const DATA_DIR = join(ROOT, 'data')
 const UNIV_DIR = join(DATA_DIR, 'universities')
 const GUIDES_DIR = join(DATA_DIR, 'guides')
-const CSV_PATH = join(DATA_DIR, 'School_Search_Result.csv')
+const CSV_PATH = join(ROOT, 'data-src', 'School_Search_Result.csv')
 
 // Ensure output directories exist
 mkdirSync(UNIV_DIR, { recursive: true })
