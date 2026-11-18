@@ -15,6 +15,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const saved = localStorage.getItem('theme')
     const initial = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDark(initial)
     document.documentElement.classList.toggle('dark', initial)
   }, [])

@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { handleRouteError, jsonData, jsonError } from '../../../../lib/http'
-import { findUniversity, toUniversityDto } from '../../../../lib/universities'
+import { findUniversityById } from '../../../../lib/data'
 import { universityIdSchema } from '../../../../lib/university-validation'
 
 export const runtime = 'nodejs'
@@ -12,12 +12,12 @@ export async function GET(
 ) {
   try {
     const id = universityIdSchema.parse(context.params.id)
-    const university = await findUniversity(BigInt(id))
+    const university = findUniversityById(id)
     if (!university) {
       return jsonError(404, 'UNIVERSITY_NOT_FOUND', 'University not found')
     }
 
-    return jsonData(toUniversityDto(university))
+    return jsonData(university)
   } catch (error) {
     return handleRouteError(error)
   }

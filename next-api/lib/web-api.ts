@@ -1,25 +1,22 @@
 export type University = {
   id: number
+  sourceKey: string
   name: string
-  description: string | null
-  ranking: number | null
-  tuitionFeeYearly: string | null
-  programs: string | null
-  websiteUrl: string | null
-  sourceUrl: string | null
-  images: string[]
   cityName: string | null
   cityId: number | null
-  costOfLivingMonthly: number | null
+  ranking: number | null
+  tuitionFeeYearly: number | null
   institutionType: string | null
-  faculty: string | null
-  degree: string | null
+  programs: string | null
   intake: string | null
   mediumOfInstruction: string | null
   preArrivalAdmission: string | null
+  images: string[]
+  degree: string | null
+  faculty: string | null
   majorSpeciality: string | null
-  ieltsRequirement: number | null
-  jlptRequirement: string | null
+  websiteUrl: string | null
+  sourceUrl: string | null
   favorited: boolean
   averageRating: number | null
   reviewCount: number

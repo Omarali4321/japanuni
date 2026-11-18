@@ -1,6 +1,5 @@
 import { createHash } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
-import path from 'node:path'
 import iconv from 'iconv-lite'
 import { parse } from 'csv-parse/sync'
 import { PrismaClient } from '@prisma/client'
