@@ -31,12 +31,6 @@ docker compose up --build
 - Backend API: http://localhost:8080/api
 - PostgreSQL: localhost:5432
 
-### Demo accounts
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@japanuni.com | admin123 |
-| Student | student@japanuni.com | student123 |
 
 ## Run locally (development)
 
