@@ -58,6 +58,7 @@ type UniversityIndex = {
   majorSpeciality: string | null
   websiteUrl: string | null
   sourceUrl: string | null
+  programCount: number | null
   ieltsRequirement: number | null
   jlptRequirement: string | null
 }
@@ -132,9 +133,23 @@ function filterUniversities(universities: UniversityIndex[], filters: University
     if (filters.maxTuition !== undefined && u.tuitionFeeYearly !== null && u.tuitionFeeYearly > filters.maxTuition) return false
     if (filters.minRanking !== undefined && u.ranking !== null && u.ranking < filters.minRanking) return false
     if (filters.institutionType && u.institutionType?.toLowerCase() !== filters.institutionType.toLowerCase()) return false
-    if (filters.mediumOfInstruction && u.mediumOfInstruction?.toLowerCase() !== filters.mediumOfInstruction.toLowerCase()) return false
-    if (filters.preArrivalAdmission && u.preArrivalAdmission?.toLowerCase() !== filters.preArrivalAdmission.toLowerCase()) return false
-    if (filters.intake && u.intake?.toLowerCase() !== filters.intake.toLowerCase()) return false
+    if (filters.mediumOfInstruction) {
+      const filterVal = filters.mediumOfInstruction.toLowerCase()
+      const uniVal = normalizeLanguageForFilter(u.mediumOfInstruction)
+      if (filterVal === 'both' && uniVal !== 'both') return false
+      if (filterVal === 'japanese' && uniVal !== 'japanese') return false
+      if (filterVal === 'english' && uniVal !== 'english') return false
+    }
+    if (filters.preArrivalAdmission) {
+      const filterVal = filters.preArrivalAdmission.toLowerCase()
+      const uniVal = normalizePreArrivalForFilter(u.preArrivalAdmission)
+      if (filterVal !== uniVal) return false
+    }
+    if (filters.intake) {
+      const filterVal = filters.intake.toLowerCase()
+      const uniVal = normalizeIntakeForFilter(u.intake)
+      if (filterVal !== uniVal) return false
+    }
     return true
   })
 }
@@ -226,47 +241,248 @@ function normalize(value: string | null | undefined) {
   return value?.trim().toLowerCase() || ''
 }
 
+function normalizeLanguageForFilter(lang: string | null | undefined): string {
+  if (!lang) return ''
+  const lower = lang.toLowerCase()
+  if (lower.includes('japanese (100%)') && lower.includes('english (100%)')) return 'both'
+  if (lower.includes('japanese (100%)')) return 'japanese'
+  if (lower.includes('english (100%)')) return 'english'
+  return 'both'
+}
+
+function normalizeIntakeForFilter(intake: string | null | undefined): string {
+  if (!intake) return ''
+  const lower = intake.toLowerCase()
+  const hasApril = lower.includes('april')
+  const hasOctober = lower.includes('october')
+  const hasSeptember = lower.includes('september')
+  if (hasApril && !hasOctober && !hasSeptember) return 'april'
+  if (hasOctober && !hasApril && !hasSeptember) return 'october'
+  if (hasSeptember && !hasApril && !hasOctober) return 'september'
+  return 'other'
+}
+
+function normalizePreArrivalForFilter(pre: string | null | undefined): string {
+  if (!pre) return ''
+  const lower = pre.toLowerCase()
+  const hasYes = lower.includes('yes')
+  const hasNo = lower.includes('no')
+  if (hasYes && !hasNo) return 'yes'
+  if (hasNo && !hasYes) return 'no'
+  return ''
+}
+
 function scoreUniversity(university: UniversityIndex, input: MatchInput) {
-  let value = 35
-  const reasons = []
-  const gaps = []
+  let value = 30
+  const reasons: string[] = []
+  const gaps: string[] = []
+
   const programs = normalize(university.programs)
+  const majorSpeciality = normalize(university.majorSpeciality)
+  const faculty = normalize(university.faculty)
   const field = normalize(input.field)
   const tuition = university.tuitionFeeYearly ? Number(university.tuitionFeeYearly) : null
+  const allProgramText = [programs, majorSpeciality, faculty].filter(Boolean).join(' ')
 
-  if (input.budgetYearly != null && tuition != null) {
-    if (input.budgetYearly >= tuition) { value += 20; reasons.push('Tuition fits your yearly budget.') }
-    else { value -= 18; gaps.push('Tuition is above your yearly budget.') }
-  }
-  if (input.ieltsScore != null && university.ieltsRequirement != null) {
-    if (input.ieltsScore >= university.ieltsRequirement) { value += 18; reasons.push('Your IELTS score meets the listed requirement.') }
-    else if (input.ieltsScore + 0.5 >= university.ieltsRequirement) { value += 4; gaps.push('IELTS is close to the listed requirement.') }
-    else { value -= 14; gaps.push('IELTS is below the listed requirement.') }
-  }
+  // 1. Field of study match (most important factor)
   if (field) {
-    const related = programs.includes(field) ||
-      (field.includes('computer') && /(computer|engineering|science)/.test(programs)) ||
-      (field.includes('business') && /(business|commerce|economics|management)/.test(programs)) ||
-      (field.includes('medicine') && /(medicine|dentistry|life science)/.test(programs))
-    if (related) { value += 22; reasons.push('Programs are related to your study interest.') }
-    else { value -= 6; gaps.push('Programs may not directly match your study interest.') }
+    const fieldScore = calculateFieldMatch(field, allProgramText)
+    value += fieldScore.score
+    reasons.push(...fieldScore.reasons)
+    gaps.push(...fieldScore.gaps)
   }
+
+  // 2. Budget match (if both provided)
+  if (input.budgetYearly != null && tuition != null) {
+    if (input.budgetYearly >= tuition) {
+      value += 15
+      reasons.push(`Tuition ¥${tuition.toLocaleString()}/year fits your budget (¥${input.budgetYearly.toLocaleString()}).`)
+    } else {
+      value -= 10
+      gaps.push(`Tuition ¥${tuition.toLocaleString()}/year exceeds your budget (¥${input.budgetYearly.toLocaleString()}).`)
+    }
+  } else if (input.budgetYearly != null) {
+    gaps.push('Tuition data not available for this university.')
+  }
+
+  // 3. IELTS match
+  if (input.ieltsScore != null && university.ieltsRequirement != null) {
+    if (input.ieltsScore >= university.ieltsRequirement) {
+      value += 12
+      reasons.push(`Your IELTS ${input.ieltsScore} meets requirement (${university.ieltsRequirement}).`)
+    } else if (input.ieltsScore + 0.5 >= university.ieltsRequirement) {
+      value += 5
+      gaps.push(`IELTS ${input.ieltsScore} is close to requirement (${university.ieltsRequirement}).`)
+    } else {
+      value -= 8
+      gaps.push(`IELTS ${input.ieltsScore} below requirement (${university.ieltsRequirement}).`)
+    }
+  } else if (input.ieltsScore != null) {
+    gaps.push('IELTS requirement data not available.')
+  }
+
+  // 4. JLPT match
   if (input.jlptLevel && university.jlptRequirement) {
     const rank = (level: string) => ({ n1: 1, n2: 2, n3: 3, n4: 4, n5: 5 }[normalize(level)] || 0)
-    if (rank(input.jlptLevel) > 0 && rank(input.jlptLevel) <= rank(university.jlptRequirement)) { value += 10; reasons.push('Your JLPT level meets the listed requirement.') }
-    else { value -= 6; gaps.push('JLPT may need improvement for Japanese-taught programs.') }
+    const userRank = rank(input.jlptLevel)
+    const reqRank = rank(university.jlptRequirement)
+    if (userRank > 0 && userRank <= reqRank) {
+      value += 10
+      reasons.push(`Your JLPT ${input.jlptLevel.toUpperCase()} meets requirement (${university.jlptRequirement.toUpperCase()}).`)
+    } else {
+      value -= 5
+      gaps.push(`JLPT ${input.jlptLevel.toUpperCase()} may need improvement for requirement (${university.jlptRequirement.toUpperCase()}).`)
+    }
+  } else if (input.jlptLevel) {
+    gaps.push('JLPT requirement data not available.')
   }
+
+  // 5. Language of instruction match
+  if (input.ieltsScore != null || input.jlptLevel) {
+    const langMatch = calculateLanguageMatch(university.mediumOfInstruction, input.ieltsScore ?? null, input.jlptLevel ?? null)
+    value += langMatch.score
+    reasons.push(...langMatch.reasons)
+    gaps.push(...langMatch.gaps)
+  }
+
+  // 6. Institution type preference (national/public often preferred)
+  if (university.institutionType === 'National') {
+    value += 5
+    reasons.push('National university — typically lower tuition and high reputation.')
+  } else if (university.institutionType === 'Public') {
+    value += 3
+    reasons.push('Public university — often good value.')
+  }
+
+  // 7. Program breadth (more programs = more options)
+  if (university.programCount && university.programCount > 10) {
+    value += 3
+    reasons.push(`${university.programCount} programs available — broad choice.`)
+  } else if (university.programCount && university.programCount <= 3) {
+    gaps.push(`Only ${university.programCount} program(s) — limited options.`)
+  }
+
+  // 8. Ranking bonus (if available)
+  if (university.ranking != null && university.ranking <= 50) {
+    value += 5
+    reasons.push(`Ranked #${university.ranking} in Japan.`)
+  }
+
+  // 9. Pre-arrival admission availability (bonus if offered)
+  if (university.preArrivalAdmission && university.preArrivalAdmission.toLowerCase().includes('yes')) {
+    value += 2
+    reasons.push('Offers pre-arrival admission.')
+  }
+
+  // 10. English-taught programs percentage bonus
+  const lang = normalize(university.mediumOfInstruction)
+  if (lang.includes('english (100%)')) {
+    value += 3
+    reasons.push('Fully English-taught programs available.')
+  } else if (lang.includes('english') && lang.includes('japanese')) {
+    value += 1
+    reasons.push('Both English and Japanese instruction available.')
+  }
+
+  // 11. City preference (if available)
   if (input.cityId != null && university.cityId != null) {
-    if (input.cityId === university.cityId) { value += 8; reasons.push('Located in your preferred city.') }
-    else value -= 2
+    if (input.cityId === university.cityId) {
+      value += 5
+      reasons.push('Located in your preferred city.')
+    }
   }
-  if (university.ranking != null && university.ranking <= 70) { value += 6; reasons.push('Strong ranking among listed universities.') }
+
+  // 12. Tie-breaker: slight preference for more programs (consistent ordering)
+  if (university.programCount && university.programCount > 0) {
+    value += Math.min(2, university.programCount / 100)
+  }
+
   value = Math.max(0, Math.min(100, value))
   return {
     university: { ...university, favorited: false, averageRating: null, reviewCount: 0 },
     score: value,
-    fitLevel: value >= 78 ? 'Excellent fit' : value >= 60 ? 'Good fit' : value >= 42 ? 'Possible fit' : 'Stretch option',
-    reasons,
+    fitLevel: value >= 75 ? 'Excellent fit' : value >= 55 ? 'Good fit' : value >= 35 ? 'Possible fit' : 'Stretch option',
+    reasons: reasons.length > 0 ? reasons : ['Limited data available for detailed matching.'],
     gaps,
   }
+}
+
+function calculateFieldMatch(field: string, programText: string) {
+  const score = { score: 0, reasons: [] as string[], gaps: [] as string[] }
+  const fieldWords = field.split(/\s+/).filter(w => w.length > 2)
+  
+  // Direct match
+  if (programText.includes(field)) {
+    score.score += 25
+    score.reasons.push(`Programs directly match "${field}".`)
+    return score
+  }
+
+  // Keyword-based matching for common fields
+  const fieldMappings: Record<string, string[]> = {
+    'computer': ['computer', 'information', 'software', 'data science', 'ai', 'artificial intelligence', 'informatics', 'computing'],
+    'engineering': ['engineering', 'mechanical', 'electrical', 'electronic', 'civil', 'chemical', 'materials', 'robotics'],
+    'business': ['business', 'commerce', 'economics', 'management', 'finance', 'accounting', 'marketing', 'mba'],
+    'medicine': ['medicine', 'medical', 'dentistry', 'pharmacy', 'nursing', 'health', 'clinical', 'life science', 'biomedical'],
+    'science': ['science', 'physics', 'chemistry', 'biology', 'mathematics', 'mathematical'],
+    'law': ['law', 'legal', 'political'],
+    'arts': ['arts', 'humanities', 'literature', 'language', 'linguistics', 'history', 'philosophy', 'culture'],
+    'education': ['education', 'teaching', 'pedagogy'],
+    'agriculture': ['agriculture', 'agricultural', 'bioresource', 'forestry', 'fisheries'],
+    'social': ['social', 'sociology', 'psychology', 'welfare', 'policy', 'international relations'],
+    'environment': ['environment', 'environmental', 'sustainability', 'energy'],
+  }
+
+  let bestMatch = 0
+  let matchedCategory = ''
+  for (const [category, keywords] of Object.entries(fieldMappings)) {
+    if (field.includes(category) || keywords.some(k => field.includes(k))) {
+      const matches = keywords.filter(k => programText.includes(k)).length
+      if (matches > bestMatch) {
+        bestMatch = matches
+        matchedCategory = category
+      }
+    }
+  }
+
+  if (bestMatch > 0) {
+    score.score += Math.min(20, 10 + bestMatch * 3)
+    score.reasons.push(`Programs relate to ${matchedCategory} (${bestMatch} keyword match${bestMatch > 1 ? 'es' : ''}).`)
+  } else {
+    // Check individual field words
+    const wordMatches = fieldWords.filter(w => programText.includes(w)).length
+    if (wordMatches > 0) {
+      score.score += wordMatches * 3
+      score.reasons.push(`${wordMatches} keyword${wordMatches > 1 ? 's' : ''} from your interest found in programs.`)
+    } else {
+      score.score -= 5
+      score.gaps.push('Programs may not directly match your study interest.')
+    }
+  }
+  return score
+}
+
+function calculateLanguageMatch(mediumOfInstruction: string | null, ieltsScore: number | null, jlptLevel: string | null) {
+  const score = { score: 0, reasons: [] as string[], gaps: [] as string[] }
+  if (!mediumOfInstruction) return score
+
+  const lang = mediumOfInstruction.toLowerCase()
+  const hasJapanese = lang.includes('japanese')
+  const hasEnglish = lang.includes('english')
+
+  if (hasJapanese && hasEnglish) {
+    score.score += 5
+    score.reasons.push('Programs offered in both Japanese and English.')
+  } else if (hasEnglish && ieltsScore != null) {
+    score.score += 5
+    score.reasons.push('English-taught programs available.')
+  } else if (hasJapanese && jlptLevel) {
+    score.score += 5
+    score.reasons.push('Japanese-taught programs available.')
+  } else if (hasJapanese && ieltsScore != null) {
+    score.gaps.push('Primarily Japanese-taught; English programs may be limited.')
+  } else if (hasEnglish && jlptLevel) {
+    score.gaps.push('Primarily English-taught; Japanese programs may be limited.')
+  }
+  return score
 }

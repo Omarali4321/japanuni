@@ -21,7 +21,7 @@ const faqs = [
       },
       {
         q: 'Can I use JapanUni in languages other than English?',
-        a: 'We\'re working on adding more languages! Currently the interface is in English, but we plan to add Japanese, Korean, Chinese, and Vietnamese. Use the language selector in the footer to switch (currently UI only).',
+        a: 'We\'re working on adding more languages! Currently the interface is in English, but we plan to add Japanese, Korean, Chinese, and Vietnamese in future releases.',
       },
     ],
   },

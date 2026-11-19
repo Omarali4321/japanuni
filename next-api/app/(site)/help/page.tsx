@@ -12,69 +12,69 @@ const categories = [
     title: 'Getting Started',
     icon: '🚀',
     articles: [
-      { title: 'How to create an account', href: '/help/account-creation' },
-      { title: 'Finding your first university', href: '/help/finding-universities' },
-      { title: 'Understanding Japanese degree types', href: '/help/degree-types' },
-      { title: 'Language requirements explained', href: '/help/language-requirements' },
+      { title: 'How to create an account', href: '/register' },
+      { title: 'Finding your first university', href: '/universities' },
+      { title: 'Understanding Japanese degree types', href: '/admission#degree-types' },
+      { title: 'Language requirements explained', href: '/admission#language' },
     ],
   },
   {
     title: 'Applications & Admissions',
     icon: '📋',
     articles: [
-      { title: 'Application timeline for Japanese universities', href: '/help/application-timeline' },
-      { title: 'Required documents checklist', href: '/help/documents-checklist' },
-      { title: 'Writing a statement of purpose', href: '/help/statement-of-purpose' },
-      { title: 'Getting recommendation letters', href: '/help/recommendation-letters' },
+      { title: 'Application timeline for Japanese universities', href: '/admission#timeline' },
+      { title: 'Required documents checklist', href: '/admission#documents' },
+      { title: 'Writing a statement of purpose', href: '/admission#sop' },
+      { title: 'Getting recommendation letters', href: '/admission#recommendations' },
     ],
   },
   {
     title: 'Scholarships & Funding',
     icon: '💴',
     articles: [
-      { title: 'MEXT Scholarship complete guide', href: '/help/mext-scholarship' },
-      { title: 'JASSO scholarships overview', href: '/help/jasso-scholarships' },
-      { title: 'University-specific scholarships', href: '/help/university-scholarships' },
-      { title: 'Private funding opportunities', href: '/help/private-funding' },
+      { title: 'MEXT Scholarship complete guide', href: '/scholarships#mext' },
+      { title: 'JASSO scholarships overview', href: '/scholarships#jasso' },
+      { title: 'University-specific scholarships', href: '/scholarships#university' },
+      { title: 'Private funding opportunities', href: '/scholarships#private' },
     ],
   },
   {
     title: 'Visa & Immigration',
     icon: '🛂',
     articles: [
-      { title: 'Student visa (COE) application process', href: '/help/student-visa-process' },
-      { title: 'Certificate of Eligibility explained', href: '/help/coe-explained' },
-      { title: 'Visa renewal and extension', href: '/help/visa-renewal' },
-      { title: 'Working part-time on student visa', href: '/help/part-time-work' },
+      { title: 'Student visa (COE) application process', href: '/visa#process' },
+      { title: 'Certificate of Eligibility explained', href: '/visa#coe' },
+      { title: 'Visa renewal and extension', href: '/visa#renewal' },
+      { title: 'Working part-time on student visa', href: '/visa#part-time' },
     ],
   },
   {
     title: 'Student Life',
     icon: '🇯🇵',
     articles: [
-      { title: 'Finding accommodation in Japan', href: '/help/accommodation' },
-      { title: 'Health insurance for students', href: '/help/health-insurance' },
-      { title: 'Opening a Japanese bank account', href: '/help/bank-account' },
-      { title: 'Mobile phone and internet setup', href: '/help/mobile-internet' },
+      { title: 'Finding accommodation in Japan', href: '/student-life#housing' },
+      { title: 'Health insurance for students', href: '/student-life#health' },
+      { title: 'Opening a Japanese bank account', href: '/student-life#banking' },
+      { title: 'Mobile phone and internet setup', href: '/student-life#mobile' },
     ],
   },
   {
     title: 'Using JapanUni',
     icon: '⚙️',
     articles: [
-      { title: 'How to use Smart Match', href: '/help/smart-match' },
-      { title: 'Comparing universities side-by-side', href: '/help/compare-universities' },
-      { title: 'Saving favorites and creating lists', href: '/help/favorites' },
-      { title: 'Writing university reviews', href: '/help/writing-reviews' },
+      { title: 'How to use Smart Match', href: '/match' },
+      { title: 'Comparing universities side-by-side', href: '/universities' },
+      { title: 'Saving favorites and creating lists', href: '/favorites' },
+      { title: 'Writing university reviews', href: '/universities' },
     ],
   },
 ]
 
 const popularArticles = [
-  { title: 'Complete guide to MEXT Scholarship 2025', category: 'Scholarships', readTime: '12 min' },
-  { title: 'Student visa application: Step by step', category: 'Visa', readTime: '8 min' },
-  { title: 'Top 10 universities for international students', category: 'Universities', readTime: '10 min' },
-  { title: 'Cost of living in Tokyo vs Osaka vs Kyoto', category: 'Student Life', readTime: '7 min' },
+  { title: 'Complete guide to MEXT Scholarship 2025', category: 'Scholarships', readTime: '12 min', href: '/scholarships#mext' },
+  { title: 'Student visa application: Step by step', category: 'Visa', readTime: '8 min', href: '/visa#process' },
+  { title: 'Top 10 universities for international students', category: 'Universities', readTime: '10 min', href: '/universities' },
+  { title: 'Cost of living in Tokyo vs Osaka vs Kyoto', category: 'Student Life', readTime: '7 min', href: '/student-life#cost' },
 ]
 
 export default function HelpPage() {
@@ -115,7 +115,7 @@ export default function HelpPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {popularArticles.map((article, index) => (
             <StaggerItem key={index} customDelay={index * 0.05}>
-              <Link href="#" className="glass-card p-6 hover:border-sakura-500/30 transition-all group">
+              <Link href={article.href} className="glass-card p-6 hover:border-sakura-500/30 transition-all group">
                 <div className="flex items-center gap-2 text-xs text-sakura-500 font-medium mb-2">
                   <span>{article.category}</span>
                   <span>•</span>

@@ -31,18 +31,18 @@ const footerLinks = {
   ],
 }
 
-const languages = [
-  ['en', 'English', '🇺🇸'],
-  ['ja', '日本語', '🇯🇵'],
-  ['ko', '한국어', '🇰🇷'],
-  ['zh', '中文', '🇨🇳'],
-  ['vi', 'Tiếng Việt', '🇻🇳'],
-]
+// Language switcher removed - multi-language support planned for future release
+// const languages = [
+//   ['en', 'English', '🇺🇸'],
+//   ['ja', '日本語', '🇯🇵'],
+//   ['ko', '한국어', '🇰🇷'],
+//   ['zh', '中文', '🇨🇳'],
+//   ['vi', 'Tiếng Việt', '🇻🇳'],
+// ]
 
 export function SiteFooter() {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
-  const [lang, setLang] = useState('en')
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault()
@@ -103,62 +103,29 @@ export function SiteFooter() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <p className="text-xs text-ink-800/40 dark:text-ink-50/40">© {new Date().getFullYear()} JapanUni. Built for students dreaming of Japan.</p>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2" aria-label="Newsletter signup">
-                <label htmlFor="footer-email" className="sr-only">Email address</label>
-                <input
-                  id="footer-email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="flex-1 min-w-[200px] px-4 py-2 text-sm rounded-lg glass border border-white/10 focus:outline-none focus:ring-2 focus:ring-sakura-500/50 dark:bg-ink-800"
-                  disabled={subscribed}
-                  aria-describedby="newsletter-status"
-                />
-                <button
-                  type="submit"
-                  disabled={subscribed || !email || !email.includes('@')}
-                  className="btn-primary px-4 py-2 text-sm whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {subscribed ? 'Subscribed!' : 'Subscribe'}
-                </button>
-                <p id="newsletter-status" className="sr-only" aria-live="polite">
-                  {subscribed ? 'Successfully subscribed to newsletter' : ''}
-                </p>
-              </form>
-
-              <div className="relative">
-                <button
-                  onClick={() => {
-                    const currentIndex = languages.findIndex(([c]) => c === lang)
-                    const nextIndex = (currentIndex + 1) % languages.length
-                    setLang(languages[nextIndex][0])
-                  }}
-                  className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg glass border border-white/10 hover:bg-sakura-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950"
-                  aria-label="Select language"
-                  aria-haspopup="listbox"
-                >
-                  <span>{languages.find(([c]) => c === lang)?.[2] || '🇺🇸'}</span>
-                  <span className="hidden sm:inline">{languages.find(([c]) => c === lang)?.[1] || 'English'}</span>
-                  <span className="text-xs">▼</span>
-                </button>
-                <div className="absolute bottom-full left-0 mb-2 w-40 rounded-lg glass border border-white/10 shadow-lg overflow-hidden z-50" role="listbox">
-                  {languages.map(([code, name, flag]) => (
-                    <button
-                      key={code}
-                      onClick={() => setLang(code)}
-                      className={`w-full px-3 py-2 text-sm flex items-center gap-2 transition-colors ${lang === code ? 'bg-sakura-500/10' : 'hover:bg-white/5 dark:hover:bg-ink-800'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950`}
-                      role="option"
-                      aria-selected={lang === code}
-                    >
-                      <span>{flag}</span>
-                      <span>{name}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto" aria-label="Newsletter signup">
+              <label htmlFor="footer-email" className="sr-only">Email address</label>
+              <input
+                id="footer-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="flex-1 min-w-[200px] px-4 py-2 text-sm rounded-lg glass border border-white/10 focus:outline-none focus:ring-2 focus:ring-sakura-500/50 dark:bg-ink-800"
+                disabled={subscribed}
+                aria-describedby="newsletter-status"
+              />
+              <button
+                type="submit"
+                disabled={subscribed || !email || !email.includes('@')}
+                className="btn-primary px-4 py-2 text-sm whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {subscribed ? 'Subscribed!' : 'Subscribe'}
+              </button>
+              <p id="newsletter-status" className="sr-only" aria-live="polite">
+                {subscribed ? 'Successfully subscribed to newsletter' : ''}
+              </p>
+            </form>
           </div>
         </motion.div>
       </div>
