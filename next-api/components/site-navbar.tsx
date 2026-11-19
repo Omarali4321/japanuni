@@ -16,6 +16,11 @@ const links = [
   ['/student-life', 'Student Life'],
 ]
 
+const authLinks = [
+  ['/dashboard', 'Dashboard'],
+  ['/favorites', 'Favorites'],
+]
+
 export function SiteNavbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -49,6 +54,11 @@ export function SiteNavbar() {
           </Link>
           <div className="hidden items-center gap-8 md:flex">
             {links.map(([href, label]) => (
+              <Link key={href} href={href} className="text-sm font-medium text-ink-800/70 transition-colors hover:text-sakura-500 dark:text-ink-50/70 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-sakura-500 after:transition-all hover:after:w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950 rounded-sm">
+                {label}
+              </Link>
+            ))}
+            {user && authLinks.map(([href, label]) => (
               <Link key={href} href={href} className="text-sm font-medium text-ink-800/70 transition-colors hover:text-sakura-500 dark:text-ink-50/70 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-sakura-500 after:transition-all hover:after:w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950 rounded-sm">
                 {label}
               </Link>
@@ -146,8 +156,9 @@ export function SiteNavbar() {
                 <hr className="border-white/10" />
                 {user ? (
                   <>
-                    <Link href="/dashboard" onClick={() => setOpen(false)} className="text-sm font-medium text-ink-800/70 hover:text-sakura-500 dark:text-ink-50/70 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950 rounded-lg px-2">Dashboard</Link>
-                    <Link href="/favorites" onClick={() => setOpen(false)} className="text-sm font-medium text-ink-800/70 hover:text-sakura-500 dark:text-ink-50/70 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950 rounded-lg px-2">Favorites</Link>
+                    {authLinks.map(([href, label]) => (
+                      <Link key={href} href={href} onClick={() => setOpen(false)} className="text-sm font-medium text-ink-800/70 hover:text-sakura-500 dark:text-ink-50/70 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950 rounded-lg px-2">{label}</Link>
+                    ))}
                     <button className="text-left text-sm text-red-500 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950 rounded-lg px-2" onClick={() => { setOpen(false); void logout() }}>Logout</button>
                   </>
                 ) : (
