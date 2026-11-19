@@ -14,48 +14,44 @@ const categories = [
     articles: [
       { title: 'How to create an account', href: '/register' },
       { title: 'Finding your first university', href: '/universities' },
-      { title: 'Understanding Japanese degree types', href: '/admission#degree-types' },
-      { title: 'Language requirements explained', href: '/admission#language' },
+      { title: 'Undergraduate Application Process', href: '/admission/1' },
+      { title: 'EJU Examination Guide', href: '/admission/3' },
     ],
   },
   {
     title: 'Applications & Admissions',
     icon: '📋',
     articles: [
-      { title: 'Application timeline for Japanese universities', href: '/admission#timeline' },
-      { title: 'Required documents checklist', href: '/admission#documents' },
-      { title: 'Writing a statement of purpose', href: '/admission#sop' },
-      { title: 'Getting recommendation letters', href: '/admission#recommendations' },
+      { title: 'Graduate School Application Guide', href: '/admission/2' },
+      { title: 'Document Preparation Checklist', href: '/admission/4' },
     ],
   },
   {
     title: 'Scholarships & Funding',
     icon: '💴',
     articles: [
-      { title: 'MEXT Scholarship complete guide', href: '/scholarships#mext' },
-      { title: 'JASSO scholarships overview', href: '/scholarships#jasso' },
-      { title: 'University-specific scholarships', href: '/scholarships#university' },
-      { title: 'Private funding opportunities', href: '/scholarships#private' },
+      { title: 'Browse all scholarships', href: '/scholarships' },
     ],
   },
   {
     title: 'Visa & Immigration',
     icon: '🛂',
     articles: [
-      { title: 'Student visa (COE) application process', href: '/visa#process' },
-      { title: 'Certificate of Eligibility explained', href: '/visa#coe' },
-      { title: 'Visa renewal and extension', href: '/visa#renewal' },
-      { title: 'Working part-time on student visa', href: '/visa#part-time' },
+      { title: 'Student Visa (COE) Application', href: '/visa/1' },
+      { title: 'Visa Extension & Renewal', href: '/visa/2' },
+      { title: 'Work Permission for Students', href: '/visa/3' },
+      { title: 'Post-Graduation Work Visa', href: '/visa/4' },
     ],
   },
   {
     title: 'Student Life',
     icon: '🇯🇵',
     articles: [
-      { title: 'Finding accommodation in Japan', href: '/student-life#housing' },
-      { title: 'Health insurance for students', href: '/student-life#health' },
-      { title: 'Opening a Japanese bank account', href: '/student-life#banking' },
-      { title: 'Mobile phone and internet setup', href: '/student-life#mobile' },
+      { title: 'Finding Accommodation in Japan', href: '/student-life/1' },
+      { title: 'Cost of Living Breakdown', href: '/student-life/2' },
+      { title: 'Part-Time Job Guide', href: '/student-life/3' },
+      { title: 'Healthcare & Insurance', href: '/student-life/4' },
+      { title: 'Japanese Language Schools', href: '/student-life/5' },
     ],
   },
   {
@@ -71,10 +67,10 @@ const categories = [
 ]
 
 const popularArticles = [
-  { title: 'Complete guide to MEXT Scholarship 2025', category: 'Scholarships', readTime: '12 min', href: '/scholarships#mext' },
-  { title: 'Student visa application: Step by step', category: 'Visa', readTime: '8 min', href: '/visa#process' },
-  { title: 'Top 10 universities for international students', category: 'Universities', readTime: '10 min', href: '/universities' },
-  { title: 'Cost of living in Tokyo vs Osaka vs Kyoto', category: 'Student Life', readTime: '7 min', href: '/student-life#cost' },
+  { title: 'Student Visa (COE) Application', category: 'Visa', readTime: '8 min', href: '/visa/1' },
+  { title: 'Finding Accommodation in Japan', category: 'Student Life', readTime: '7 min', href: '/student-life/1' },
+  { title: 'Graduate School Application Guide', category: 'Admissions', readTime: '10 min', href: '/admission/2' },
+  { title: 'Cost of Living Breakdown', category: 'Student Life', readTime: '7 min', href: '/student-life/2' },
 ]
 
 export default function HelpPage() {
