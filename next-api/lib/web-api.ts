@@ -17,6 +17,7 @@ export type University = {
   majorSpeciality: string | null
   websiteUrl: string | null
   sourceUrl: string | null
+  programCount: number | null
   favorited: boolean
   averageRating: number | null
   reviewCount: number

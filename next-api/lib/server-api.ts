@@ -23,6 +23,7 @@ export type University = {
   majorSpeciality: string | null
   ieltsRequirement: number | null
   jlptRequirement: string | null
+  programCount: number | null
   favorited: boolean
   averageRating: number | null
   reviewCount: number

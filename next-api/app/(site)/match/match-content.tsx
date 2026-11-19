@@ -51,18 +51,87 @@ export default function MatchContent() {
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr]">
         <FadeIn>
-          <form onSubmit={submit} className="glass-card space-y-4">
+          <form onSubmit={submit} className="glass-card space-y-5">
             <h1 className="font-display text-2xl font-semibold">Find your best-fit university</h1>
             <p className="text-sm text-ink-800/60 dark:text-ink-50/60">Match your goals against the current catalog.</p>
-            <input className="input-field" value={form.field} onChange={(e) => setForm({ ...form, field: e.target.value })} placeholder="Study interest" />
-            <input className="input-field" type="number" value={form.budgetYearly} onChange={(e) => setForm({ ...form, budgetYearly: e.target.value })} placeholder="Yearly tuition budget" />
-            <input className="input-field" type="number" step="0.5" min="0" max="9" value={form.ieltsScore} onChange={(e) => setForm({ ...form, ieltsScore: e.target.value })} placeholder="IELTS score" />
-            <select className="input-field" value={form.jlptLevel} onChange={(e) => setForm({ ...form, jlptLevel: e.target.value })}>
-              <option value="">JLPT not sure</option>
-              {['N1', 'N2', 'N3', 'N4', 'N5'].map((level) => <option key={level}>{level}</option>)}
-            </select>
+            
+            <div className="space-y-1.5">
+              <label htmlFor="field" className="block text-sm font-medium text-ink-800 dark:text-ink-50">
+                Study interest <span className="text-sakura-500" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="field"
+                type="text"
+                className="input-field"
+                value={form.field}
+                onChange={(e) => setForm({ ...form, field: e.target.value })}
+                placeholder="e.g., Computer Science, Business, Medicine"
+                required
+                autoComplete="off"
+              />
+              <p className="text-xs text-ink-800/40 dark:text-ink-50/40">Enter your primary field of study</p>
+            </div>
+
+            <div className="space-y-1.5">
+              <label htmlFor="budgetYearly" className="block text-sm font-medium text-ink-800 dark:text-ink-50">
+                Yearly tuition budget (JPY)
+              </label>
+              <input
+                id="budgetYearly"
+                type="number"
+                className="input-field"
+                value={form.budgetYearly}
+                onChange={(e) => setForm({ ...form, budgetYearly: e.target.value })}
+                placeholder="e.g., 800000"
+                min="0"
+                step="10000"
+                autoComplete="off"
+              />
+              <p className="text-xs text-ink-800/40 dark:text-ink-50/40">Optional. Leave empty to ignore budget filtering.</p>
+            </div>
+
+            <div className="space-y-1.5">
+              <label htmlFor="ieltsScore" className="block text-sm font-medium text-ink-800 dark:text-ink-50">
+                IELTS score
+              </label>
+              <input
+                id="ieltsScore"
+                type="number"
+                className="input-field"
+                value={form.ieltsScore}
+                onChange={(e) => setForm({ ...form, ieltsScore: e.target.value })}
+                placeholder="e.g., 6.5"
+                min="0"
+                max="9"
+                step="0.5"
+                autoComplete="off"
+              />
+              <p className="text-xs text-ink-800/40 dark:text-ink-50/40">Optional. For English-taught programs.</p>
+            </div>
+
+            <div className="space-y-1.5">
+              <label htmlFor="jlptLevel" className="block text-sm font-medium text-ink-800 dark:text-ink-50">
+                JLPT level
+              </label>
+              <select
+                id="jlptLevel"
+                className="input-field"
+                value={form.jlptLevel}
+                onChange={(e) => setForm({ ...form, jlptLevel: e.target.value })}
+                autoComplete="off"
+              >
+                <option value="">Not sure / not applicable</option>
+                {['N1', 'N2', 'N3', 'N4', 'N5'].map((level) => (
+                  <option key={level} value={level}>{level}</option>
+                ))}
+              </select>
+              <p className="text-xs text-ink-800/40 dark:text-ink-50/40">Optional. For Japanese-taught programs.</p>
+            </div>
+
             <p className="text-xs text-ink-800/40 dark:text-ink-50/40">City filter hidden — city data not available in source CSV.</p>
-            <button className="btn-primary w-full" disabled={loading}>{loading ? 'Matching...' : 'Find matches'}</button>
+            <button className="btn-primary w-full" disabled={loading} type="submit">
+              {loading ? 'Matching...' : 'Find matches'}
+            </button>
           </form>
         </FadeIn>
         <SlideUp delay={0.1}>
