@@ -12,14 +12,33 @@ export default function ContactPage() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setSubmitted(true)
-    setSubmitting(false)
-    setFormData({ name: '', email: '', subject: '', message: '' })
+    setError(null)
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      
+      const data = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message')
+      }
+      
+      setSubmitted(true)
+      setFormData({ name: '', email: '', subject: '', message: '' })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send message. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -59,6 +78,11 @@ export default function ContactPage() {
           ) : (
             <FadeIn>
               <form onSubmit={handleSubmit} className="glass-card p-6 space-y-4">
+                {error && (
+                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-sm">
+                    {error}
+                  </div>
+                )}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-ink-800/70 dark:text-ink-50/70 mb-1">Name</label>
