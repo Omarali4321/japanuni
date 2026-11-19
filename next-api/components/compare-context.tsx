@@ -9,17 +9,29 @@ interface CompareContextType {
   isSelected: (id: number) => boolean
   selectionCount: number
   canCompare: boolean
+  error: string | null
+  dismissError: () => void
 }
 
 const CompareContext = createContext<CompareContextType | null>(null)
 
+const MAX_COMPARE = 4
+
 export function CompareProvider({ children }: { children: ReactNode }) {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   const toggleSelection = useCallback((id: number) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id].slice(0, 4)
-    )
+    setSelectedIds((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((x) => x !== id)
+      }
+      if (prev.length >= MAX_COMPARE) {
+        setError(`You can compare up to ${MAX_COMPARE} universities. Remove one to add another.`)
+        return prev
+      }
+      return [...prev, id]
+    })
   }, [])
 
   const clearSelection = useCallback(() => {
@@ -27,6 +39,10 @@ export function CompareProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const isSelected = useCallback((id: number) => selectedIds.includes(id), [selectedIds])
+
+  const dismissError = useCallback(() => {
+    setError(null)
+  }, [])
 
   return (
     <CompareContext.Provider
@@ -37,6 +53,8 @@ export function CompareProvider({ children }: { children: ReactNode }) {
         isSelected,
         selectionCount: selectedIds.length,
         canCompare: selectedIds.length >= 2,
+        error,
+        dismissError,
       }}
     >
       {children}
