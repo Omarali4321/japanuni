@@ -90,10 +90,10 @@ export default function HomeContent() {
             <SlideUp delay={0.4}>
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <Link className="btn-primary h-[56px] px-8 text-base" href="/universities">
-                  Explore Universities&nbsp;↗
+                  Explore Universities ↗
                 </Link>
                 <Link className="text-base font-medium text-ink hover:text-accent transition-colors" href="/compare">
-                  Compare choices&nbsp;↗
+                  Compare choices ↗
                 </Link>
               </div>
             </SlideUp>

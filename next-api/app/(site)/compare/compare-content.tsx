@@ -18,7 +18,7 @@ export default function CompareContent() {
   useEffect(() => {
     const ids = (params.get('ids') || '').split(',').map(Number).filter(Boolean)
     if (ids.length < 2) {
-      setError('Select at least 2 universities with ?ids=1,3')
+      setError('Select at least 2 universities to compare')
       setIsLoading(false)
       return
     }
@@ -40,10 +40,16 @@ export default function CompareContent() {
 
   if (error) {
     return (
-      <section className="mx-auto max-w-7xl px-4 py-12">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <FadeIn>
+          <Link href="/universities" className="text-sm text-accent hover:underline mb-4 inline-block">← Back to Universities</Link>
           <h1 className="section-title">Compare Universities</h1>
           <div className="mt-8"><ErrorState message={error} /></div>
+          <div className="mt-8 text-center">
+            <Link className="btn-primary h-[48px] px-8 text-base" href="/universities">
+              Select Universities ↗
+            </Link>
+          </div>
         </FadeIn>
       </section>
     )
@@ -53,8 +59,14 @@ export default function CompareContent() {
     return (
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <FadeIn>
-          <Link href="/universities" className="text-sm text-sakura-500">← Universities</Link>
+          <Link href="/universities" className="text-sm text-accent hover:underline mb-4 inline-block">← Back to Universities</Link>
           <h1 className="section-title mt-4">Compare Universities</h1>
+          <p className="mt-2 text-muted">Select universities from the catalog to compare them side by side.</p>
+          <div className="mt-8 text-center">
+            <Link className="btn-primary h-[48px] px-8 text-base" href="/universities">
+              Select Universities ↗
+            </Link>
+          </div>
         </FadeIn>
         <SlideUp delay={0.1}>
           <CompareTableSkeleton cols={3} rows={6} />
@@ -66,18 +78,18 @@ export default function CompareContent() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <FadeIn>
-        <Link href="/universities" className="text-sm text-sakura-500">← Universities</Link>
+        <Link href="/universities" className="text-sm text-accent hover:underline mb-4 inline-block">← Back to Universities</Link>
         <h1 className="section-title mt-4">Compare Universities</h1>
       </FadeIn>
       <SlideUp delay={0.1}>
-        <div className="mt-8 overflow-x-auto rounded-2xl glass">
+        <div className="mt-8 overflow-x-auto rounded-2xl border border-border bg-white">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-white/10">
-                <th className="p-4">Criteria</th>
+              <tr className="border-b border-border">
+                <th className="p-4 font-medium text-ink/60 bg-soft-surface">Criteria</th>
                 {items.map((item) => (
                   <th className="min-w-[220px] p-4 font-display" key={item.id}>
-                    <Link href={`/universities/${item.id}`} className="hover:text-sakura-500">{item.name}</Link>
+                    <Link href={`/universities/${item.id}`} className="hover:text-accent transition-colors">{item.name}</Link>
                   </th>
                 ))}
               </tr>
@@ -85,8 +97,8 @@ export default function CompareContent() {
             <tbody>
               {rows.map(([label, getter], rowIndex) => (
                 <StaggerItem key={label as string} customDelay={rowIndex * 0.03}>
-                  <tr className="border-b border-white/5 align-top">
-                    <td className="p-4 font-medium text-ink-800/60 dark:text-ink-50/60">{label as string}</td>
+                  <tr className="border-b border-border/50 align-top">
+                    <td className="p-4 font-medium text-ink/60 bg-soft-surface/50">{label as string}</td>
                     {items.map((item) => (
                       <td className="p-4" key={item.id}>{(getter as (u: University) => string)(item)}</td>
                     ))}

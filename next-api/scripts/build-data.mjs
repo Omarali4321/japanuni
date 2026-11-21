@@ -68,6 +68,8 @@ function cleanText(value) {
   let text = String(value)
   // Fix known typos from CSV
   text = text.replace(/Doctral/gi, 'Doctoral')
+  text = text.replace(/Univerishity/gi, 'University')
+  text = text.replace(/\s*,\s*/g, ', ')
   // Decode common HTML entities
   text = text
     .replace(/&/g, '&')
@@ -93,6 +95,38 @@ function cleanText(value) {
   // Normalize whitespace
   text = text.replace(/\s+/g, ' ').trim()
   return text || null
+}
+
+// Normalize medium of instruction for consistent display
+function normalizeMediumOfInstruction(value) {
+  if (!value) return null
+  let text = String(value)
+  // Normalize common patterns
+  text = text.replace(/Japanese \(100%\) \| Japanese, English \(Supplementary\)/gi, 'Japanese & English')
+  text = text.replace(/English \(100%\) \| Japanese, English \(Supplementary\)/gi, 'Japanese & English')
+  text = text.replace(/Japanese \(100%\) \| English, Japanese \(Supplementary\)/gi, 'Japanese & English')
+  text = text.replace(/English \(100%\) \| English, Japanese \(Supplementary\)/gi, 'Japanese & English')
+  text = text.replace(/Japanese, English \(Supplementary\) \| Japanese \(100%\)/gi, 'Japanese & English')
+  text = text.replace(/Japanese, English \(Supplementary\) \| English \(100%\)/gi, 'Japanese & English')
+  text = text.replace(/English, Japanese \(Supplementary\) \| Japanese \(100%\)/gi, 'Japanese & English')
+  text = text.replace(/English, Japanese \(Supplementary\) \| English \(100%\)/gi, 'Japanese & English')
+  text = text.replace(/Japanese \(100%\) \| English \(100%\)/gi, 'Japanese & English')
+  text = text.replace(/English \(100%\) \| Japanese \(100%\)/gi, 'Japanese & English')
+  text = text.replace(/Japanese \(100%\)/gi, 'Japanese')
+  text = text.replace(/English \(100%\)/gi, 'English')
+  text = text.replace(/Japanese, English \(Supplementary\)/gi, 'Japanese & English')
+  text = text.replace(/English, Japanese \(Supplementary\)/gi, 'Japanese & English')
+  return text
+}
+
+// Normalize intake for consistent display
+function normalizeIntake(value) {
+  if (!value) return null
+  let text = String(value)
+  text = text.replace(/October \| April/gi, 'April | October')
+  text = text.replace(/September \| April/gi, 'April | September')
+  text = text.replace(/October \| September/gi, 'September | October')
+  return text
 }
 
 // Read and parse CSV
@@ -138,7 +172,11 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     cleanText(row[headers.begins1]),
     cleanText(row[headers.begins2]),
   ]))
-  const cleanMedium = joinValues(schoolRows.map((row) => cleanText(row[headers.medium])))
+  const cleanMedium = joinValues(schoolRows.map((row) => normalizeMediumOfInstruction(cleanText(row[headers.medium]))))
+  const cleanIntakeNormalized = joinValues(schoolRows.flatMap((row) => [
+    normalizeIntake(cleanText(row[headers.begins1])),
+    normalizeIntake(cleanText(row[headers.begins2])),
+  ]))
   const cleanPreArrival = joinValues(schoolRows.map((row) => cleanText(row[headers.preArrival])))
   const cleanWebsiteUrl = urls[0] ? cleanText(urls[0]).slice(0, 500) : null
   const cleanSourceUrl = urls[0] ? cleanText(urls[0]).slice(0, 1000) : null
@@ -158,7 +196,7 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     institutionType: cleanInstitutionType,
     faculty: cleanFaculty,
     degree: cleanDegree,
-    intake: cleanIntake,
+    intake: cleanIntakeNormalized,
     mediumOfInstruction: cleanMedium,
     preArrivalAdmission: cleanPreArrival,
     majorSpeciality: cleanSpeciality,

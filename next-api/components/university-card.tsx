@@ -86,6 +86,9 @@ export function UniversityCard({ university, showCompare = true }: { university:
           {languageBadge && <span className={`text-xs px-2 py-0.5 rounded-full ${languageBadge.className}`}>{languageBadge.text}</span>}
           {intakeBadge && <span className={`text-xs px-2 py-0.5 rounded-full ${intakeBadge.className}`}>{intakeBadge.text}</span>}
           {university.programCount && <span className="text-xs px-2 py-0.5 rounded-full bg-muted/50 text-muted">{university.programCount} programs</span>}
+          <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
+            {university.programCount && university.programCount > 0 ? 'Program-level data' : 'University-level data'}
+          </span>
         </div>
         <h2 className="font-display text-lg font-medium hover:text-accent transition-colors">{university.name}</h2>
         <p className="mt-1 text-sm text-muted">{university.cityName || 'Japan'}</p>

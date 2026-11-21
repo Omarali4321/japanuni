@@ -22,9 +22,11 @@ function UniversitiesSkeleton() {
 
 export default async function Page() {
   const initialData = await getInitialData()
+  // Get current build date for data freshness indicator
+  const buildDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   return (
     <Suspense fallback={<UniversitiesSkeleton />}>
-      <UniversityListClient initialData={initialData} />
+      <UniversityListClient initialData={initialData} buildDate={buildDate} />
     </Suspense>
   )
 }
