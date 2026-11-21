@@ -15,7 +15,7 @@ const navLinks = [
   ['/student-life', 'Student Life'],
 ]
 
-const userLinks = [
+const authLinks = [
   ['/dashboard', 'Dashboard'],
   ['/favorites', 'Favorites'],
 ]
@@ -45,88 +45,68 @@ export function SiteNavbar() {
 
   return (
     <>
-      <header className={`fixed inset-x-0 top-0 z-50 h-nav bg-background/95 backdrop-blur-sm border-b border-border transition-shadow duration-200 ${scrolled ? 'shadow-card' : ''}`}>
-        <nav className="mx-auto max-w-content flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="font-display text-xl font-bold text-ink" aria-label="JapanUni Home">
+      <header className={`fixed inset-x-0 top-0 z-50 h-nav transition-all duration-300 ${scrolled ? 'bg-background/80 backdrop-blur-md shadow-card' : 'bg-background'} border-b border-border`}>
+        <nav className="mx-auto flex h-full max-w-content items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="font-display text-xl font-bold text-accent">
             JapanUni
           </Link>
-
           <div className="hidden items-center gap-8 md:flex">
             {navLinks.map(([href, label]) => (
-              <Link
-                key={href}
-                href={href}
-                className="nav-link px-0 py-2"
-              >
+              <Link key={href} href={href} className="text-sm font-medium text-muted transition-colors hover:text-accent relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full focus-visible-ring rounded-sm">
                 {label}
               </Link>
             ))}
-            {user && userLinks.map(([href, label]) => (
-              <Link
-                key={href}
-                href={href}
-                className="nav-link px-0 py-2"
-              >
+            {user && authLinks.map(([href, label]) => (
+              <Link key={href} href={href} className="text-sm font-medium text-muted transition-colors hover:text-accent relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full focus-visible-ring rounded-sm">
                 {label}
               </Link>
             ))}
           </div>
-
           <div className="hidden items-center gap-3 md:flex">
             {user ? (
               <div className="relative" ref={userMenuRef}>
                 <button
                   type="button"
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-background hover:bg-warm-surface transition-colors duration-200 focus-visible-ring"
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 card transition-colors hover:bg-soft-surface focus-visible-ring"
                   aria-expanded={userMenuOpen}
                   aria-haspopup="true"
                 >
-                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center font-sans font-medium text-sm text-accent">
-                    {user.fullName?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
+                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent font-medium text-sm">
+                    {user.fullName?.[0]?.toUpperCase() || 'U'}
                   </div>
-                  <span className="hidden sm:block font-sans text-sm font-medium text-ink">
-                    {user.fullName || 'Account'}
-                  </span>
-                  <motion.span
-                    className="text-xs text-muted"
-                    animate={{ rotate: userMenuOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    ▼
-                  </motion.span>
+                  <span className="text-sm font-medium text-ink hidden sm:block">{user.fullName || 'User'}</span>
                 </button>
                 <AnimatePresence>
                   {userMenuOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      className="absolute right-0 mt-2 w-48 rounded-card bg-background border border-border shadow-lg py-2 z-50"
-                      role="menu"
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      className="absolute right-0 mt-2 w-48 card shadow-card-hover rounded-lg border border-border py-2"
                     >
                       <Link
                         href="/dashboard"
-                        className="block px-4 py-2 font-sans text-sm text-ink hover:bg-warm-surface"
-                        role="menuitem"
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-muted hover:text-accent hover:bg-soft-surface"
                         onClick={() => setUserMenuOpen(false)}
                       >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                         Dashboard
                       </Link>
                       <Link
                         href="/favorites"
-                        className="block px-4 py-2 font-sans text-sm text-ink hover:bg-warm-surface"
-                        role="menuitem"
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-muted hover:text-accent hover:bg-soft-surface"
                         onClick={() => setUserMenuOpen(false)}
                       >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg>
                         Favorites
                       </Link>
                       <hr className="my-2 border-border" />
                       <button
-                        className="w-full text-left px-4 py-2 font-sans text-sm text-accent hover:bg-warm-surface"
-                        role="menuitem"
-                        onClick={() => { setUserMenuOpen(false); void logout() }}
+                        onClick={logout}
+                        className="flex items-center gap-3 w-full px-4 py-2 text-sm text-accent hover:bg-soft-surface"
                       >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                         Logout
                       </button>
                     </motion.div>
@@ -134,86 +114,58 @@ export function SiteNavbar() {
                 </AnimatePresence>
               </div>
             ) : (
-              <>
-                <Link href="/login" className="btn-ghost hidden sm:block">Login</Link>
-                <Link href="/register" className="btn-primary">Sign up</Link>
-              </>
+              <div className="flex items-center gap-2">
+                <Link href="/login" className="btn-ghost text-sm">Log in</Link>
+                <Link href="/register" className="btn-primary text-sm">Sign up</Link>
+              </div>
             )}
           </div>
-
           <button
             type="button"
-            className="p-2 font-sans text-xl md:hidden focus-visible-ring rounded-lg"
             onClick={() => setOpen(!open)}
-            aria-label="Menu"
+            className="md:hidden p-2 rounded-lg card transition-colors hover:bg-soft-surface focus-visible-ring"
+            aria-label="Toggle menu"
             aria-expanded={open}
           >
-            {open ? '✕' : '☰'}
+            <svg className="w-6 h-6 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {open ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
           </button>
         </nav>
-
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="border-t border-border bg-background/95 backdrop-blur-sm md:hidden overflow-hidden"
-            >
-              <div className="p-4 flex flex-col gap-3">
-                {navLinks.map(([href, label]) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={() => setOpen(false)}
-                    className="font-sans text-sm font-medium text-ink/70 hover:text-accent py-2 focus-visible-ring rounded-lg px-2"
-                  >
-                    {label}
-                  </Link>
-                ))}
-                <hr className="border-border" />
-                {user ? (
-                  <>
-                    {userLinks.map(([href, label]) => (
-                      <Link
-                        key={href}
-                        href={href}
-                        onClick={() => setOpen(false)}
-                        className="font-sans text-sm font-medium text-ink/70 hover:text-accent py-2 focus-visible-ring rounded-lg px-2"
-                      >
-                        {label}
-                      </Link>
-                    ))}
-                    <button
-                      className="text-left font-sans text-sm text-accent py-2 focus-visible-ring rounded-lg px-2"
-                      onClick={() => { setOpen(false); void logout() }}
-                    >
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      href="/login"
-                      onClick={() => setOpen(false)}
-                      className="font-sans text-sm font-medium text-ink/70 hover:text-accent py-2 focus-visible-ring rounded-lg px-2"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      href="/register"
-                      className="btn-primary text-center py-2"
-                      onClick={() => setOpen(false)}
-                    >
-                      Sign up
-                    </Link>
-                  </>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </header>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden fixed inset-x-0 top-0 z-40 pt-16 bg-background border-b border-border shadow-lg"
+          >
+            <nav className="mx-auto max-w-content px-4 py-6 space-y-4">
+              {navLinks.map(([href, label]) => (
+                <Link key={href} href={href} className="block py-3 text-lg font-medium text-muted hover:text-accent focus-visible-ring rounded-lg" onClick={() => setOpen(false)}>
+                  {label}
+                </Link>
+              ))}
+              {user && authLinks.map(([href, label]) => (
+                <Link key={href} href={href} className="block py-3 text-lg font-medium text-muted hover:text-accent focus-visible-ring rounded-lg" onClick={() => setOpen(false)}>
+                  {label}
+                </Link>
+              ))}
+              {!user && (
+                <div className="flex flex-col gap-2 pt-4 border-t border-border">
+                  <Link href="/login" className="btn-ghost text-center">Log in</Link>
+                  <Link href="/register" className="btn-primary text-center">Sign up</Link>
+                </div>
+              )}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <CommandPalette />
     </>
   )

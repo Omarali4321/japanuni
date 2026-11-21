@@ -12,25 +12,21 @@
     line-height: inherit;
     @apply bg-background text-ink font-sans antialiased;
   }
-
-  * {
-    @apply border-border;
-  }
 }
 
 @layer components {
-  /* Container */
-  .container-main {
-    @apply mx-auto max-w-content px-4 sm:px-6 lg:px-8;
+  /* Focus visible ring */
+  .focus-visible-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
   /* Buttons */
   .btn-primary {
-    @apply inline-flex items-center justify-center h-button px-6 font-sans font-medium text-base text-on-accent bg-accent rounded-button transition-all duration-200 hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-button font-medium bg-accent text-on-accent hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/25 hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center h-button px-6 font-sans font-medium text-base text-accent bg-transparent border border-accent rounded-button transition-all duration-200 hover:bg-warm-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-button font-medium bg-background text-ink border border-border hover:bg-soft-surface transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
   .btn-ghost {
@@ -39,7 +35,7 @@
 
   /* Inputs */
   .input-field {
-    @apply w-full h-input px-4 font-sans text-base text-ink bg-background border border-border rounded-input placeholder:text-muted transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply w-full px-4 py-3 rounded-input bg-background border border-border focus:outline-none focus:ring-2 focus:ring-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 transition-all;
   }
 
   .input-label {
@@ -64,147 +60,90 @@
     @apply card flex flex-col overflow-hidden p-0;
   }
 
-  .university-card-image {
-    @apply relative h-[200px] w-full bg-soft-surface;
-  }
-
-  .university-card-image img {
-    @apply h-full w-full object-cover;
-  }
-
-  .university-card-content {
-    @apply flex-1 p-6 flex flex-col;
-  }
-
-  .university-card-badges {
-    @apply flex flex-wrap gap-2 mb-3;
-  }
-
-  .badge {
-    @apply inline-flex items-center px-2 py-0.5 font-sans text-xs font-medium rounded-full;
-  }
-
-  .badge-type-national { @apply bg-red-500/10 text-red-600; }
-  .badge-type-public { @apply bg-blue-500/10 text-blue-600; }
-  .badge-type-private { @apply bg-purple-500/10 text-purple-600; }
-  .badge-language-jp { @apply bg-blue-500/10 text-blue-600; }
-  .badge-language-en { @apply bg-amber-500/10 text-amber-600; }
-  .badge-language-both { @apply bg-emerald-500/10 text-emerald-600; }
-  .badge-intake-apr { @apply bg-accent/10 text-accent; }
-  .badge-intake-oct { @apply bg-indigo-500/10 text-indigo-600; }
-  .badge-intake-sep { @apply bg-orange-500/10 text-orange-600; }
-  .badge-count { @apply bg-muted/10 text-muted; }
-
-  .university-card-title {
-    @apply font-display text-xl font-semibold text-ink transition-colors duration-200 hover:text-accent;
-  }
-
-  .university-card-location {
-    @apply mt-1 font-sans text-sm text-muted;
-  }
-
-  .university-card-description {
-    @apply mt-2 flex-1 font-sans text-sm text-ink/70 line-clamp-2;
-  }
-
-  .university-card-tuition {
-    @apply mt-3 font-sans text-sm font-medium text-accent;
-  }
-
-  /* Section Titles */
-  .section-title {
-    @apply font-display text-3xl md:text-4xl font-normal tracking-tight text-ink;
-  }
-
-  .section-subtitle {
-    @apply mt-3 font-sans text-base text-muted max-w-2xl;
-  }
-
-  /* Page Header */
-  .page-header {
-    @apply mb-8;
-  }
-
-  .page-title {
-    @apply font-display text-4xl md:text-5xl font-normal text-ink;
-  }
-
-  .page-subtitle {
-    @apply mt-2 font-sans text-base text-muted;
-  }
-
-  /* Navigation */
-  .nav-link {
-    @apply font-sans text-sm font-medium text-ink/70 hover:text-accent transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-accent after:transition-all hover:after:w-full;
-  }
-
-  .nav-link-active {
-    @apply text-accent after:w-full;
-  }
-
-  /* Footer */
-  .footer-link {
-    @apply font-sans text-sm text-ink/60 hover:text-accent transition-colors duration-200;
-  }
-
-  /* Forms */
-  .form-group {
-    @apply space-y-2;
-  }
-
-  /* Photo Blur */
   .photo-wrapper {
-    @apply relative overflow-hidden rounded-photo;
+    @apply relative aspect-[332/220] overflow-hidden rounded-t-photo;
   }
 
-  .photo-wrapper img {
-    @apply w-full h-full object-cover transition-[filter] duration-[16ms] will-change-[filter];
+  .university-card:hover .photo-wrapper img {
+    @apply scale-105;
   }
 
-  /* Compare Checkbox */
-  .compare-checkbox {
-    @apply w-8 h-8 rounded-full flex items-center justify-center transition-all;
+  /* Badges */
+  .badge-type {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-soft-surface text-ink;
   }
 
-  .compare-checkbox-selected {
-    @apply bg-accent text-on-accent ring-2 ring-accent/50;
+  .badge-language {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-warm-surface text-accent;
   }
 
-  .compare-checkbox-unselected {
-    @apply bg-background text-ink border border-border hover:bg-warm-surface;
+  .badge-intake {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent;
   }
 
-  /* Empty State */
-  .empty-state {
-    @apply text-center py-12;
+  /* Section Title */
+  .section-title {
+    @apply font-display text-3xl md:text-4xl font-bold text-ink;
   }
 
-  .empty-state-icon {
-    @apply text-4xl mb-3;
+  /* Text utilities - use direct color values to avoid circular @apply */
+  .text-ink {
+    color: #252C28;
   }
 
-  .empty-state-title {
-    @apply font-display text-xl font-semibold text-ink;
+  .text-muted {
+    color: #67716A;
   }
 
-  .empty-state-description {
-    @apply mt-2 font-sans text-base text-muted;
+  .text-accent {
+    color: #B84438;
   }
 
-  /* Loading Skeleton */
-  .skeleton {
-    @apply animate-pulse bg-border rounded;
+  .text-on-accent {
+    color: #FFFFFF;
   }
 
-  /* Focus Visible */
-  .focus-visible-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  /* Motion utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Photo wrapper for university detail - blur on scroll */
+  .photo-blur-wrapper {
+    @apply relative overflow-hidden;
+  }
+
+  .photo-blur-wrapper img {
+    @apply w-full h-full object-cover transition-filter duration-[16ms];
+  }
+
+  /* Layout */
+  .max-w-content {
+    max-width: 1312px;
+  }
+
+  .container-main {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 1312px;
   }
 }
 
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .photo-wrapper img {
-    @apply transition-none;
+@layer utilities {
+  .glass {
+    @apply bg-background/80 backdrop-blur-sm border border-border/50;
   }
 }

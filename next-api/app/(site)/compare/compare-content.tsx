@@ -22,11 +22,6 @@ export default function CompareContent() {
       setIsLoading(false)
       return
     }
-    if (ids.length > 4) {
-      setError('You can compare up to 4 universities. Please adjust your selection.')
-      setIsLoading(false)
-      return
-    }
     setIsLoading(true)
     compareUniversities(ids)
       .then(setItems)
@@ -45,7 +40,7 @@ export default function CompareContent() {
 
   if (error) {
     return (
-      <section className="mx-auto max-w-content px-4 py-8 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-12">
         <FadeIn>
           <h1 className="section-title">Compare Universities</h1>
           <div className="mt-8"><ErrorState message={error} /></div>
@@ -56,9 +51,9 @@ export default function CompareContent() {
 
   if (isLoading || !items) {
     return (
-      <section className="mx-auto max-w-content px-4 py-8 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <FadeIn>
-          <Link href="/universities" className="text-sm text-accent">← Universities</Link>
+          <Link href="/universities" className="text-sm text-sakura-500">← Universities</Link>
           <h1 className="section-title mt-4">Compare Universities</h1>
         </FadeIn>
         <SlideUp delay={0.1}>
@@ -69,20 +64,20 @@ export default function CompareContent() {
   }
 
   return (
-    <section className="mx-auto max-w-content px-4 py-8 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <FadeIn>
-        <Link href="/universities" className="text-sm text-accent">← Universities</Link>
+        <Link href="/universities" className="text-sm text-sakura-500">← Universities</Link>
         <h1 className="section-title mt-4">Compare Universities</h1>
       </FadeIn>
       <SlideUp delay={0.1}>
-        <div className="mt-8 overflow-x-auto card">
+        <div className="mt-8 overflow-x-auto rounded-2xl glass">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-white/10">
                 <th className="p-4">Criteria</th>
                 {items.map((item) => (
                   <th className="min-w-[220px] p-4 font-display" key={item.id}>
-                    <Link href={`/universities/${item.id}`} className="hover:text-accent">{item.name}</Link>
+                    <Link href={`/universities/${item.id}`} className="hover:text-sakura-500">{item.name}</Link>
                   </th>
                 ))}
               </tr>
@@ -90,8 +85,8 @@ export default function CompareContent() {
             <tbody>
               {rows.map(([label, getter], rowIndex) => (
                 <StaggerItem key={label as string} customDelay={rowIndex * 0.03}>
-                  <tr className="border-b border-border align-top">
-                    <td className="p-4 font-medium text-muted">{label as string}</td>
+                  <tr className="border-b border-white/5 align-top">
+                    <td className="p-4 font-medium text-ink-800/60 dark:text-ink-50/60">{label as string}</td>
                     {items.map((item) => (
                       <td className="p-4" key={item.id}>{(getter as (u: University) => string)(item)}</td>
                     ))}

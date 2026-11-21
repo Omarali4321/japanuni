@@ -41,38 +41,35 @@ export default function ScholarshipsContent({ initialScholarships }: Scholarship
   }, [search, initialScholarships])
 
   return (
-    <section className="mx-auto max-w-content px-4 py-8 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <FadeIn>
-        <h1 className="section-title">Scholarships</h1>
-        <p className="mt-2 text-muted">Government and university funding for your studies in Japan</p>
-        <div className="mt-6">
-          <input className="input-field max-w-md" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search scholarships..." />
-        </div>
+        <h1 className="section-title">Scholarships in Japan</h1>
+        <p className="mt-2 text-ink-800/60 dark:text-ink-50/60">Government and university funding for your studies.</p>
+        <input className="input-field mt-8 max-w-md" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search scholarships..." />
       </FadeIn>
       <SlideUp delay={0.1}>
         {error && <FadeIn><div className="mt-8"><ErrorState message={error} /></div></FadeIn>}
         {isLoading && (
-          <StaggerContainer staggerDelay={0.08} className="mt-8 grid gap-6">
+          <StaggerContainer staggerDelay={0.08} className="mt-8 grid gap-6 md:grid-cols-2">
             {Array.from({ length: 6 }).map((_, i) => (
               <StaggerItem key={i}><ListItemSkeleton /></StaggerItem>
             ))}
           </StaggerContainer>
         )}
-        {!isLoading && items?.length === 0 && <FadeIn><div className="card mt-8 text-center py-8 text-muted">No scholarships match your search.</div></FadeIn>}
+        {!isLoading && items?.length === 0 && <FadeIn><div className="glass-card mt-8 text-center text-ink-800/60 dark:text-ink-50/60">No scholarships have been published yet.</div></FadeIn>}
         {!isLoading && items && items.length > 0 && (
-          <StaggerContainer staggerDelay={0.08} className="mt-8 grid gap-6">
+          <StaggerContainer staggerDelay={0.08} className="mt-8 grid gap-6 md:grid-cols-2">
             {items.map((item, index) => (
               <StaggerItem key={String(item.id)} customDelay={index * 0.05}>
                 <HoverLift>
-                  <article className="card">
-                    <h2 className="font-display text-xl font-semibold text-ink">{item.title}</h2>
-                    {item.universityId ? <p className="mt-1 text-sm text-muted">University-specific</p> : null}
-                    <p className="mt-3 text-sm text-muted">{item.description || ''}</p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {item.amountYearly && <span className="badge-type">¥{item.amountYearly}/yr</span>}
-                      {item.coverage && <span className="badge-language">{item.coverage}</span>}
-                      {item.deadlineMonth && <span className="badge-intake">Deadline: {item.deadlineMonth}</span>}
-                      {item.eligibility && <span className="badge-type">Eligibility: {item.eligibility}</span>}
+                  <article className="glass-card">
+                    <h2 className="font-display text-xl font-semibold text-sakura-500">{item.title}</h2>
+                    {item.universityId ? <p className="mt-1 text-sm text-ink-800/60 dark:text-ink-50/60">University-specific</p> : null}
+                    <p className="mt-3 text-sm">{item.description || ''}</p>
+                    <div className="mt-4 flex flex-wrap gap-2 text-xs">
+                      <span className="rounded-md glass px-2 py-1">¥{item.amountYearly || '—'}/yr</span>
+                      <span className="rounded-md glass px-2 py-1">{item.coverage || 'Details pending'}</span>
+                      <span className="rounded-md glass px-2 py-1">Deadline: {item.deadlineMonth || '—'}</span>
                     </div>
                   </article>
                 </HoverLift>

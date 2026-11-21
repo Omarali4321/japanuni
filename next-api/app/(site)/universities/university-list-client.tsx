@@ -57,7 +57,7 @@ export function UniversityListClient({ initialData }: UniversityListClientProps)
   const [result, setResult] = useState(initialData)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [filtersOpen, setFiltersOpen] = useState(true) // Open by default on desktop
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [institutionType, setInstitutionType] = useState('')
   const [language, setLanguage] = useState('')
   const [intake, setIntake] = useState('')
@@ -95,165 +95,89 @@ export function UniversityListClient({ initialData }: UniversityListClientProps)
   }
 
   return (
-    <section className="mx-auto max-w-content px-4 py-8 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <FadeIn>
         <h1 className="section-title">Japanese Universities</h1>
-        <p className="mt-2 text-muted">Search the imported university catalog.</p>
+        <p className="mt-2 text-ink-800/60 dark:text-ink-50/60">Search the imported university catalog.</p>
       </FadeIn>
       <SlideUp delay={0.1}>
-        <div className="mt-8 flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar - 248px */}
-          <aside className="lg:w-[248px] flex-shrink-0 hidden lg:block">
-            <div className="card sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-sans font-semibold text-ink">Filters</h3>
-                {hasActiveFilters && (
-                  <button type="button" className="btn-ghost text-sm" onClick={clearFilters}>Clear all</button>
-                )}
-              </div>
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-ink mb-1">Institution Type</label>
-                  <select className="input-field w-full" value={institutionType} onChange={(e) => { setInstitutionType(e.target.value); setPage(0) }}>
-                    <option value="">All types</option>
-                    {institutionTypes.map(t => <option key={t} value={t}>{t}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-ink mb-1">Language</label>
-                  <select className="input-field w-full" value={language} onChange={(e) => { setLanguage(e.target.value); setPage(0) }}>
-                    {languageOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-ink mb-1">Intake</label>
-                  <select className="input-field w-full" value={intake} onChange={(e) => { setIntake(e.target.value); setPage(0) }}>
-                    {intakeOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-ink mb-1">Pre-arrival Admission</label>
-                  <select className="input-field w-full" value={preArrival} onChange={(e) => { setPreArrival(e.target.value); setPage(0) }}>
-                    {preArrivalOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                  </select>
-                </div>
-              </div>
-            </div>
-          </aside>
+        <div className="mt-8 space-y-4">
+          <form className="glass-card flex gap-3" onSubmit={(event) => { event.preventDefault(); setPage(0); setSubmitted(search.trim()) }}>
+            <input className="input-field flex-1" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search universities, programs, faculty..." />
+            <button className="btn-primary" type="submit" disabled={isLoading}>{isLoading ? 'Searching...' : 'Search'}</button>
+          </form>
 
-          {/* Mobile filters toggle */}
-          <div className="lg:hidden mb-4">
-            <button
-              type="button"
-              className={`btn-secondary w-full ${filtersOpen ? 'bg-accent/10 border-accent' : ''}`}
-              onClick={() => setFiltersOpen(!filtersOpen)}
-            >
-              Filters {hasActiveFilters && <span className="ml-2 px-2 py-0.5 text-xs bg-accent/20 text-accent rounded-full">{[institutionType, language, intake, preArrival].filter(Boolean).length}</span>}
+          <div className="glass-card">
+            <button type="button" className="w-full flex items-center justify-between p-4" onClick={() => setFiltersOpen(!filtersOpen)}>
+              <span className="font-medium">Filters</span>
+              <svg className={`w-5 h-5 text-ink-800/60 dark:text-ink-50/60 transition-transform ${filtersOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
             </button>
             {filtersOpen && (
-              <div className="card mt-4 p-4 space-y-4 animate-slide-down">
-                <div>
-                  <label className="block text-sm font-medium text-ink mb-1">Institution Type</label>
-                  <select className="input-field w-full" value={institutionType} onChange={(e) => { setInstitutionType(e.target.value); setPage(0) }}>
-                    <option value="">All types</option>
-                    {institutionTypes.map(t => <option key={t} value={t}>{t}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-ink mb-1">Language</label>
-                  <select className="input-field w-full" value={language} onChange={(e) => { setLanguage(e.target.value); setPage(0) }}>
-                    {languageOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-ink mb-1">Intake</label>
-                  <select className="input-field w-full" value={intake} onChange={(e) => { setIntake(e.target.value); setPage(0) }}>
-                    {intakeOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-ink mb-1">Pre-arrival Admission</label>
-                  <select className="input-field w-full" value={preArrival} onChange={(e) => { setPreArrival(e.target.value); setPage(0) }}>
-                    {preArrivalOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                  </select>
+              <div className="px-4 pb-4 space-y-4 border-t border-ink-800/10 dark:border-ink-50/10">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  <div>
+                    <label className="block text-sm font-medium text-ink-800/70 dark:text-ink-50/70 mb-1">Institution Type</label>
+                    <select className="input-field" value={institutionType} onChange={(e) => { setInstitutionType(e.target.value); setPage(0) }}>
+                      <option value="">All types</option>
+                      {institutionTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-ink-800/70 dark:text-ink-50/70 mb-1">Language</label>
+                    <select className="input-field" value={language} onChange={(e) => { setLanguage(e.target.value); setPage(0) }}>
+                      {languageOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-ink-800/70 dark:text-ink-50/70 mb-1">Intake</label>
+                    <select className="input-field" value={intake} onChange={(e) => { setIntake(e.target.value); setPage(0) }}>
+                      {intakeOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-ink-800/70 dark:text-ink-50/70 mb-1">Pre-arrival Admission</label>
+                    <select className="input-field" value={preArrival} onChange={(e) => { setPreArrival(e.target.value); setPage(0) }}>
+                      {preArrivalOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    </select>
+                  </div>
                 </div>
                 {hasActiveFilters && (
-                  <button type="button" className="btn-secondary w-full text-sm" onClick={clearFilters}>Clear all</button>
+                  <button type="button" className="btn-secondary text-sm" onClick={clearFilters}>Clear filters</button>
                 )}
               </div>
-            )}
-          </div>
-
-          {/* Main Content */}
-          <div className="flex-1 min-w-0">
-            {/* Search Bar */}
-            <form className="card p-4 mb-6" onSubmit={(event) => { event.preventDefault(); setPage(0); setSubmitted(search.trim()) }}>
-              <div className="flex gap-3">
-                <svg className="w-5 h-5 text-muted mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                  className="input-field flex-1 bg-transparent border-0 focus-visible:ring-0 p-0"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Search universities, programs, faculty..."
-                  disabled={isLoading}
-                />
-                <button className="btn-primary whitespace-nowrap flex-shrink-0" type="submit" disabled={isLoading}>
-                  {isLoading ? 'Searching...' : 'Search'}
-                </button>
-              </div>
-            </form>
-
-            {/* Results Count */}
-            <FadeIn delay={0.2}>
-              <p className="mb-4 text-sm text-muted">{result.meta.totalElements} universities found</p>
-            </FadeIn>
-
-            {/* University Grid - 3 columns */}
-            {error ? (
-              <FadeIn>
-                <div className="mt-8"><ErrorState message={error} /></div>
-              </FadeIn>
-            ) : (
-              <>
-                <StaggerContainer staggerDelay={0.08} delayChildren={0.2} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {result.data.map((university, index) => (
-                    <StaggerItem key={university.id} customDelay={index * 0.05}>
-                      <UniversityCard university={university} />
-                    </StaggerItem>
-                  ))}
-                </StaggerContainer>
-
-                {/* Pagination */}
-                {result.meta.totalPages > 1 && (
-                  <FadeIn delay={0.3}>
-                    <div className="mt-10 flex justify-center gap-3">
-                      <button
-                        className="btn-secondary"
-                        disabled={page === 0 || isLoading}
-                        onClick={() => setPage(page - 1)}
-                      >
-                        Previous
-                      </button>
-                      <span className="card flex items-center px-4 py-3 text-sm text-muted">
-                        Page {page + 1} / {result.meta.totalPages}
-                      </span>
-                      <button
-                        className="btn-secondary"
-                        disabled={page >= result.meta.totalPages - 1 || isLoading}
-                        onClick={() => setPage(page + 1)}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  </FadeIn>
-                )}
-              </>
             )}
           </div>
         </div>
       </SlideUp>
+      {error ? (
+        <FadeIn>
+          <div className="mt-8"><ErrorState message={error} /></div>
+        </FadeIn>
+      ) : (
+        <>
+          <FadeIn delay={0.2}>
+            <p className="mt-8 text-sm text-ink-800/60 dark:text-ink-50/60">{result.meta.totalElements} universities found</p>
+          </FadeIn>
+          <StaggerContainer staggerDelay={0.08} delayChildren={0.2} className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {result.data.map((university, index) => (
+              <StaggerItem key={university.id} customDelay={index * 0.05}>
+                <UniversityCard university={university} />
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+          {result.meta.totalPages > 1 && (
+            <FadeIn delay={0.3}>
+              <div className="mt-10 flex justify-center gap-3">
+                <button className="btn-secondary" disabled={page === 0 || isLoading} onClick={() => setPage(page - 1)}>Previous</button>
+                <span className="rounded-xl px-4 py-3 glass flex items-center">Page {page + 1} / {result.meta.totalPages}</span>
+                <button className="btn-secondary" disabled={page >= result.meta.totalPages - 1 || isLoading} onClick={() => setPage(page + 1)}>Next</button>
+              </div>
+            </FadeIn>
+          )}
+        </>
+      )}
     </section>
   )
 }
