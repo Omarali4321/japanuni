@@ -6,24 +6,51 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
-        display: ['"Outfit"', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Playfair Display"', 'Georgia', 'serif'],
       },
       colors: {
-        sakura: { 50: '#fff5f7', 100: '#ffe4ec', 200: '#ffc9d9', 500: '#e85d8a', 600: '#c93d6a' },
-        ink: { 50: '#f8f9fb', 100: '#eef1f6', 800: '#1a1f2e', 900: '#0f1219', 950: '#080a0f' },
+        // White Gallery theme
+        background: '#FDFDFC',
+        ink: '#252C28',
+        muted: '#67716A',
+        accent: '#B84438',
+        border: '#E0E5DF',
+        'soft-surface': '#F5F7F3',
+        'warm-surface': '#F5EBE7',
+        'on-accent': '#FFFFFF',
       },
-      backgroundImage: {
-        'hero-gradient': 'linear-gradient(135deg, #0f1219 0%, #1a2744 40%, #2d1b3d 100%)',
-        'card-gradient': 'linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
+      borderRadius: {
+        'card': '16px',
+        'button': '28px',
+        'input': '12px',
+        'photo': '20px',
+        'photo-bottom-right': '180px',
       },
-      animation: {
-        'fade-in': 'fadeIn 0.6s ease-out',
-        'slide-up': 'slideUp 0.6s ease-out',
+      spacing: {
+        'rhythm-8': '8px',
+        'rhythm-12': '12px',
+        'rhythm-16': '16px',
+        'rhythm-24': '24px',
+        'rhythm-32': '32px',
+        'rhythm-48': '48px',
+        'rhythm-64': '64px',
       },
-      keyframes: {
-        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+      maxWidth: {
+        'content': '1312px',
+      },
+      height: {
+        'nav': '96px',
+        'button': '56px',
+        'input': '52px',
+        'photo-desktop': '750px',
+      },
+      boxShadow: {
+        'card': '0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05)',
+        'card-hover': '0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)',
+      },
+      transitionDuration: {
+        'scroll-blur': '16ms',
       },
     },
   },

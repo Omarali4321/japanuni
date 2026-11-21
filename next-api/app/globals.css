@@ -10,31 +10,201 @@
   body {
     margin: 0;
     line-height: inherit;
+    @apply bg-background text-ink font-sans antialiased;
+  }
+
+  * {
+    @apply border-border;
   }
 }
 
 @layer components {
-  .glass {
-    @apply bg-white/75 dark:bg-ink-950/70 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-xl;
+  /* Container */
+  .container-main {
+    @apply mx-auto max-w-content px-4 sm:px-6 lg:px-8;
   }
 
-  .glass-card {
-    @apply glass rounded-2xl p-6 hover:border-sakura-500/30 transition-all duration-300;
-  }
-
+  /* Buttons */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium bg-gradient-to-r from-sakura-500 to-sakura-600 text-white hover:shadow-lg hover:shadow-sakura-500/25 hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950;
+    @apply inline-flex items-center justify-center h-button px-6 font-sans font-medium text-base text-on-accent bg-accent rounded-button transition-all duration-200 hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium glass hover:bg-white/90 dark:hover:bg-ink-800/80 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950;
+    @apply inline-flex items-center justify-center h-button px-6 font-sans font-medium text-base text-accent bg-transparent border border-accent rounded-button transition-all duration-200 hover:bg-warm-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2 font-sans font-medium text-sm text-accent hover:bg-warm-surface rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  /* Inputs */
   .input-field {
-    @apply w-full px-4 py-3 rounded-xl glass border border-white/30 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-sakura-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 transition-all;
+    @apply w-full h-input px-4 font-sans text-base text-ink bg-background border border-border rounded-input placeholder:text-muted transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
+  .input-label {
+    @apply block mb-2 font-sans text-sm font-medium text-ink;
+  }
+
+  .input-error {
+    @apply mt-1 font-sans text-sm text-accent;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-background border border-border rounded-card p-6 transition-shadow duration-200 hover:shadow-card-hover;
+  }
+
+  .card-compact {
+    @apply bg-background border border-border rounded-card p-4 transition-shadow duration-200 hover:shadow-card-hover;
+  }
+
+  /* University Card */
+  .university-card {
+    @apply card flex flex-col overflow-hidden p-0;
+  }
+
+  .university-card-image {
+    @apply relative h-[200px] w-full bg-soft-surface;
+  }
+
+  .university-card-image img {
+    @apply h-full w-full object-cover;
+  }
+
+  .university-card-content {
+    @apply flex-1 p-6 flex flex-col;
+  }
+
+  .university-card-badges {
+    @apply flex flex-wrap gap-2 mb-3;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 font-sans text-xs font-medium rounded-full;
+  }
+
+  .badge-type-national { @apply bg-red-500/10 text-red-600; }
+  .badge-type-public { @apply bg-blue-500/10 text-blue-600; }
+  .badge-type-private { @apply bg-purple-500/10 text-purple-600; }
+  .badge-language-jp { @apply bg-blue-500/10 text-blue-600; }
+  .badge-language-en { @apply bg-amber-500/10 text-amber-600; }
+  .badge-language-both { @apply bg-emerald-500/10 text-emerald-600; }
+  .badge-intake-apr { @apply bg-accent/10 text-accent; }
+  .badge-intake-oct { @apply bg-indigo-500/10 text-indigo-600; }
+  .badge-intake-sep { @apply bg-orange-500/10 text-orange-600; }
+  .badge-count { @apply bg-muted/10 text-muted; }
+
+  .university-card-title {
+    @apply font-display text-xl font-semibold text-ink transition-colors duration-200 hover:text-accent;
+  }
+
+  .university-card-location {
+    @apply mt-1 font-sans text-sm text-muted;
+  }
+
+  .university-card-description {
+    @apply mt-2 flex-1 font-sans text-sm text-ink/70 line-clamp-2;
+  }
+
+  .university-card-tuition {
+    @apply mt-3 font-sans text-sm font-medium text-accent;
+  }
+
+  /* Section Titles */
   .section-title {
-    @apply font-display text-3xl md:text-4xl font-bold tracking-tight;
+    @apply font-display text-3xl md:text-4xl font-normal tracking-tight text-ink;
+  }
+
+  .section-subtitle {
+    @apply mt-3 font-sans text-base text-muted max-w-2xl;
+  }
+
+  /* Page Header */
+  .page-header {
+    @apply mb-8;
+  }
+
+  .page-title {
+    @apply font-display text-4xl md:text-5xl font-normal text-ink;
+  }
+
+  .page-subtitle {
+    @apply mt-2 font-sans text-base text-muted;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply font-sans text-sm font-medium text-ink/70 hover:text-accent transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-accent after:transition-all hover:after:w-full;
+  }
+
+  .nav-link-active {
+    @apply text-accent after:w-full;
+  }
+
+  /* Footer */
+  .footer-link {
+    @apply font-sans text-sm text-ink/60 hover:text-accent transition-colors duration-200;
+  }
+
+  /* Forms */
+  .form-group {
+    @apply space-y-2;
+  }
+
+  /* Photo Blur */
+  .photo-wrapper {
+    @apply relative overflow-hidden rounded-photo;
+  }
+
+  .photo-wrapper img {
+    @apply w-full h-full object-cover transition-[filter] duration-[16ms] will-change-[filter];
+  }
+
+  /* Compare Checkbox */
+  .compare-checkbox {
+    @apply w-8 h-8 rounded-full flex items-center justify-center transition-all;
+  }
+
+  .compare-checkbox-selected {
+    @apply bg-accent text-on-accent ring-2 ring-accent/50;
+  }
+
+  .compare-checkbox-unselected {
+    @apply bg-background text-ink border border-border hover:bg-warm-surface;
+  }
+
+  /* Empty State */
+  .empty-state {
+    @apply text-center py-12;
+  }
+
+  .empty-state-icon {
+    @apply text-4xl mb-3;
+  }
+
+  .empty-state-title {
+    @apply font-display text-xl font-semibold text-ink;
+  }
+
+  .empty-state-description {
+    @apply mt-2 font-sans text-base text-muted;
+  }
+
+  /* Loading Skeleton */
+  .skeleton {
+    @apply animate-pulse bg-border rounded;
+  }
+
+  /* Focus Visible */
+  .focus-visible-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .photo-wrapper img {
+    @apply transition-none;
   }
 }
