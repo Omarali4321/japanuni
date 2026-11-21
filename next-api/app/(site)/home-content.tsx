@@ -11,77 +11,30 @@ import { UniversityCardSkeleton } from '@/components/ui/Skeleton'
 
 const helpDirections = [
   {
-    title: 'Explore Universities',
-    description: 'Browse 230+ Japanese universities with detailed program info, faculties, and admission requirements.',
-    icon: '🏛️',
+    number: '01',
+    title: 'Universities',
+    description: 'Find your academic path',
     href: '/universities',
   },
   {
-    title: 'Compare Programs',
-    description: 'Side-by-side comparison of up to 4 universities. Filter by tuition, language, intake, and more.',
-    icon: '⚖️',
-    href: '/compare',
-  },
-  {
-    title: 'Find Scholarships',
-    description: 'Discover MEXT, JASSO, and university-specific scholarships. Filter by degree level and coverage.',
-    icon: '💴',
+    number: '02',
+    title: 'Scholarships',
+    description: 'Explore study funding',
     href: '/scholarships',
   },
   {
-    title: 'Plan Admission & Visa',
-    description: 'Step-by-step guides for admission requirements, document preparation, and visa application.',
-    icon: '📋',
+    number: '03',
+    title: 'Admission',
+    description: 'Prepare your application',
     href: '/admission',
   },
+  {
+    number: '04',
+    title: 'Visa help',
+    description: 'Plan the move to Japan',
+    href: '/visa',
+  },
 ]
-
-const partners = [
-  { name: 'MEXT', logo: '🇯🇵' },
-  { name: 'JASSO', logo: '🎓' },
-  { name: 'University of Tokyo', logo: '🏛️' },
-  { name: 'Kyoto University', logo: '🏛️' },
-  { name: 'Waseda University', logo: '🏛️' },
-  { name: 'Osaka University', logo: '🏛️' },
-  { name: 'Tokyo Tech', logo: '🏛️' },
-  { name: 'Tohoku University', logo: '🏛️' },
-]
-
-function SocialProof() {
-  return (
-    <section className="mt-24" aria-labelledby="social-proof-heading">
-      <div className="text-center mb-12">
-        <FadeIn>
-          <h2 id="social-proof-heading" className="section-title">Data sources & references</h2>
-        </FadeIn>
-        <FadeIn delay={0.1}>
-          <p className="mt-3 max-w-2xl mx-auto text-muted">
-            University data sourced from official Japanese government datasets. Scholarship information from public government and university sources.
-          </p>
-        </FadeIn>
-      </div>
-
-      <div className="border-t border-border pt-12">
-        <FadeIn>
-          <h3 className="text-center text-lg font-semibold text-muted mb-8">Official sources & organizations</h3>
-        </FadeIn>
-        <StaggerContainer staggerDelay={0.05} className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
-          {partners.map((partner, index) => (
-            <StaggerItem key={index} customDelay={index * 0.05}>
-              <motion.div
-                className="flex items-center gap-2 px-4 py-2 rounded-full card transition-colors hover:bg-accent/10"
-                whileHover={{ scale: 1.05 }}
-              >
-                <span className="text-2xl">{partner.logo}</span>
-                <span className="font-medium text-ink hidden sm:inline">{partner.name}</span>
-              </motion.div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </div>
-    </section>
-  )
-}
 
 export default function HomeContent() {
   const [universities, setUniversities] = useState<University[]>([])
@@ -89,7 +42,7 @@ export default function HomeContent() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    listUniversities(new URLSearchParams({ page: '0', size: '4' }))
+    listUniversities(new URLSearchParams({ page: '0', size: '3' }))
       .then((result) => {
         setUniversities(result.data)
         setIsLoading(false)
@@ -101,77 +54,106 @@ export default function HomeContent() {
   }, [])
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 relative">
-      {/* Hero Section with large photo */}
+    <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 lg:px-8 relative">
+      {/* Hero Section - Campus photo on left, content on right */}
       <section className="relative mb-24" aria-labelledby="hero-heading">
-        <div className="relative aspect-[664/374] rounded-2xl overflow-hidden bg-background">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1328&h=748&fit=crop)' }} />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-transparent" />
-          <div className="absolute inset-0 flex items-center">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-              <FadeIn>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Study in Japan</p>
-              </FadeIn>
-              <SlideUp delay={0.1}>
-                <h1 id="hero-heading" className="mt-4 font-display text-4xl font-bold md:text-5xl lg:text-6xl text-ink max-w-2xl">
-                  Your gateway to Japanese higher education
-                </h1>
-              </SlideUp>
-              <SlideUp delay={0.2}>
-                <p className="mt-5 max-w-xl text-lg text-muted">
-                  Compare programs, discover scholarships, and plan your student life in Japan — all in one place.
-                </p>
-              </SlideUp>
-              <SlideUp delay={0.3}>
-                <div className="mt-8 flex flex-wrap gap-4">
-                  <Link className="btn-primary" href="/universities">Explore Universities</Link>
-                  <Link className="btn-secondary" href="/compare">Compare Programs</Link>
-                </div>
-              </SlideUp>
-            </div>
+        <div className="relative grid gap-8 lg:grid-cols-[664px_1fr] items-start">
+          {/* Campus Image - Left side */}
+          <div className="relative aspect-[664/650] lg:aspect-auto lg:h-[650px]">
+            <div className="absolute inset-0 rounded-bl-xl rounded-br-[180px] rounded-tl-xl rounded-tr-xl overflow-hidden bg-cover bg-center" style={{ backgroundImage: 'url(/images/hero-campus.jpg)' }} />
+            <div className="absolute bottom-4 left-6 text-xs text-muted/70">Illustrative campus imagery</div>
+          </div>
+
+          {/* Hero Content - Right side */}
+          <div className="flex flex-col justify-center pt-12 lg:pt-0">
+            <FadeIn>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-soft-surface text-xs font-medium text-ink mb-4 w-fit">
+                <span className="text-accent font-semibold">STUDY IN JAPAN</span>
+              </div>
+            </FadeIn>
+            <SlideUp delay={0.1}>
+              <p className="text-xs font-semibold uppercase tracking-wider text-accent mb-3">YOUR NEXT CHAPTER, IN JAPAN</p>
+            </SlideUp>
+            <SlideUp delay={0.2}>
+              <h1 id="hero-heading" className="font-display text-[62px] leading-[1.1] text-ink max-w-[622px]">
+                <span className="block">Your journey to</span>
+                <span className="block">Japanese universities</span>
+                <span className="block">starts here.</span>
+              </h1>
+            </SlideUp>
+            <SlideUp delay={0.3}>
+              <p className="mt-8 text-base leading-relaxed text-muted max-w-[600px]">
+                Compare programs, discover scholarships,<br />
+                and plan your student life in Japan.
+              </p>
+            </SlideUp>
+            <SlideUp delay={0.4}>
+              <div className="mt-10 flex flex-wrap items-center gap-4">
+                <Link className="btn-primary h-[56px] px-8 text-base" href="/universities">
+                  Explore Universities&nbsp;↗
+                </Link>
+                <Link className="text-base font-medium text-ink hover:text-accent transition-colors" href="/compare">
+                  Compare choices&nbsp;↗
+                </Link>
+              </div>
+            </SlideUp>
+            <SlideUp delay={0.5}>
+              <div className="mt-16 flex flex-col items-start gap-2 border-t border-border pt-10 w-full max-w-[600px]">
+                <span className="font-display text-[46px] font-normal text-ink">233</span>
+                <span className="text-base text-muted">Universities in the current catalog</span>
+                <span className="text-sm text-muted">One place for research, comparison, and planning.</span>
+              </div>
+            </SlideUp>
           </div>
         </div>
       </section>
 
-      {/* 4 Help Directions - 2x2 Grid */}
-      <section className="mb-24" aria-labelledby="help-directions-heading">
-        <div className="text-center mb-12">
+      {/* Journey Guide - 4 Direction Cards */}
+      <section className="mb-24" aria-labelledby="journey-guide-heading">
+        <div className="mb-10">
           <FadeIn>
-            <h2 id="help-directions-heading" className="section-title">How can we help you?</h2>
+            <p className="text-sm font-medium uppercase tracking-wider text-accent mb-2">JapanUni guide</p>
           </FadeIn>
-          <FadeIn delay={0.1}>
-            <p className="mt-3 max-w-2xl mx-auto text-muted">
-              Choose a path to start your journey. Each section is designed to guide you through a specific part of the process.
-            </p>
-          </FadeIn>
+          <SlideUp delay={0.1}>
+            <h2 id="journey-guide-heading" className="font-display text-[36px] font-normal text-ink max-w-[1150px]">
+              One place for your next step.
+            </h2>
+          </SlideUp>
         </div>
         <StaggerContainer staggerDelay={0.1} className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {helpDirections.map((direction, index) => (
             <StaggerItem key={direction.title} customDelay={index * 0.05}>
-              <Link href={direction.href} className="card group p-6 h-full transition-all hover:shadow-lg hover:-translate-y-1">
-                <div className="text-4xl mb-4">{direction.icon}</div>
-                <h3 className="text-xl font-semibold text-ink group-hover:text-accent transition-colors">{direction.title}</h3>
-                <p className="mt-3 text-muted text-sm">{direction.description}</p>
-                <div className="mt-4 text-sm font-medium text-accent group-hover:underline">Learn more →</div>
+              <Link href={direction.href} className="card h-[104px] p-6 relative flex flex-col justify-between transition-all hover:shadow-lg hover:-translate-y-1 border-border">
+                <div className="flex items-start gap-3">
+                  <span className="text-xs font-semibold text-accent shrink-0 pt-1">{direction.number}</span>
+                  <h3 className="text-xl font-medium text-ink group-hover:text-accent transition-colors">
+                    {direction.title}&nbsp;↗
+                  </h3>
+                </div>
+                <p className="text-sm text-muted mt-auto">{direction.description}</p>
               </Link>
             </StaggerItem>
           ))}
         </StaggerContainer>
       </section>
 
-      {/* Featured Universities */}
+      {/* Featured Universities - 3 Cards */}
       <section className="mb-24" aria-labelledby="featured-heading">
-        <div className="mb-8 flex items-end justify-between">
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <FadeIn>
-              <h2 id="featured-heading" className="section-title">Featured universities</h2>
+              <h2 id="featured-heading" className="font-display text-[36px] font-normal text-ink">
+                Featured universities
+              </h2>
             </FadeIn>
             <FadeIn delay={0.1}>
-              <p className="mt-2 text-muted">Explore institutions from the current catalog.</p>
+              <p className="mt-2 text-base text-muted">Explore institutions from the current catalog.</p>
             </FadeIn>
           </div>
           <FadeIn delay={0.2}>
-            <Link href="/universities" className="btn-secondary">View all</Link>
+            <Link href="/universities" className="text-sm font-medium text-accent hover:underline self-end">
+              View all universities&nbsp;↗
+            </Link>
           </FadeIn>
         </div>
         {error ? (
@@ -179,13 +161,13 @@ export default function HomeContent() {
             <ErrorState message={error} />
           </FadeIn>
         ) : isLoading ? (
-          <StaggerContainer staggerDelay={0.1} className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
+          <StaggerContainer staggerDelay={0.1} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
               <StaggerItem key={i}><UniversityCardSkeleton /></StaggerItem>
             ))}
           </StaggerContainer>
         ) : (
-          <StaggerContainer staggerDelay={0.1} className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <StaggerContainer staggerDelay={0.1} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {universities.map((university, index) => (
               <StaggerItem key={university.id} customDelay={index * 0.05}>
                 <HoverLift><UniversityCard university={university} /></HoverLift>
@@ -195,8 +177,32 @@ export default function HomeContent() {
         )}
       </section>
 
-      {/* Sources / Social Proof */}
-      <SocialProof />
+      {/* Official Sources Panel */}
+      <section className="mb-16" aria-labelledby="sources-heading">
+        <div className="rounded-2xl bg-soft-surface p-6 md:p-10">
+          <FadeIn>
+            <h2 id="sources-heading" className="font-display text-[27px] font-normal text-ink mb-4">
+              Data sources & references
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div className="text-sm text-muted leading-relaxed mb-6 max-w-[1220px]">
+              <p>University data sourced from official Japanese government datasets.</p>
+              <p>Scholarship information from public government and university sources.</p>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <p className="text-sm font-medium text-ink mb-2">
+              MEXT&nbsp;&nbsp;&nbsp;JASSO&nbsp;&nbsp;&nbsp;University of Tokyo&nbsp;&nbsp;&nbsp;Kyoto University
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.3}>
+            <p className="text-sm text-muted">
+              Waseda University&nbsp;&nbsp;&nbsp;Osaka University&nbsp;&nbsp;&nbsp;Tokyo Tech&nbsp;&nbsp;&nbsp;Tohoku University
+            </p>
+          </FadeIn>
+        </div>
+      </section>
     </div>
   )
 }

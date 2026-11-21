@@ -24,31 +24,6 @@ const intakeOptions = [
   { value: 'September', label: 'September' },
   { value: 'Other', label: 'Other' },
 ]
-const preArrivalOptions = [
-  { value: '', label: 'All' },
-  { value: 'Yes', label: 'Yes' },
-  { value: 'No', label: 'No' },
-]
-
-function normalizeLanguage(lang: string): string {
-  if (lang.includes('Japanese (100%)') && lang.includes('English (100%)')) return 'Both'
-  if (lang.includes('Japanese (100%)')) return 'Japanese (100%)'
-  if (lang.includes('English (100%)')) return 'English (100%)'
-  return 'Both'
-}
-
-function normalizeIntake(intake: string): string {
-  if (intake.includes('April') && !intake.includes('October') && !intake.includes('September')) return 'April'
-  if (intake.includes('October') && !intake.includes('April') && !intake.includes('September')) return 'October'
-  if (intake.includes('September') && !intake.includes('April') && !intake.includes('October')) return 'September'
-  return 'Other'
-}
-
-function normalizePreArrival(pre: string): string {
-  if (pre.includes('Yes') && !pre.includes('No')) return 'Yes'
-  if (pre.includes('No') && !pre.includes('Yes')) return 'No'
-  return ''
-}
 
 export function UniversityListClient({ initialData }: UniversityListClientProps) {
   const [search, setSearch] = useState('')
@@ -57,11 +32,9 @@ export function UniversityListClient({ initialData }: UniversityListClientProps)
   const [result, setResult] = useState(initialData)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [filtersOpen, setFiltersOpen] = useState(false)
   const [institutionType, setInstitutionType] = useState('')
   const [language, setLanguage] = useState('')
   const [intake, setIntake] = useState('')
-  const [preArrival, setPreArrival] = useState('')
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
@@ -70,7 +43,6 @@ export function UniversityListClient({ initialData }: UniversityListClientProps)
     if (institutionType) params.set('institutionType', institutionType)
     if (language) params.set('mediumOfInstruction', language)
     if (intake) params.set('intake', intake)
-    if (preArrival) params.set('preArrivalAdmission', preArrival)
     setError('')
     setIsLoading(true)
     listUniversities(params)
@@ -82,102 +54,171 @@ export function UniversityListClient({ initialData }: UniversityListClientProps)
         setError(reason.message)
         setIsLoading(false)
       })
-  }, [page, submitted, institutionType, language, intake, preArrival])
+  }, [page, submitted, institutionType, language, intake])
 
-  const hasActiveFilters = institutionType || language || intake || preArrival
+  const hasActiveFilters = institutionType || language || intake
 
   const clearFilters = () => {
     setInstitutionType('')
     setLanguage('')
     setIntake('')
-    setPreArrival('')
     setPage(0)
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 lg:px-8">
+      {/* Page Heading */}
       <FadeIn>
-        <h1 className="section-title">Japanese Universities</h1>
-        <p className="mt-2 text-ink-800/60 dark:text-ink-50/60">Search the imported university catalog.</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-accent mb-2">FIND YOUR NEXT CHAPTER</p>
+        <h1 className="font-display text-[64px] font-normal text-ink mb-4">Japanese Universities</h1>
+        <p className="text-[17px] text-muted max-w-[1200px]">Search the imported university catalog.</p>
       </FadeIn>
-      <SlideUp delay={0.1}>
-        <div className="mt-8 space-y-4">
-          <form className="glass-card flex gap-3" onSubmit={(event) => { event.preventDefault(); setPage(0); setSubmitted(search.trim()) }}>
-            <input className="input-field flex-1" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search universities, programs, faculty..." />
-            <button className="btn-primary" type="submit" disabled={isLoading}>{isLoading ? 'Searching...' : 'Search'}</button>
-          </form>
 
-          <div className="glass-card">
-            <button type="button" className="w-full flex items-center justify-between p-4" onClick={() => setFiltersOpen(!filtersOpen)}>
-              <span className="font-medium">Filters</span>
-              <svg className={`w-5 h-5 text-ink-800/60 dark:text-ink-50/60 transition-transform ${filtersOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            {filtersOpen && (
-              <div className="px-4 pb-4 space-y-4 border-t border-ink-800/10 dark:border-ink-50/10">
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  <div>
-                    <label className="block text-sm font-medium text-ink-800/70 dark:text-ink-50/70 mb-1">Institution Type</label>
-                    <select className="input-field" value={institutionType} onChange={(e) => { setInstitutionType(e.target.value); setPage(0) }}>
-                      <option value="">All types</option>
-                      {institutionTypes.map(t => <option key={t} value={t}>{t}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-ink-800/70 dark:text-ink-50/70 mb-1">Language</label>
-                    <select className="input-field" value={language} onChange={(e) => { setLanguage(e.target.value); setPage(0) }}>
-                      {languageOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-ink-800/70 dark:text-ink-50/70 mb-1">Intake</label>
-                    <select className="input-field" value={intake} onChange={(e) => { setIntake(e.target.value); setPage(0) }}>
-                      {intakeOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-ink-800/70 dark:text-ink-50/70 mb-1">Pre-arrival Admission</label>
-                    <select className="input-field" value={preArrival} onChange={(e) => { setPreArrival(e.target.value); setPage(0) }}>
-                      {preArrivalOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                    </select>
-                  </div>
+      {/* Search Bar */}
+      <SlideUp delay={0.1}>
+        <form className="mt-10 flex gap-3" onSubmit={(event) => { event.preventDefault(); setPage(0); setSubmitted(search.trim()) }}>
+          <input
+            className="input-field flex-1 h-[52px] rounded-xl"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search by university or program"
+            disabled={isLoading}
+          />
+          <button
+            className="btn-primary h-[52px] px-8 text-base whitespace-nowrap"
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Searching...' : 'Search&nbsp;↗'}
+          </button>
+        </form>
+      </SlideUp>
+
+      {/* Main Content: Filters Sidebar + University Grid */}
+      <div className="mt-8 flex gap-8">
+        {/* Filters Sidebar - 248px */}
+        <aside className="w-[248px] flex-shrink-0" aria-label="Filters">
+          <FadeIn delay={0.2}>
+            <div className="rounded-2xl bg-soft-surface p-6 h-fit">
+              <h2 className="text-[21px] font-medium text-ink mb-6">Filters</h2>
+
+              <div className="space-y-8">
+                {/* Institution Type */}
+                <div>
+                  <label className="block text-[12px] font-semibold text-ink mb-2">Institution type</label>
+                  <select
+                    className="input-field h-[48px] rounded-xl text-sm"
+                    value={institutionType}
+                    onChange={(e) => { setInstitutionType(e.target.value); setPage(0) }}
+                    disabled={isLoading}
+                  >
+                    <option value="">All types&nbsp;⌄</option>
+                    {institutionTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                  </select>
                 </div>
+
+                {/* Teaching Language */}
+                <div>
+                  <label className="block text-[12px] font-semibold text-ink mb-2">Teaching language</label>
+                  <select
+                    className="input-field h-[48px] rounded-xl text-sm"
+                    value={language}
+                    onChange={(e) => { setLanguage(e.target.value); setPage(0) }}
+                    disabled={isLoading}
+                  >
+                    <option value="">All languages&nbsp;⌄</option>
+                    {languageOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                </div>
+
+                {/* Intake */}
+                <div>
+                  <label className="block text-[12px] font-semibold text-ink mb-2">Intake</label>
+                  <select
+                    className="input-field h-[48px] rounded-xl text-sm"
+                    value={intake}
+                    onChange={(e) => { setIntake(e.target.value); setPage(0) }}
+                    disabled={isLoading}
+                  >
+                    <option value="">All intakes&nbsp;⌄</option>
+                    {intakeOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                </div>
+
+                {/* Help text */}
+                <div className="text-sm text-muted leading-relaxed">
+                  <p>Search the current</p>
+                  <p>imported catalog.</p>
+                  <p>Program details may vary</p>
+                  <p>by institution.</p>
+                </div>
+
+                {/* Reset Filters */}
                 {hasActiveFilters && (
-                  <button type="button" className="btn-secondary text-sm" onClick={clearFilters}>Clear filters</button>
+                  <button
+                    type="button"
+                    className="w-full text-left text-sm font-medium text-accent hover:underline mt-4"
+                    onClick={clearFilters}
+                    disabled={isLoading}
+                  >
+                    Reset filters
+                  </button>
                 )}
               </div>
-            )}
-          </div>
-        </div>
-      </SlideUp>
-      {error ? (
-        <FadeIn>
-          <div className="mt-8"><ErrorState message={error} /></div>
-        </FadeIn>
-      ) : (
-        <>
-          <FadeIn delay={0.2}>
-            <p className="mt-8 text-sm text-ink-800/60 dark:text-ink-50/60">{result.meta.totalElements} universities found</p>
+            </div>
           </FadeIn>
-          <StaggerContainer staggerDelay={0.08} delayChildren={0.2} className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {result.data.map((university, index) => (
-              <StaggerItem key={university.id} customDelay={index * 0.05}>
-                <UniversityCard university={university} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-          {result.meta.totalPages > 1 && (
-            <FadeIn delay={0.3}>
-              <div className="mt-10 flex justify-center gap-3">
-                <button className="btn-secondary" disabled={page === 0 || isLoading} onClick={() => setPage(page - 1)}>Previous</button>
-                <span className="rounded-xl px-4 py-3 glass flex items-center">Page {page + 1} / {result.meta.totalPages}</span>
-                <button className="btn-secondary" disabled={page >= result.meta.totalPages - 1 || isLoading} onClick={() => setPage(page + 1)}>Next</button>
-              </div>
+        </aside>
+
+        {/* University Grid - 3 columns of 328px */}
+        <div className="flex-1 min-w-0">
+          {error ? (
+            <FadeIn>
+              <div className="mt-8"><ErrorState message={error} /></div>
             </FadeIn>
+          ) : (
+            <>
+              <div className="flex items-center justify-between mb-4">
+                <FadeIn delay={0.2}>
+                  <p className="text-[14px] font-medium text-ink">{result.meta.totalElements} universities found</p>
+                </FadeIn>
+                <FadeIn delay={0.2}>
+                  <p className="text-sm text-muted">Page {page + 1} of {result.meta.totalPages}</p>
+                </FadeIn>
+              </div>
+
+              <StaggerContainer staggerDelay={0.08} delayChildren={0.3} className="grid gap-6 grid-cols-3">
+                {result.data.map((university, index) => (
+                  <StaggerItem key={university.id} customDelay={index * 0.05}>
+                    <UniversityCard university={university} />
+                  </StaggerItem>
+                ))}
+              </StaggerContainer>
+
+              {/* Pagination */}
+              {result.meta.totalPages > 1 && (
+                <FadeIn delay={0.4}>
+                  <div className="mt-10 flex items-center justify-between">
+                    <button
+                      className="btn-secondary h-[40px] px-5 text-sm"
+                      disabled={page === 0 || isLoading}
+                      onClick={() => setPage(page - 1)}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className="btn-primary h-[40px] px-5 text-sm"
+                      disabled={page >= result.meta.totalPages - 1 || isLoading}
+                      onClick={() => setPage(page + 1)}
+                    >
+                      Next&nbsp;→
+                    </button>
+                  </div>
+                </FadeIn>
+              )}
+            </>
           )}
-        </>
-      )}
-    </section>
+        </div>
+      </div>
+    </div>
   )
 }
