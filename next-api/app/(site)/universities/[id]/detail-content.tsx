@@ -100,3 +100,4 @@ export default function DetailContent({ id }: { id: string }) {
     </div>
   </section>
 }
+ 
