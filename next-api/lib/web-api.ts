@@ -31,38 +31,64 @@ async function get<T>(path: string): Promise<T> {
 }
 
 export async function listUniversities(params: URLSearchParams) {
-  const response = await fetch(`/api/universities?${params.toString()}`, { cache: 'no-store' })
-  const body = await response.json()
-  if (!response.ok) throw new Error(body.error?.message || 'Could not load universities')
-  return body as { data: University[]; meta: { page: number; size: number; totalElements: number; totalPages: number } }
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+  
+  try {
+    const response = await fetch(`/api/universities?${params.toString()}`, { 
+      cache: 'no-store',
+      signal: controller.signal
+    })
+    const body = await response.json()
+    if (!response.ok) throw new Error(body.error?.message || 'Could not load universities')
+    return body as { data: University[]; meta: { page: number; size: number; totalElements: number; totalPages: number } }
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('Request timed out. Please try again.')
+    }
+    throw error
+  } finally {
+    clearTimeout(timeoutId)
+  }
+}
+
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeout = 10000) {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeout)
+  
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal })
+    const body = await response.json()
+    if (!response.ok) throw new Error(body.error?.message || 'Request failed')
+    return body
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('Request timed out. Please try again.')
+    }
+    throw error
+  } finally {
+    clearTimeout(timeoutId)
+  }
 }
 
 export function getUniversity(id: string) {
-  return get<University>(`/api/universities/${id}`)
+  return fetchWithTimeout(`/api/universities/${id}`, { cache: 'no-store' }) as Promise<University>
 }
 
 export function getReviews(id: string) {
-  return get<Array<{ id: number; rating: number; comment: string | null; userName: string; createdAt: string }>>(`/api/universities/${id}/reviews`)
+  return fetchWithTimeout(`/api/universities/${id}/reviews`, { cache: 'no-store' }) as Promise<Array<{ id: number; rating: number; comment: string | null; userName: string; createdAt: string }>>
 }
 
 export function compareUniversities(ids: number[]) {
-  return fetch('/api/universities/compare', {
+  return fetchWithTimeout('/api/universities/compare', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ universityIds: ids }),
-  }).then(async (response) => {
-    const body = await response.json()
-    if (!response.ok) throw new Error(body.error?.message || 'Could not compare universities')
-    return body.data as University[]
-  })
+  }).then((body) => body.data as University[])
 }
 
 export function listScholarships(params: URLSearchParams) {
-  return fetch(`/api/scholarships?${params.toString()}`, { cache: 'no-store' }).then(async (response) => {
-    const body = await response.json()
-    if (!response.ok) throw new Error(body.error?.message || 'Could not load scholarships')
-    return body as { data: Array<Record<string, unknown>>; meta: { page: number; size: number; totalElements: number; totalPages: number } }
-  })
+  return fetchWithTimeout(`/api/scholarships?${params.toString()}`, { cache: 'no-store' }).then((body) => body as { data: Array<Record<string, unknown>>; meta: { page: number; size: number; totalElements: number; totalPages: number } })
 }
 
 export function listContent(path: string) {

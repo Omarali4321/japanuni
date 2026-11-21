@@ -34,6 +34,15 @@ function getIntakeBadge(intake: string | null) {
   return { text: 'Multi', className: 'bg-muted/20 text-muted' }
 }
 
+function getInitials(name: string) {
+  return name
+    .split(' ')
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
+}
+
 export function UniversityCard({ university, showCompare = true }: { university: University; showCompare?: boolean }) {
   const { selectedIds, toggleSelection, isSelected } = useCompare()
   const selected = isSelected(university.id)
@@ -44,14 +53,23 @@ export function UniversityCard({ university, showCompare = true }: { university:
                     university.institutionType === 'Public' ? 'bg-blue-500/10 text-blue-600' :
                     'bg-purple-500/10 text-purple-600'
 
+  const hasImage = university.images?.[0]
+  const initials = getInitials(university.name)
+
   return <article className="card overflow-hidden p-0 flex flex-col border-border transition-shadow hover:shadow-lg">
     <div className="relative h-48 bg-muted/30">
-      {university.images?.[0] && (
+      {hasImage ? (
         <img
           src={university.images[0]}
           alt={`${university.name} campus`}
           className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
         />
+      ) : (
+        <div className="flex items-center justify-center h-full w-full bg-muted/30">
+          <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center">
+            <span className="text-2xl font-display font-medium text-accent">{initials}</span>
+          </div>
+        </div>
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" />
       <div className="absolute left-3 top-3 right-3 flex justify-between">

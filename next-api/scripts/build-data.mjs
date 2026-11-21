@@ -97,6 +97,30 @@ function cleanText(value) {
   return text || null
 }
 
+// Generate university image URL using deterministic Unsplash photos
+// Uses a set of curated campus/university photos from Unsplash
+function generateImageUrl(universityName) {
+  // Curated Unsplash university/campus photo IDs (high-quality, generic campus shots)
+  const photoIds = [
+    'photo-1562774053-701939374585', // Modern university building
+    'photo-1523050854058-8df90110c9f1', // Campus courtyard
+    'photo-1497633762265-9d179a990aa6', // Library interior
+    'photo-1501504905252-473c42e085f8', // University campus aerial
+    'photo-1562774053-8fe1b8b6b4e8', // Lecture hall
+    'photo-1580587771525-78b9dba3b914', // Campus pathway
+    'photo-1517486808906-6ca8b3f04846', // University building facade
+    'photo-1607237138185-eedd9c632b0b', // Campus green space
+    'photo-1524178232363-1fb2b075b655', // Modern campus architecture
+    'photo-1541339907198-e08756dedf3f', // University library
+  ]
+  // Deterministic selection based on university name hash
+  const hash = createHash('md5').update(universityName).digest('hex')
+  const index = parseInt(hash.slice(0, 8), 16) % photoIds.length
+  const photoId = photoIds[index]
+  // Return optimized Unsplash URL (800w for cards, 1600w for detail)
+  return `https://images.unsplash.com/${photoId}?w=1600&h=900&fit=crop&q=80&auto=format`
+}
+
 // Normalize medium of instruction for consistent display
 function normalizeMediumOfInstruction(value) {
   if (!value) return null
@@ -146,7 +170,8 @@ const grouped = new Map()
 for (const row of rows) {
   const school = normalize(row[headers.school])
   if (!school) continue
-  const key = sourceKey(school)
+  const cleanSchool = cleanText(school)
+  const key = sourceKey(cleanSchool)
   grouped.set(key, [...(grouped.get(key) ?? []), row])
 }
 
@@ -214,7 +239,7 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     cityId: null,
     cityName: null,
     costOfLivingMonthly: null,
-    images: [],
+    images: [generateImageUrl(cleanName)],
     scholarships: [],
   }
 })
@@ -227,6 +252,7 @@ const indexFields = [
   'preArrivalAdmission', 'programCount',
   'faculty', // first 3 faculty names for display
   'tuitionFeeYearly', 'ieltsRequirement', 'jlptRequirement', 'ranking', 'programs', 'majorSpeciality',
+  'images',
 ]
 
 const index = records.map((r) => {
