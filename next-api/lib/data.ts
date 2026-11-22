@@ -134,11 +134,7 @@ function filterUniversities(universities: UniversityIndex[], filters: University
     if (filters.minRanking !== undefined && u.ranking !== null && u.ranking < filters.minRanking) return false
     if (filters.institutionType && u.institutionType?.toLowerCase() !== filters.institutionType.toLowerCase()) return false
     if (filters.mediumOfInstruction) {
-      const filterVal = filters.mediumOfInstruction.toLowerCase()
-      const uniVal = normalizeLanguageForFilter(u.mediumOfInstruction)
-      if (filterVal === 'both' && uniVal !== 'both') return false
-      if (filterVal === 'japanese' && uniVal !== 'japanese') return false
-      if (filterVal === 'english' && uniVal !== 'english') return false
+      if (!matchesLanguageFilter(u.mediumOfInstruction, filters.mediumOfInstruction)) return false
     }
     if (filters.preArrivalAdmission) {
       const filterVal = filters.preArrivalAdmission.toLowerCase()
@@ -244,10 +240,25 @@ function normalize(value: string | null | undefined) {
 function normalizeLanguageForFilter(lang: string | null | undefined): string {
   if (!lang) return ''
   const lower = lang.toLowerCase()
-  if (lower.includes('japanese (100%)') && lower.includes('english (100%)')) return 'both'
-  if (lower.includes('japanese (100%)')) return 'japanese'
-  if (lower.includes('english (100%)')) return 'english'
+  const hasJapanese = lower.includes('japanese')
+  const hasEnglish = lower.includes('english')
+  if (hasJapanese && hasEnglish) return 'both'
+  if (hasJapanese) return 'japanese'
+  if (hasEnglish) return 'english'
   return 'both'
+}
+
+function matchesLanguageFilter(uniLang: string | null, filterLang: string): boolean {
+  if (!filterLang) return true
+  if (!uniLang) return false
+  const filter = filterLang.toLowerCase()
+  const normalizedUni = normalizeLanguageForFilter(uniLang)
+  
+  // Filter values from UI: 'Japanese (100%)', 'English (100%)', 'Both'
+  if (filter === 'japanese (100%)') return normalizedUni === 'japanese'
+  if (filter === 'english (100%)') return normalizedUni === 'english'
+  if (filter === 'both') return normalizedUni === 'both'
+  return true
 }
 
 function normalizeIntakeForFilter(intake: string | null | undefined): string {

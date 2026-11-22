@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { useEffect, useState, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/components/auth-provider'
 import { ErrorState } from '@/components/public-states'
 import { addFavorite, createReview, deleteReview, getReviews, removeFavorite, type University } from '@/lib/web-api'
-import { FadeIn, SlideUp, HoverLift } from '@/components/ui/Motion'
+import { FadeIn, SlideUp } from '@/components/ui/Motion'
 
 type Review = { id: number; rating: number; comment: string | null; userName: string }
 
@@ -15,13 +15,31 @@ function splitCatalogItems(value: string | null) {
   return [...new Map(value.split('|').map((item) => item.trim()).filter(Boolean).map((item) => [item.toLocaleLowerCase(), item])).values()]
 }
 
+function getInitials(name: string) {
+  return name
+    .split(' ')
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
+}
+
 function getPhotoUrl(university: University): string {
   if (university.images && university.images.length > 0) {
     return university.images[0]
   }
-  // Fallback to Unsplash with university name for variety
-  const encodedName = encodeURIComponent(university.name)
-  return `https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1328&h=1500&fit=crop&q=80&auto=format`
+  // SVG placeholder with initials
+  const initials = getInitials(university.name)
+  const hue = Array.from(university.name).reduce((acc, char) => acc + char.charCodeAt(0), 0) % 360
+  const bgColor = `hsl(${hue}, 55%, 45%)`
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225"><rect width="400" height="225" fill="${bgColor}"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="600" fill="#ffffff" opacity="0.9">${initials}</text><text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#ffffff" opacity="0.6">University placeholder</text></svg>`
+  return `data:image/svg+xml;base64,${btoa(svg)}`
+}
+
+function formatProgramCount(count: number) {
+  if (count > 10) return `${count} listed`
+  if (count > 0) return `${count} listed`
+  return '—'
 }
 
 interface UniversityDetailProps {
@@ -37,6 +55,7 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
   const [showAllPrograms, setShowAllPrograms] = useState(false)
   const [showAllFaculties, setShowAllFaculties] = useState(false)
   const [scrollY, setScrollY] = useState(0)
+  const [activeTab, setActiveTab] = useState<'overview' | 'programs' | 'faculties' | 'reviews'>('overview')
   const photoRef = useRef<HTMLDivElement>(null)
 
   // Photo blur on scroll: start after 80px, ramp 0→12px over 360px
@@ -97,192 +116,447 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
 
   const programs = splitCatalogItems(university.programs)
   const faculties = splitCatalogItems(university.faculty)
-  const visiblePrograms = showAllPrograms ? programs : programs.slice(0, 8)
-  const visibleFaculties = showAllFaculties ? faculties : faculties.slice(0, 8)
 
-  // Photo blur calculation: progress = clamp((scrollY − 80) / 360, 0, 1); radius = 12 × progress px
+  // Photo blur calculation: progress = clamp((scrollY - 80) / 360, 0, 1); radius = 12 × progress px
   const blurRadius = Math.min(Math.max((scrollY - 80) / 360, 0), 1) * 12
 
   const photoUrl = getPhotoUrl(university)
 
+  // Stat cards data
+  const stats = [
+    { label: '01 / PROGRAMS', value: formatProgramCount(programs.length), desc: 'Programs listed' },
+    { label: '02 / INTAKE', value: university.intake || 'April & October', desc: 'Two entry periods' },
+    { label: '03 / LANGUAGES', value: university.mediumOfInstruction || 'Japanese / English', desc: 'Varies by program' },
+    { label: '04 / DEGREES', value: university.degree || "Bachelor's to doctoral", desc: 'Explore available pathways' },
+  ]
+
   return (
     <>
-      {/* Large photo header with blur on scroll */}
-      <div className="relative w-full" style={{ height: '750px', maxHeight: '75vh' }}>
-        <div
-          ref={photoRef}
-          className="absolute inset-0 bg-cover bg-center transition-all duration-700"
-          style={{
-            backgroundImage: `url(${photoUrl})`,
-            filter: `blur(${blurRadius}px)`,
-            transform: `translateY(${scrollY * 0.3}px)`
-          }}
-          aria-hidden="true"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
-        <div className="absolute inset-0 flex items-end">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full pb-12">
-            <FadeIn>
-              <Link href="/universities" className="inline-flex items-center gap-1 text-sm font-medium text-ink-600 hover:text-accent transition-colors mb-4">
-                ← Universities
-              </Link>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-ink max-w-3xl">{university.name}</h1>
-            </FadeIn>
-            <FadeIn delay={0.2}>
-              <div className="mt-3 flex flex-wrap items-center gap-3 text-muted">
-                <span className="badge-type">{university.institutionType || 'University'}</span>
-                {university.intake && <span className="badge-intake">{university.intake}</span>}
-                {university.mediumOfInstruction && <span className="badge-language">{university.mediumOfInstruction.split('|')[0].trim()}</span>}
-              </div>
-            </FadeIn>
+      {/* Large photo header with blur on scroll and stat cards */}
+      <div className="relative w-full bg-[#fdfdfc]">
+        {/* Navigation */}
+        <header className="absolute inset-x-0 top-0 z-50 h-[96px] bg-background/80 backdrop-blur-sm border-b border-[#e0e5df]">
+          <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+            <Link href="/" className="font-display text-xl font-bold text-accent">JapanUni</Link>
+            <nav className="hidden md:flex items-center gap-8">
+              <Link href="/universities" className="text-sm font-medium text-accent relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-accent">Universities</Link>
+              <Link href="/match" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Smart Match</Link>
+              <Link href="/scholarships" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Scholarships</Link>
+              <Link href="/admission" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Admission</Link>
+              <Link href="/visa" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Visa</Link>
+              <Link href="/student-life" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Student Life</Link>
+            </nav>
+            <div className="hidden md:flex items-center gap-3">
+              <Link href="/login" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Log in</Link>
+              <Link href="/register" className="btn-primary text-sm">Sign up ↗</Link>
+            </div>
           </div>
-        </div>
-      </div>
+        </header>
 
-      {/* Main content */}
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 -mt-12 relative z-10">
-        <div className="grid gap-8 lg:grid-cols-[1.4fr_0.6fr]">
-          <div>
-            <div className="mt-8 space-y-6">
-              {/* Programs */}
-              <div className="card">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h2 className="font-display text-xl font-semibold">Programs</h2>
-                  {programs.length > 0 && <span className="text-sm text-muted">{programs.length} listed</span>}
-                </div>
-                {programs.length ? (
-                  <ul className="mt-4 grid gap-x-8 gap-y-2 text-sm leading-relaxed text-ink/75 sm:grid-cols-2">
-                    {visiblePrograms.map((program, index) => (
-                      <li key={`${index}-${program}`} className="border-b border-border/50 pb-2">{program}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="mt-3 text-sm text-muted">Program details are not listed yet.</p>
-                )}
-                {programs.length > 8 && (
-                  <button
-                    type="button"
-                    className="mt-4 text-sm font-medium text-accent hover:underline"
-                    aria-expanded={showAllPrograms}
-                    onClick={() => setShowAllPrograms((shown) => !shown)}
+        {/* Hero Section */}
+        <section className="relative pt-[96px] pb-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {/* Back link and tagline */}
+            <div className="flex items-center justify-between mb-8">
+              <Link href="/universities" className="inline-flex items-center gap-1 text-xs font-medium text-[#67716a] hover:text-accent transition-colors uppercase tracking-wide">
+                ← ALL UNIVERSITIES
+              </Link>
+              <p className="text-right text-xs font-semibold text-accent tracking-wider max-w-xs">
+                YOUR NEXT CHAPTER, IN JAPAN
+              </p>
+            </div>
+
+            {/* University name and description */}
+            <div className="mb-8">
+              <h1 className="font-['Playfair_Display'] font-normal leading-[1.1] text-[52px] md:text-[72px] lg:text-[80px] text-[#252c28] max-w-4xl">
+                {university.name}.
+              </h1>
+              <p className="mt-4 text-lg md:text-xl text-[#252c28] max-w-3xl leading-relaxed">
+                A {university.institutionType?.toLowerCase() || 'national'} university. A world of possibilities.
+              </p>
+            </div>
+
+            {/* Programs description and actions */}
+            <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="text-[#67716a] text-base md:text-lg leading-relaxed max-w-2xl">
+                <p>Explore {programs.length} programs across undergraduate and graduate</p>
+                <p>studies. Find the path that fits your ambitions.</p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <Link
+                  href="#programs"
+                  className="inline-flex items-center justify-center gap-2 h-[52px] px-8 rounded-[26px] bg-accent text-white font-medium text-base transition-colors hover:bg-accent/90"
+                >
+                  Explore {programs.length} programs →
+                </Link>
+                {university.sourceUrl && (
+                  <a
+                    href={university.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 h-[52px] px-8 rounded-[26px] border border-[#e0e5df] text-[#252c28] font-medium text-base transition-colors hover:bg-[#f5f7f3]"
                   >
-                    {showAllPrograms ? 'Show fewer programs' : `Show all ${programs.length} programs`}
-                  </button>
+                    University website ↗
+                  </a>
                 )}
               </div>
+            </div>
 
-              {/* Faculties */}
-              {faculties.length > 0 && (
-                <details className="card group">
-                  <summary className="cursor-pointer list-none font-display text-xl font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
-                    Faculties and departments <span className="ml-2 text-sm font-normal text-muted">({faculties.length})</span><span className="float-right text-sm text-accent group-open:rotate-180 transition-transform">⌄</span>
-                  </summary>
-                  <ul className="mt-4 grid gap-x-8 gap-y-2 text-sm leading-relaxed text-ink/75 sm:grid-cols-2">
-                    {visibleFaculties.map((faculty, index) => (
-                      <li key={`${index}-${faculty}`} className="border-b border-border/50 pb-2">{faculty}</li>
-                    ))}
-                  </ul>
-                  {faculties.length > 8 && (
-                    <div className="mt-4 pt-4 border-t border-border/50">
-                      <button
-                        type="button"
-                        className="text-sm font-medium text-accent hover:underline"
-                        aria-expanded={showAllFaculties}
-                        onClick={() => setShowAllFaculties((shown) => !shown)}
-                      >
-                        {showAllFaculties ? 'Show fewer faculties' : `Show all ${faculties.length} faculties`}
-                      </button>
-                    </div>
-                  )}
-                </details>
-              )}
+            {/* Campus photo with rounded corners */}
+            <div className="relative overflow-hidden rounded-bl-[20px] rounded-br-[100px] rounded-tl-[20px] rounded-tr-[20px] aspect-[1440/390] max-h-[420px]">
+              <div
+                ref={photoRef}
+                className="absolute inset-0 bg-cover bg-center transition-all duration-700"
+                style={{
+                  backgroundImage: `url(${photoUrl})`,
+                  filter: `blur(${blurRadius}px)`,
+                  transform: `translateY(${scrollY * 0.3}px)`
+                }}
+                aria-hidden="true"
+              />
+            </div>
 
-              {/* Official source */}
-              <div className="card">
-                <h2 className="font-display text-xl font-semibold">Official source</h2>
-                <p className="mt-2 text-sm text-muted">This listing is based on the Study in Japan school search. Information is supplied by schools and may not include every institution; confirm current details directly with the university.</p>
-                <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
-                  <a className="text-accent hover:underline" href={`https://www.studyinjapan.go.jp/en/search-for-schools/school_search.php?lang=en&offset=0&go=go&narabikae=2&limit=25&school_name=${encodeURIComponent(university.name)}`} target="_blank" rel="noreferrer">View in Study in Japan catalog <span aria-hidden="true">↗</span></a>
-                  {university.sourceUrl && <a className="text-accent hover:underline" href={university.sourceUrl} target="_blank" rel="noreferrer">University website <span aria-hidden="true">↗</span></a>}
+            {/* Badge and note */}
+            <div className="mt-4 flex items-center justify-between">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[20px] bg-[#fdfdfc] border border-[#e0e5df]">
+                <span className="text-xs font-medium text-[#252c28]">
+                  JAPAN / {university.institutionType?.toUpperCase() || 'NATIONAL'} UNIVERSITY
+                </span>
+              </div>
+              <p className="text-xs text-[#67716a]">Campus imagery is illustrative</p>
+            </div>
+
+            {/* Stat Cards */}
+            <div className="mt-8 grid gap-4 md:grid-cols-4">
+              {stats.map((stat, index) => (
+                <div key={index} className="p-4">
+                  <p className="text-xs font-semibold text-[#67716a] uppercase tracking-wide">{stat.label}</p>
+                  <p className="mt-1 font-['Playfair_Display'] text-[32px] md:text-[36px] text-[#252c28]">{stat.value}</p>
+                  <p className="mt-2 text-sm text-[#67716a]">{stat.desc}</p>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-              {/* Reviews */}
-              <div className="card">
-                <h2 className="font-display text-xl font-semibold">Reviews ({reviews.length})</h2>
-                {user ? (
-                  <form onSubmit={submitReview} className="mb-6 mt-4 space-y-3">
-                    <select className="input-field" value={form.rating} onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })}>
-                      {[5, 4, 3, 2, 1].map((rating) => (
-                        <option key={rating} value={rating}>{rating} stars</option>
-                      ))}
-                    </select>
-                    <textarea className="input-field" rows={3} maxLength={2000} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} placeholder="Your experience..." />
-                    <button className="btn-primary" disabled={pending}>{pending ? 'Submitting...' : 'Submit review'}</button>
-                  </form>
-                ) : (
-                  <p className="mt-3 text-sm text-muted">Sign in to leave a review.</p>
-                )}
-                {reviews.length ? (
-                  <div className="space-y-4">
-                    {reviews.map((review) => (
-                      <div key={review.id} className="border-t border-border/50 pt-4">
-                        <div className="flex justify-between">
-                          <span>{review.userName}</span>
-                          <span>{'★'.repeat(review.rating)}</span>
-                        </div>
-                        {review.comment && <p className="mt-2 text-sm text-muted">{review.comment}</p>}
-                        {user?.fullName === review.userName && (
-                          <button className="mt-2 text-xs text-red-500" onClick={() => void removeReview(review.id)}>
-                            Delete review
+        {/* Tab Navigation */}
+        <section className="border-t border-[#d7d8d0] border-b border-[#d7d8d0] bg-background">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <p className="text-xs font-semibold text-[#67716a] uppercase tracking-wide">EXPLORE THE UNIVERSITY</p>
+              <div className="flex gap-6" role="tablist" aria-label="University sections">
+                {[
+                  { id: 'overview', label: 'Overview', count: null },
+                  { id: 'programs', label: 'Programs', count: programs.length },
+                  { id: 'faculties', label: 'Faculties', count: faculties.length },
+                  { id: 'reviews', label: 'Reviews', count: reviews.length }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    role="tab"
+                    aria-selected={activeTab === tab.id}
+                    aria-controls={`panel-${tab.id}`}
+                    id={`tab-${tab.id}`}
+                    onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                    className={`relative px-2 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
+                      activeTab === tab.id ? 'text-accent' : 'text-[#67716a] hover:text-[#252c28]'
+                    }`}
+                  >
+                    {tab.label}
+                    {tab.count !== null && (
+                      <span className="text-xs text-[#67716a]">({tab.count})</span>
+                    )}
+                    {activeTab === tab.id && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Main Content */}
+        <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-[1.4fr_0.6fr]">
+            <div>
+              {/* Tab Panels with AnimatePresence */}
+              <AnimatePresence mode="wait">
+                {/* Overview Tab */}
+                {activeTab === 'overview' && (
+                  <motion.div
+                    key="overview"
+                    id="panel-overview"
+                    role="tabpanel"
+                    aria-labelledby="tab-overview"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-8"
+                  >
+                    {/* Programs Section */}
+                    <div>
+                      <div className="flex items-baseline justify-between gap-2 mb-6">
+                        <h2 className="font-['Playfair_Display'] font-normal text-3xl text-[#252c28]">Find your academic path.</h2>
+                        <p className="text-sm text-[#67716a]">{programs.length} listed</p>
+                      </div>
+                      
+                      {programs.length > 0 ? (
+                        <ul className="space-y-2">
+                          {programs.slice(0, 8).map((program, index) => (
+                            <li key={`${index}-${program}`} className="text-base text-[#252c28] border-b border-[#e0e5df] pb-3 last:border-0">
+                              {program}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-sm text-[#67716a] py-4">Program details are not listed yet.</p>
+                      )}
+
+                      {programs.length > 8 && (
+                        <button
+                          type="button"
+                          id="show-all-programs"
+                          className="mt-6 inline-flex items-center justify-center gap-2 h-[48px] w-full max-w-xs border border-[#e0e5df] rounded-[24px] text-accent font-medium transition-colors hover:bg-[#f5f7f3]"
+                          onClick={() => setShowAllPrograms(!showAllPrograms)}
+                        >
+                          Show all {programs.length} programs {showAllPrograms ? '↑' : '↓'}
+                        </button>
+                      )}
+
+                      {showAllPrograms && programs.length > 8 && (
+                        <ul className="mt-4 space-y-2">
+                          {programs.slice(8).map((program, index) => (
+                            <li key={`${index + 8}-${program}`} className="text-base text-[#252c28] border-b border-[#e0e5df] pb-3 last:border-0">
+                              {program}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+
+                    {/* Faculties Accordion */}
+                    <div className="border-t border-[#e0e5df] pt-8">
+                      <h3 className="font-medium text-[#252c28] text-base">Faculties and departments ({faculties.length})</h3>
+                      <div className="mt-4 bg-[#f5f7f3] rounded-[14px] p-4">
+                        {faculties.length > 0 ? (
+                          <ul className="space-y-2">
+                            {faculties.slice(0, 8).map((faculty, index) => (
+                              <li key={`${index}-${faculty}`} className="text-sm text-[#252c28]">{faculty}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-sm text-[#67716a]">No faculties listed.</p>
+                        )}
+                        {faculties.length > 8 && (
+                          <button
+                            type="button"
+                            className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-medium text-[#252c28] transition-colors"
+                            onClick={() => setShowAllFaculties(!showAllFaculties)}
+                          >
+                            {showAllFaculties ? 'Show less' : 'Show all'} {faculties.length} faculties
+                            <span className="text-xl">{showAllFaculties ? '⌃' : '⌄'}</span>
                           </button>
                         )}
+                        {showAllFaculties && faculties.length > 8 && (
+                          <ul className="mt-4 space-y-2">
+                            {faculties.slice(8).map((faculty, index) => (
+                              <li key={`${index + 8}-${faculty}`} className="text-sm text-[#252c28]">{faculty}</li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="mt-3 text-sm text-muted">No reviews yet.</p>
-                )}
-              </div>
-            </div>
-          </div>
+                    </div>
 
-          {/* Sidebar */}
-          <aside>
-            <div className="card sticky top-24">
-              {user && (
-                <button className="btn-secondary mb-5 w-full" disabled={pending} onClick={() => void toggleFavorite()}>
-                  {university.favorited ? '❤️ Saved' : '🤍 Save to favorites'}
-                </button>
-              )}
-              <dl className="space-y-3 text-sm">
-                <div className="flex justify-between gap-4">
-                  <dt className="text-muted">Type</dt>
-                  <dd className="text-ink font-medium">{university.institutionType || '—'}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-muted">Degree</dt>
-                  <dd className="text-right text-ink font-medium">{university.degree || '—'}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-muted">Intake</dt>
-                  <dd className="text-ink font-medium">{university.intake || '—'}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-muted">Instruction</dt>
-                  <dd className="text-right text-ink font-medium">{university.mediumOfInstruction || '—'}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-muted">Pre-arrival</dt>
-                  <dd className="text-ink font-medium">{university.preArrivalAdmission || '—'}</dd>
-                </div>
-              </dl>
+                    {/* Degree Options */}
+                    <div className="border-t border-[#e0e5df] pt-8">
+                      <h3 className="font-semibold text-[13px] text-[#252c28] tracking-wide uppercase">Degree options</h3>
+                      <div className="mt-4 text-sm text-[#67716a] leading-relaxed">
+                        <p>{university.degree || "Bachelor's Degree · Master's Degree · Doctoral Degree"}</p>
+                        {university.degree && university.degree.includes('Professional') && (
+                          <p>Master of Education (Professional Degree)</p>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Programs Tab */}
+                {activeTab === 'programs' && (
+                  <motion.div
+                    key="programs"
+                    id="panel-programs"
+                    role="tabpanel"
+                    aria-labelledby="tab-programs"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-6"
+                  >
+                    <div className="flex items-baseline justify-between gap-2">
+                      <h2 className="font-['Playfair_Display'] font-normal text-3xl text-[#252c28]">Programs</h2>
+                      <p className="text-sm text-[#67716a]">{programs.length} listed</p>
+                    </div>
+                    <div className="space-y-2">
+                      {programs.length > 0 ? (
+                        programs.map((program, index) => (
+                          <div key={`${index}-${program}`} className="text-base text-[#252c28] border-b border-[#e0e5df] pb-3 last:border-0">
+                            {program}
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-[#67716a] py-8 text-center">No programs listed for this university.</p>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Faculties Tab */}
+                {activeTab === 'faculties' && (
+                  <motion.div
+                    key="faculties"
+                    id="panel-faculties"
+                    role="tabpanel"
+                    aria-labelledby="tab-faculties"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-6"
+                  >
+                    <div className="flex items-baseline justify-between gap-2">
+                      <h2 className="font-['Playfair_Display'] font-normal text-3xl text-[#252c28]">Faculties & Departments</h2>
+                      <p className="text-sm text-[#67716a]">{faculties.length} listed</p>
+                    </div>
+                    <div className="space-y-2">
+                      {faculties.length > 0 ? (
+                        faculties.map((faculty, index) => (
+                          <div key={`${index}-${faculty}`} className="text-sm text-[#252c28] border-b border-[#e0e5df] pb-3 last:border-0">
+                            {faculty}
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-[#67716a] py-8 text-center">No faculties listed for this university.</p>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Reviews Tab */}
+                {activeTab === 'reviews' && (
+                  <motion.div
+                    key="reviews"
+                    id="panel-reviews"
+                    role="tabpanel"
+                    aria-labelledby="tab-reviews"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-6"
+                  >
+                    <div className="flex items-baseline justify-between gap-2">
+                      <h2 className="font-['Playfair_Display'] font-normal text-3xl text-[#252c28]">Reviews</h2>
+                      <p className="text-sm text-[#67716a]">{reviews.length} reviews</p>
+                    </div>
+                    <div className="space-y-4">
+                      {user ? (
+                        <form onSubmit={submitReview} className="mb-6 p-4 bg-[#f5f7f3] rounded-[14px] space-y-3">
+                          <div className="flex items-center gap-4">
+                            <label className="text-sm font-medium text-[#252c28]">Rating</label>
+                            <select className="input-field w-auto" value={form.rating} onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })}>
+                              {[5, 4, 3, 2, 1].map((rating) => (
+                                <option key={rating} value={rating}>{rating} stars</option>
+                              ))}
+                            </select>
+                          </div>
+                          <textarea className="input-field w-full" rows={3} maxLength={2000} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} placeholder="Your experience..." />
+                          <button className="btn-primary" disabled={pending}>{pending ? 'Submitting...' : 'Submit review'}</button>
+                        </form>
+                      ) : (
+                        <p className="text-sm text-[#67716a]">Sign in to leave a review.</p>
+                      )}
+                      {reviews.length ? (
+                        reviews.map((review) => (
+                          <div key={review.id} className="border-t border-[#e0e5df] pt-4">
+                            <div className="flex justify-between">
+                              <span className="font-medium text-[#252c28]">{review.userName}</span>
+                              <span className="text-accent">{'★'.repeat(review.rating)}</span>
+                            </div>
+                            {review.comment && <p className="mt-2 text-sm text-[#67716a]">{review.comment}</p>}
+                            {user?.fullName === review.userName && (
+                              <button className="mt-2 text-xs text-red-500" onClick={() => void removeReview(review.id)}>
+                                Delete review
+                              </button>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <p className="mt-3 text-sm text-[#67716a]">No reviews yet.</p>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          </aside>
-        </div>
-      </section>
+
+            {/* Sidebar - Official Source & Reviews */}
+            <aside>
+              <div className="sticky top-[120px] space-y-6">
+                {/* Official Source Panel */}
+                <div className="bg-[#f5f7f3] rounded-[20px] p-6">
+                  <h3 className="font-['Playfair_Display'] font-normal text-2xl text-[#252c28]">Official source</h3>
+                  <p className="mt-4 text-sm text-[#67716a] leading-relaxed">
+                    This listing is based on the Study in Japan school search. Information is supplied by schools and may not include every institution; confirm current details directly with the university.
+                  </p>
+                  <div className="mt-6 space-y-3">
+                    <a
+                      href={`https://www.studyinjapan.go.jp/en/search-for-schools/school_search.php?lang=en&offset=0&go=go&narabikae=2&limit=25&school_name=${encodeURIComponent(university.name)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
+                    >
+                      View in Study in Japan catalog ↗
+                    </a>
+                    {university.sourceUrl && (
+                      <a
+                        href={university.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 text-sm font-medium text-[#252c28] hover:underline"
+                      >
+                        University website ↗
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* Reviews Panel */}
+                <div className="border border-[#e0e5df] rounded-[20px] p-6">
+                  <h3 className="font-['Playfair_Display'] font-normal text-2xl text-[#252c28]">Reviews ({reviews.length})</h3>
+                  {reviews.length > 0 ? (
+                    <p className="mt-4 text-sm text-[#67716a]">Based on {reviews.length} review{reviews.length !== 1 ? 's' : ''}.</p>
+                  ) : (
+                    <p className="mt-4 text-sm text-[#67716a]">No reviews yet.</p>
+                  )}
+                  {user ? (
+                    <a
+                      href="#reviews"
+                      className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
+                    >
+                      Sign in to leave a review ↗
+                    </a>
+                  ) : (
+                    <p className="mt-6 text-xs text-[#67716a]">Pre-arrival admission information available on the university website.</p>
+                  )}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </div>
     </>
   )
 }
