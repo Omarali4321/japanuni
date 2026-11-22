@@ -29,7 +29,7 @@ export default async function StudentLifeDetailPage({ params }: Props) {
   if (!guide) notFound()
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
       <FadeIn>
         <Link href="/student-life" className="inline-flex items-center gap-2 text-sm text-ink-800/60 dark:text-ink-50/60 hover:text-sakura-500 transition-colors mb-6">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,16 +48,20 @@ export default async function StudentLifeDetailPage({ params }: Props) {
         </p>
       </FadeIn>
       <SlideUp delay={0.1} className="mt-8">
-        <article className="glass-card p-8 md:p-12">
+        <article className="glass-card p-8 md:p-12 border border-white/20">
           {guide.imageUrl && (
             <img
               src={guide.imageUrl}
               alt={guide.title}
-              className="mb-6 h-64 w-full rounded-xl object-cover"
+              className="mb-8 h-64 w-full rounded-xl object-cover"
             />
           )}
-          <div className="whitespace-pre-wrap text-base leading-relaxed text-ink-800/75 dark:text-ink-50/75">
-            {guide.content}
+          <div className="prose prose-ink max-w-none dark:prose-invert">
+            {guide.content.split('\n\n').map((paragraph, index) => (
+              <p key={index} className="mb-6 text-base leading-relaxed text-ink-800/80 dark:text-ink-50/80 whitespace-pre-wrap">
+                {paragraph}
+              </p>
+            ))}
           </div>
         </article>
       </SlideUp>
