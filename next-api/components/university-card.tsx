@@ -34,13 +34,26 @@ function getIntakeBadge(intake: string | null) {
   return { text: 'Multi', className: 'bg-muted/20 text-muted' }
 }
 
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase()
+// Neutral placeholder generator (matches build script)
+function generateNeutralPlaceholder(universityName: string): string {
+  const displayName = universityName.length > 40 ? universityName.slice(0, 37) + '...' : universityName
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
+    <rect width="400" height="225" fill="#e5e7eb"/>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+          font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#6b7280">
+      ${displayName}
+    </text>
+    <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" 
+          font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#9ca3af">
+      Campus photo not yet verified
+    </text>
+  </svg>`
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
+}
+
+// Check if image URL is a neutral placeholder (data URL SVG)
+function isNeutralPlaceholder(url: string): boolean {
+  return url.startsWith('data:image/svg+xml')
 }
 
 export function UniversityCard({ university, showCompare = true }: { university: University; showCompare?: boolean }) {
@@ -53,26 +66,25 @@ export function UniversityCard({ university, showCompare = true }: { university:
                     university.institutionType === 'Public' ? 'bg-blue-500/10 text-blue-600' :
                     'bg-purple-500/10 text-purple-600'
 
-  const hasImage = university.images?.[0]
-  const initials = getInitials(university.name)
+  const imageUrl = university.images?.[0] || generateNeutralPlaceholder(university.name)
+  const isPlaceholder = isNeutralPlaceholder(imageUrl)
 
   return (
     <Link href={`/universities/${university.id}`} className="block">
       <article className="card overflow-hidden p-0 flex flex-col border-border transition-shadow hover:shadow-lg">
         <div className="relative h-48 bg-muted/30">
-          {hasImage ? (
-            <img
-              src={university.images[0]}
-              alt={`${university.name} campus`}
-              className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-            />
-          ) : (
-            <div className="flex items-center justify-center h-full w-full bg-muted/30">
-              <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center">
-                <span className="text-2xl font-display font-medium text-accent">{initials}</span>
-              </div>
-            </div>
-          )}
+          <img
+            src={imageUrl}
+            alt={isPlaceholder ? `${university.name} - campus photo not yet verified` : `${university.name} campus`}
+            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+            onError={(e) => {
+              // Only fall back for external URLs (Wikimedia Commons), not for neutral placeholders
+              if (!isPlaceholder) {
+                e.currentTarget.onerror = null
+                e.currentTarget.src = generateNeutralPlaceholder(university.name)
+              }
+            }}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" />
           <div className="absolute left-3 top-3 right-3 flex justify-between">
             {university.ranking && (

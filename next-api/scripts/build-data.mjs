@@ -97,41 +97,47 @@ function cleanText(value) {
   return text || null
 }
 
-// Generate SVG placeholder with university initials and deterministic color
-// Uses inline SVG data URLs - no external dependencies, fast, free, clearly identifiable as placeholders
-function generateImageUrl(universityName) {
-  // Get initials (first letter of first two words, or first two letters of single word)
-  const words = universityName.trim().split(/\s+/).filter(Boolean)
-  let initials = ''
-  if (words.length >= 2) {
-    initials = (words[0][0] + words[1][0]).toUpperCase()
-  } else if (words.length === 1) {
-    initials = words[0].slice(0, 2).toUpperCase()
-  } else {
-    initials = 'UN'
-  }
+// Load verified university photos mapping
+const PHOTOS_MAPPING_PATH = join(DATA_DIR, 'university-photos-mapping.json')
+let photosMapping = {}
+try {
+  photosMapping = JSON.parse(readFileSync(PHOTOS_MAPPING_PATH, 'utf8'))
+  console.log(`Loaded verified photos mapping for ${Object.keys(photosMapping).length} universities`)
+} catch (e) {
+  console.warn('No verified photos mapping found, will use neutral placeholders for all universities')
+}
 
-  // Deterministic color based on university name hash
-  const hash = createHash('md5').update(universityName).digest('hex')
-  const hue = parseInt(hash.slice(0, 4), 16) % 360
-  const bgColor = `hsl(${hue}, 55%, 45%)`
-  const textColor = '#ffffff'
+// Generate neutral SVG placeholder with university name (no random colors, no initials)
+// Used when no verified photo is available - clearly identifiable as placeholder
+function generateNeutralPlaceholder(universityName) {
+  // Clean name for display
+  const displayName = universityName.length > 40 ? universityName.slice(0, 37) + '...' : universityName
 
-  // SVG placeholder (400x225 for 16:9 aspect ratio)
+  // Neutral gray placeholder (400x225 for 16:9 aspect ratio)
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
-    <rect width="400" height="225" fill="${bgColor}"/>
+    <rect width="400" height="225" fill="#e5e7eb"/>
     <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-          font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="600" fill="${textColor}" opacity="0.9">
-      ${initials}
+          font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#6b7280">
+      ${displayName}
     </text>
-    <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" 
-          font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="${textColor}" opacity="0.6">
-      University placeholder
+    <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" 
+          font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#9ca3af">
+      Campus photo not yet verified
     </text>
   </svg>`
 
   // Return as data URL
   return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
+}
+
+// Get verified photo URL for university, or generate neutral placeholder
+function getUniversityPhoto(universityId, universityName) {
+  const mapping = photosMapping[String(universityId)]
+  if (mapping && mapping.verified && mapping.photoUrl) {
+    return mapping.photoUrl
+  }
+  // No verified photo - return neutral placeholder
+  return generateNeutralPlaceholder(universityName)
 }
 
 // Normalize medium of instruction for consistent display
@@ -252,7 +258,7 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     cityId: null,
     cityName: null,
     costOfLivingMonthly: null,
-    images: [generateImageUrl(cleanName)],
+    images: [getUniversityPhoto(index + 1, cleanName)],
     scholarships: [],
   }
 })

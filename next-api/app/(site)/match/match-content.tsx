@@ -1,12 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { ErrorState } from '@/components/public-states'
-import { listContent } from '@/lib/web-api'
+import { useState } from 'react'
 import { FadeIn, SlideUp, StaggerContainer, StaggerItem, HoverLift } from '@/components/ui/Motion'
 import { MatchResultSkeleton } from '@/components/ui/Skeleton'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 
 type MatchResult = {
   university: { id: number; name: string; cityName: string | null; ranking: number | null; tuitionFeeYearly: string | null; ieltsRequirement: number | null; jlptRequirement: string | null }
@@ -21,7 +19,6 @@ export default function MatchContent() {
   const [form, setForm] = useState({ field: '', budgetYearly: '', ieltsScore: '', jlptLevel: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [focusedField, setFocusedField] = useState<string | null>(null)
 
   async function submit(event: React.FormEvent) {
     event.preventDefault()
@@ -121,13 +118,11 @@ export default function MatchContent() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
                       <input
-                        id="field"
+                        id="study-interest-field"
                         type="text"
                         className="input-field pl-10"
                         value={form.field}
                         onChange={(e) => setForm({ ...form, field: e.target.value })}
-                        onFocus={() => setFocusedField('field')}
-                        onBlur={() => setFocusedField(null)}
                         placeholder="e.g., Computer Science, Business, Medicine"
                         required
                         autoComplete="off"
@@ -152,8 +147,6 @@ export default function MatchContent() {
                         className="input-field pl-10"
                         value={form.budgetYearly}
                         onChange={(e) => setForm({ ...form, budgetYearly: e.target.value })}
-                        onFocus={() => setFocusedField('budgetYearly')}
-                        onBlur={() => setFocusedField(null)}
                         placeholder="e.g., 800000"
                         min="0"
                         step="10000"
@@ -179,8 +172,6 @@ export default function MatchContent() {
                         className="input-field pl-10"
                         value={form.ieltsScore}
                         onChange={(e) => setForm({ ...form, ieltsScore: e.target.value })}
-                        onFocus={() => setFocusedField('ieltsScore')}
-                        onBlur={() => setFocusedField(null)}
                         placeholder="e.g., 6.5"
                         min="0"
                         max="9"
@@ -206,8 +197,6 @@ export default function MatchContent() {
                         className="input-field pl-10 appearance-none bg-white"
                         value={form.jlptLevel}
                         onChange={(e) => setForm({ ...form, jlptLevel: e.target.value })}
-                        onFocus={() => setFocusedField('jlptLevel')}
-                        onBlur={() => setFocusedField(null)}
                         autoComplete="off"
                         aria-describedby="jlpt-hint"
                       >
@@ -299,14 +288,18 @@ export default function MatchContent() {
 
               {!loading && !error && !results.length && (
                 <FadeIn key="empty">
-                  <div className="glass-card p-12 text-center border border-white/20">
-                    <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-sakura-500/10 flex items-center justify-center">
-                      <svg className="w-8 h-8 text-sakura-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
+                  <div className="glass-card p-12 text-center border border-white/20 min-h-[400px] flex items-center justify-center">
+                    <div className="max-w-md mx-auto">
+                      <div className="mx-auto mb-6 w-16 h-16 rounded-full bg-sakura-500/10 flex items-center justify-center">
+                        <svg className="w-8 h-8 text-sakura-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                      <h3 className="font-display text-xl sm:text-2xl font-semibold text-ink">No matches yet</h3>
+                      <p className="mt-3 text-ink-800/60 dark:text-ink-50/60">
+                        Fill in your study interest above and hit "Find My Matches" to see personalized university recommendations.
+                      </p>
                     </div>
-                    <h3 className="font-display text-xl font-semibold text-ink">No matches yet</h3>
-                    <p className="mt-2 text-ink-800/60 dark:text-ink-50/60">Fill in your profile and hit "Find My Matches" to see personalized recommendations.</p>
                   </div>
                 </FadeIn>
               )}

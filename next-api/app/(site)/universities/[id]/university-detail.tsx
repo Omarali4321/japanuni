@@ -24,16 +24,34 @@ function getInitials(name: string) {
     .toUpperCase()
 }
 
+// Neutral placeholder generator (matches build script)
+function generateNeutralPlaceholder(universityName: string): string {
+  const displayName = universityName.length > 40 ? universityName.slice(0, 37) + '...' : universityName
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
+    <rect width="400" height="225" fill="#e5e7eb"/>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+          font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#6b7280">
+      ${displayName}
+    </text>
+    <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" 
+          font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#9ca3af">
+      Campus photo not yet verified
+    </text>
+  </svg>`
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
+}
+
+// Check if image URL is a neutral placeholder (data URL SVG)
+function isNeutralPlaceholder(url: string): boolean {
+  return url.startsWith('data:image/svg+xml')
+}
+
 function getPhotoUrl(university: University): string {
   if (university.images && university.images.length > 0) {
     return university.images[0]
   }
-  // SVG placeholder with initials
-  const initials = getInitials(university.name)
-  const hue = Array.from(university.name).reduce((acc, char) => acc + char.charCodeAt(0), 0) % 360
-  const bgColor = `hsl(${hue}, 55%, 45%)`
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225"><rect width="400" height="225" fill="${bgColor}"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="600" fill="#ffffff" opacity="0.9">${initials}</text><text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#ffffff" opacity="0.6">University placeholder</text></svg>`
-  return `data:image/svg+xml;base64,${btoa(svg)}`
+  // Use neutral placeholder instead of random campus photo
+  return generateNeutralPlaceholder(university.name)
 }
 
 function formatProgramCount(count: number) {
