@@ -133,25 +133,6 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
     <>
       {/* Large photo header with blur on scroll and stat cards */}
       <div className="relative w-full bg-[#fdfdfc]">
-        {/* Navigation */}
-        <header className="absolute inset-x-0 top-0 z-50 h-[96px] bg-background/80 backdrop-blur-sm border-b border-[#e0e5df]">
-          <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-            <Link href="/" className="font-display text-xl font-bold text-accent">JapanUni</Link>
-            <nav className="hidden md:flex items-center gap-8">
-              <Link href="/universities" className="text-sm font-medium text-accent relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-accent">Universities</Link>
-              <Link href="/match" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Smart Match</Link>
-              <Link href="/scholarships" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Scholarships</Link>
-              <Link href="/admission" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Admission</Link>
-              <Link href="/visa" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Visa</Link>
-              <Link href="/student-life" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Student Life</Link>
-            </nav>
-            <div className="hidden md:flex items-center gap-3">
-              <Link href="/login" className="text-sm font-medium text-[#67716a] hover:text-accent transition-colors">Log in</Link>
-              <Link href="/register" className="btn-primary text-sm">Sign up ↗</Link>
-            </div>
-          </div>
-        </header>
-
         {/* Hero Section */}
         <section className="relative pt-[96px] pb-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
