@@ -12,6 +12,17 @@
     line-height: inherit;
     @apply bg-background text-ink font-sans antialiased;
   }
+
+  /* CSS variables for accent colors used in auth forms */
+  :root {
+    --indigo-rgb: 99, 102, 241;
+    --sakura-rgb: 244, 63, 78;
+  }
+
+  .dark {
+    --indigo-rgb: 129, 140, 248;
+    --sakura-rgb: 251, 113, 118;
+  }
 }
 
 @layer components {
