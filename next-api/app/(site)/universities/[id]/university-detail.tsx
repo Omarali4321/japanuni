@@ -52,8 +52,7 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
   const [error, setError] = useState('')
   const [form, setForm] = useState({ rating: 5, comment: '' })
   const [pending, setPending] = useState(false)
-  const [showAllPrograms, setShowAllPrograms] = useState(false)
-  const [showAllFaculties, setShowAllFaculties] = useState(false)
+  
   const [scrollY, setScrollY] = useState(0)
   const [activeTab, setActiveTab] = useState<'overview' | 'programs' | 'faculties' | 'reviews'>('overview')
   const photoRef = useRef<HTMLDivElement>(null)
@@ -282,7 +281,7 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
             <div>
               {/* Tab Panels with AnimatePresence */}
               <AnimatePresence mode="wait">
-                {/* Overview Tab */}
+                {/* Overview Tab - Summary only */}
                 {activeTab === 'overview' && (
                   <motion.div
                     key="overview"
@@ -295,79 +294,71 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                     transition={{ duration: 0.2 }}
                     className="space-y-8"
                   >
-                    {/* Programs Section */}
-                    <div>
-                      <div className="flex items-baseline justify-between gap-2 mb-6">
-                        <h2 className="font-['Playfair_Display'] font-normal text-3xl text-[#252c28]">Find your academic path.</h2>
-                        <p className="text-sm text-[#67716a]">{programs.length} listed</p>
+                    {/* Quick Academic Summary */}
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <div className="bg-[#f5f7f3] rounded-[14px] p-6">
+                        <h3 className="font-medium text-[#252c28] text-base mb-3">Programs offered</h3>
+                        <p className="font-['Playfair_Display'] font-normal text-4xl text-[#252c28]">{programs.length}</p>
+                        <p className="mt-1 text-sm text-[#67716a]">Academic programs across all levels</p>
                       </div>
-                      
-                      {programs.length > 0 ? (
+                      <div className="bg-[#f5f7f3] rounded-[14px] p-6">
+                        <h3 className="font-medium text-[#252c28] text-base mb-3">Faculties & departments</h3>
+                        <p className="font-['Playfair_Display'] font-normal text-4xl text-[#252c28]">{faculties.length}</p>
+                        <p className="mt-1 text-sm text-[#67716a]">Academic units and departments</p>
+                      </div>
+                    </div>
+
+                    {/* Featured Programs Preview */}
+                    {programs.length > 0 && (
+                      <div>
+                        <div className="flex items-baseline justify-between gap-2 mb-4">
+                          <h2 className="font-['Playfair_Display'] font-normal text-2xl text-[#252c28]">Featured programs</h2>
+                          <button
+                            type="button"
+                            onClick={() => setActiveTab('programs')}
+                            className="text-sm text-accent hover:underline font-medium"
+                          >
+                            View all {programs.length} →
+                          </button>
+                        </div>
                         <ul className="space-y-2">
-                          {programs.slice(0, 8).map((program, index) => (
+                          {programs.slice(0, 5).map((program, index) => (
                             <li key={`${index}-${program}`} className="text-base text-[#252c28] border-b border-[#e0e5df] pb-3 last:border-0">
                               {program}
                             </li>
                           ))}
                         </ul>
-                      ) : (
-                        <p className="text-sm text-[#67716a] py-4">Program details are not listed yet.</p>
-                      )}
+                        {programs.length > 5 && (
+                          <p className="mt-2 text-sm text-[#67716a]">+{programs.length - 5} more programs</p>
+                        )}
+                      </div>
+                    )}
 
-                      {programs.length > 8 && (
-                        <button
-                          type="button"
-                          id="show-all-programs"
-                          className="mt-6 inline-flex items-center justify-center gap-2 h-[48px] w-full max-w-xs border border-[#e0e5df] rounded-[24px] text-accent font-medium transition-colors hover:bg-[#f5f7f3]"
-                          onClick={() => setShowAllPrograms(!showAllPrograms)}
-                        >
-                          Show all {programs.length} programs {showAllPrograms ? '↑' : '↓'}
-                        </button>
-                      )}
-
-                      {showAllPrograms && programs.length > 8 && (
-                        <ul className="mt-4 space-y-2">
-                          {programs.slice(8).map((program, index) => (
-                            <li key={`${index + 8}-${program}`} className="text-base text-[#252c28] border-b border-[#e0e5df] pb-3 last:border-0">
-                              {program}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-
-                    {/* Faculties Accordion */}
-                    <div className="border-t border-[#e0e5df] pt-8">
-                      <h3 className="font-medium text-[#252c28] text-base">Faculties and departments ({faculties.length})</h3>
-                      <div className="mt-4 bg-[#f5f7f3] rounded-[14px] p-4">
-                        {faculties.length > 0 ? (
+                    {/* Featured Faculties Preview */}
+                    {faculties.length > 0 && (
+                      <div className="border-t border-[#e0e5df] pt-8">
+                        <div className="flex items-baseline justify-between gap-2 mb-4">
+                          <h3 className="font-medium text-[#252c28] text-base">Featured faculties</h3>
+                          <button
+                            type="button"
+                            onClick={() => setActiveTab('faculties')}
+                            className="text-sm text-accent hover:underline font-medium"
+                          >
+                            View all {faculties.length} →
+                          </button>
+                        </div>
+                        <div className="bg-[#f5f7f3] rounded-[14px] p-4">
                           <ul className="space-y-2">
-                            {faculties.slice(0, 8).map((faculty, index) => (
+                            {faculties.slice(0, 5).map((faculty, index) => (
                               <li key={`${index}-${faculty}`} className="text-sm text-[#252c28]">{faculty}</li>
                             ))}
                           </ul>
-                        ) : (
-                          <p className="text-sm text-[#67716a]">No faculties listed.</p>
-                        )}
-                        {faculties.length > 8 && (
-                          <button
-                            type="button"
-                            className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-medium text-[#252c28] transition-colors"
-                            onClick={() => setShowAllFaculties(!showAllFaculties)}
-                          >
-                            {showAllFaculties ? 'Show less' : 'Show all'} {faculties.length} faculties
-                            <span className="text-xl">{showAllFaculties ? '⌃' : '⌄'}</span>
-                          </button>
-                        )}
-                        {showAllFaculties && faculties.length > 8 && (
-                          <ul className="mt-4 space-y-2">
-                            {faculties.slice(8).map((faculty, index) => (
-                              <li key={`${index + 8}-${faculty}`} className="text-sm text-[#252c28]">{faculty}</li>
-                            ))}
-                          </ul>
-                        )}
+                          {faculties.length > 5 && (
+                            <p className="mt-2 text-sm text-[#67716a]">+{faculties.length - 5} more faculties</p>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
                     {/* Degree Options */}
                     <div className="border-t border-[#e0e5df] pt-8">
@@ -377,6 +368,18 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                         {university.degree && university.degree.includes('Professional') && (
                           <p>Master of Education (Professional Degree)</p>
                         )}
+                      </div>
+                    </div>
+
+                    {/* Intake & Language Summary */}
+                    <div className="border-t border-[#e0e5df] pt-8 grid gap-4 sm:grid-cols-2">
+                      <div className="bg-[#f5f7f3] rounded-[14px] p-4">
+                        <h4 className="font-semibold text-[13px] text-[#252c28] tracking-wide uppercase mb-2">Main intake</h4>
+                        <p className="text-sm text-[#67716a]">{university.intake || 'April'}</p>
+                      </div>
+                      <div className="bg-[#f5f7f3] rounded-[14px] p-4">
+                        <h4 className="font-semibold text-[13px] text-[#252c28] tracking-wide uppercase mb-2">Medium of instruction</h4>
+                        <p className="text-sm text-[#67716a]">{university.mediumOfInstruction || 'Japanese'}</p>
                       </div>
                     </div>
                   </motion.div>
