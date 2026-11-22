@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getGuides } from '@/lib/data'
 import { FadeIn, SlideUp } from '@/components/ui/Motion'
+import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -56,13 +57,7 @@ export default async function AdmissionDetailPage({ params }: Props) {
               className="mb-8 h-64 w-full rounded-xl object-cover"
             />
           )}
-          <div className="prose prose-ink max-w-none dark:prose-invert">
-            {guide.content.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="mb-6 text-base leading-relaxed text-ink-800/80 dark:text-ink-50/80 whitespace-pre-wrap">
-                {paragraph}
-              </p>
-            ))}
-          </div>
+          <MarkdownRenderer content={guide.content} />
         </article>
       </SlideUp>
     </div>
