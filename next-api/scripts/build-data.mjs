@@ -97,28 +97,41 @@ function cleanText(value) {
   return text || null
 }
 
-// Generate university image URL using deterministic Unsplash photos
-// Uses a set of curated campus/university photos from Unsplash
+// Generate SVG placeholder with university initials and deterministic color
+// Uses inline SVG data URLs - no external dependencies, fast, free, clearly identifiable as placeholders
 function generateImageUrl(universityName) {
-  // Curated Unsplash university/campus photo IDs (high-quality, generic campus shots)
-  const photoIds = [
-    'photo-1562774053-701939374585', // Modern university building
-    'photo-1523050854058-8df90110c9f1', // Campus courtyard
-    'photo-1497633762265-9d179a990aa6', // Library interior
-    'photo-1501504905252-473c42e085f8', // University campus aerial
-    'photo-1562774053-8fe1b8b6b4e8', // Lecture hall
-    'photo-1580587771525-78b9dba3b914', // Campus pathway
-    'photo-1517486808906-6ca8b3f04846', // University building facade
-    'photo-1607237138185-eedd9c632b0b', // Campus green space
-    'photo-1524178232363-1fb2b075b655', // Modern campus architecture
-    'photo-1541339907198-e08756dedf3f', // University library
-  ]
-  // Deterministic selection based on university name hash
+  // Get initials (first letter of first two words, or first two letters of single word)
+  const words = universityName.trim().split(/\s+/).filter(Boolean)
+  let initials = ''
+  if (words.length >= 2) {
+    initials = (words[0][0] + words[1][0]).toUpperCase()
+  } else if (words.length === 1) {
+    initials = words[0].slice(0, 2).toUpperCase()
+  } else {
+    initials = 'UN'
+  }
+
+  // Deterministic color based on university name hash
   const hash = createHash('md5').update(universityName).digest('hex')
-  const index = parseInt(hash.slice(0, 8), 16) % photoIds.length
-  const photoId = photoIds[index]
-  // Return optimized Unsplash URL (800w for cards, 1600w for detail)
-  return `https://images.unsplash.com/${photoId}?w=1600&h=900&fit=crop&q=80&auto=format`
+  const hue = parseInt(hash.slice(0, 4), 16) % 360
+  const bgColor = `hsl(${hue}, 55%, 45%)`
+  const textColor = '#ffffff'
+
+  // SVG placeholder (400x225 for 16:9 aspect ratio)
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
+    <rect width="400" height="225" fill="${bgColor}"/>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+          font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="600" fill="${textColor}" opacity="0.9">
+      ${initials}
+    </text>
+    <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" 
+          font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="${textColor}" opacity="0.6">
+      University placeholder
+    </text>
+  </svg>`
+
+  // Return as data URL
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
 }
 
 // Normalize medium of instruction for consistent display

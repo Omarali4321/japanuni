@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { UniversityCard } from '@/components/university-card'
 import { ErrorState } from '@/components/public-states'
 import { listUniversities, type University } from '@/lib/web-api'
@@ -81,6 +81,28 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
   const [language, setLanguage] = useState('')
   const [intake, setIntake] = useState('')
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const drawerRef = useRef<HTMLDivElement>(null)
+
+  // Body scroll lock when mobile filters open
+  useEffect(() => {
+    if (filtersOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [filtersOpen])
+
+  // Close drawer on escape key
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && filtersOpen) {
+        setFiltersOpen(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [filtersOpen])
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
@@ -241,68 +263,87 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
         </div>
       </div>
 
-      {/* Mobile Filters Drawer */}
-      <div id="mobile-filters" className={`lg:hidden ${filtersOpen ? 'block' : 'hidden'}`} role="region" aria-label="Mobile filters">
-        <FadeIn delay={0.2}>
-          <div className="rounded-2xl bg-soft-surface p-6 mb-6 border border-border/50">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-[21px] font-medium text-ink">Filters</h2>
-              <button
-                type="button"
-                className="text-ink hover:text-accent transition-colors"
-                onClick={() => setFiltersOpen(false)}
-                aria-label="Close filters"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
-            </div>
-
-            <div className="space-y-6">
-              <FilterSelect
-                label="Institution type"
-                id="mobile-institution-type"
-                value={institutionType}
-                onChange={v => { setInstitutionType(v); setPage(0) }}
-                options={[{ value: '', label: 'All types' }, ...institutionTypes.map(t => ({ value: t, label: t }))]}
-                disabled={isLoading}
-              />
-              <FilterSelect
-                label="Teaching language"
-                id="mobile-teaching-language"
-                value={language}
-                onChange={v => { setLanguage(v); setPage(0) }}
-                options={languageOptions}
-                disabled={isLoading}
-              />
-              <FilterSelect
-                label="Intake"
-                id="mobile-intake"
-                value={intake}
-                onChange={v => { setIntake(v); setPage(0) }}
-                options={intakeOptions}
-                disabled={isLoading}
-              />
-
-              <div className="pt-4 border-t border-border">
-                <div className="text-sm text-muted leading-relaxed mb-4">
-                  <p>Search the current imported catalog.</p>
-                  <p>Program details may vary by institution.</p>
-                </div>
-                {hasActiveFilters && (
-                  <button
-                    type="button"
-                    className="w-full text-left text-sm font-medium text-accent hover:underline"
-                    onClick={clearFilters}
-                    disabled={isLoading}
-                  >
-                    Reset all filters ({activeFilterCount})
-                  </button>
-                )}
+      {/* Mobile Filters Drawer - Fixed Overlay */}
+      {filtersOpen && (
+        <div
+          id="mobile-filters"
+          className="lg:hidden fixed inset-0 z-50"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-filters-title"
+        >
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+            onClick={() => setFiltersOpen(false)}
+            aria-hidden="true"
+          />
+          {/* Drawer Panel */}
+          <div
+            ref={drawerRef}
+            className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white shadow-xl flex flex-col"
+          >
+            <FadeIn delay={0.05}>
+              <div className="flex items-center justify-between p-4 border-b border-border/50">
+                <h2 id="mobile-filters-title" className="text-[21px] font-medium text-ink">Filters</h2>
+                <button
+                  type="button"
+                  className="text-ink hover:text-accent transition-colors p-2"
+                  onClick={() => setFiltersOpen(false)}
+                  aria-label="Close filters"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
               </div>
-            </div>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                <FilterSelect
+                  label="Institution type"
+                  id="mobile-institution-type"
+                  value={institutionType}
+                  onChange={v => { setInstitutionType(v); setPage(0) }}
+                  options={[{ value: '', label: 'All types' }, ...institutionTypes.map(t => ({ value: t, label: t }))]}
+                  disabled={isLoading}
+                />
+                <FilterSelect
+                  label="Teaching language"
+                  id="mobile-teaching-language"
+                  value={language}
+                  onChange={v => { setLanguage(v); setPage(0) }}
+                  options={languageOptions}
+                  disabled={isLoading}
+                />
+                <FilterSelect
+                  label="Intake"
+                  id="mobile-intake"
+                  value={intake}
+                  onChange={v => { setIntake(v); setPage(0) }}
+                  options={intakeOptions}
+                  disabled={isLoading}
+                />
+
+                <div className="pt-4 border-t border-border">
+                  <div className="text-sm text-muted leading-relaxed mb-4">
+                    <p>Search the current imported catalog.</p>
+                    <p>Program details may vary by institution.</p>
+                  </div>
+                  {hasActiveFilters && (
+                    <button
+                      type="button"
+                      className="w-full text-left text-sm font-medium text-accent hover:underline"
+                      onClick={clearFilters}
+                      disabled={isLoading}
+                    >
+                      Reset all filters ({activeFilterCount})
+                    </button>
+                  )}
+                </div>
+              </div>
+            </FadeIn>
           </div>
-        </FadeIn>
-      </div>
+        </div>
+      )}
 
       {/* Results Section */}
       <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
