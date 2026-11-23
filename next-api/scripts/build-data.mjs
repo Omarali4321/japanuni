@@ -107,39 +107,14 @@ try {
   console.warn('No verified photos mapping found; universities will use the designed UI placeholder')
 }
 
-// Generate a neutral gray placeholder SVG as a data URL for universities
-// without verified photos. This avoids storing UI-specific placeholders in data
-// while ensuring every university has an image URL.
-function generateNeutralPlaceholder(universityName) {
-  const safeName = String(universityName).replace(/"/g, '"')
-  const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
-  <rect width="800" height="450" fill="#e5e7eb"/>
-  <text x="400" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="24" fill="#6b7280" font-weight="500">Campus photo not yet verified</text>
-  <text x="400" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#9ca3af">${safeName}</text>
-</svg>
-`.trim()
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
-}
-
-// Return a photo mapping if verified/illustrative, otherwise generate a neutral placeholder.
-// Every university will have an image URL - either a verified Wikimedia photo or a neutral placeholder.
-function getUniversityPhoto(universityId, universityName) {
+// Return only a real, verified photo. Missing images are rendered as a designed
+// placeholder in the UI instead of storing an image-shaped placeholder as data.
+function getUniversityPhoto(universityId) {
   const mapping = photosMapping[String(universityId)]
   if (mapping?.photoUrl && (mapping.verified || mapping.illustrative)) {
     return mapping
   }
-  // Return neutral placeholder for universities without verified photos
-  return {
-    photoUrl: generateNeutralPlaceholder(universityName),
-    sourceUrl: null,
-    license: 'Generated placeholder',
-    attribution: 'JapanUni',
-    altText: `${universityName} — campus photo not yet verified`,
-    verified: false,
-    illustrative: false,
-    reason: 'No verified campus photo found for this university'
-  }
+  return null
 }
 
 // Normalize medium of instruction for consistent display
@@ -260,11 +235,13 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     cityId: null,
     cityName: null,
     costOfLivingMonthly: null,
-    images: [getUniversityPhoto(index + 1, cleanName).photoUrl],
-    imageIsIllustrative: Boolean(getUniversityPhoto(index + 1, cleanName)?.illustrative),
-    imageSourceUrl: getUniversityPhoto(index + 1, cleanName)?.sourceUrl ?? null,
-    imageAttribution: getUniversityPhoto(index + 1, cleanName)?.attribution ?? null,
-    imageLicense: getUniversityPhoto(index + 1, cleanName)?.license ?? null,
+    images: getUniversityPhoto(index + 1)?.photoUrl
+      ? [getUniversityPhoto(index + 1).photoUrl]
+      : [],
+    imageIsIllustrative: Boolean(getUniversityPhoto(index + 1)?.illustrative),
+    imageSourceUrl: getUniversityPhoto(index + 1)?.sourceUrl ?? null,
+    imageAttribution: getUniversityPhoto(index + 1)?.attribution ?? null,
+    imageLicense: getUniversityPhoto(index + 1)?.license ?? null,
     scholarships: [],
   }
 })
