@@ -167,8 +167,8 @@ function generateImageUrl(universityName) {
 }
 
 // Return verified photo if available, otherwise generate SVG placeholder with initials
-function getUniversityPhoto(universityId, universityName) {
-  const mapping = photosMapping[String(universityId)]
+function getUniversityPhoto(sourceKey, universityName) {
+  const mapping = photosMapping[sourceKey]
   if (mapping?.photoUrl && (mapping.verified || mapping.illustrative)) {
     return { photoUrl: mapping.photoUrl, isPlaceholder: false, ...mapping }
   }
@@ -273,14 +273,14 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     cityName: null,
     costOfLivingMonthly: null,
     images: (() => {
-      const photo = getUniversityPhoto(index + 1, cleanName)
+      const photo = getUniversityPhoto(key, cleanName)
       return [photo.photoUrl]
     })(),
-    imageIsPlaceholder: getUniversityPhoto(index + 1, cleanName).isPlaceholder,
-    imageIsIllustrative: Boolean(getUniversityPhoto(index + 1, cleanName).illustrative),
-    imageSourceUrl: getUniversityPhoto(index + 1, cleanName).sourceUrl ?? null,
-    imageAttribution: getUniversityPhoto(index + 1, cleanName).attribution ?? null,
-    imageLicense: getUniversityPhoto(index + 1, cleanName).license ?? null,
+    imageIsPlaceholder: getUniversityPhoto(key, cleanName).isPlaceholder,
+    imageIsIllustrative: Boolean(getUniversityPhoto(key, cleanName).illustrative),
+    imageSourceUrl: getUniversityPhoto(key, cleanName).sourceUrl ?? null,
+    imageAttribution: getUniversityPhoto(key, cleanName).attribution ?? null,
+    imageLicense: getUniversityPhoto(key, cleanName).license ?? null,
     scholarships: [],
   }
 })

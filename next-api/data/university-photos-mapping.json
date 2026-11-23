@@ -1,5 +1,5 @@
 {
-  "1": {
+  "aichi-medical-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Aichi_Medical_University_campus.jpg/1200px-Aichi_Medical_University_campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/Category:Aichi_Medical_University",
     "license": "CC BY-SA 4.0",
@@ -7,7 +7,7 @@
     "altText": "Aichi Medical University campus, Nagakute",
     "verified": true
   },
-  "50": {
+  "hitotsubashi-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Hitotsubashi_University_Kunitachi_Campus.jpg/1200px-Hitotsubashi_University_Kunitachi_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hitotsubashi_University_Kunitachi_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -15,7 +15,7 @@
     "altText": "Kunitachi Campus, Hitotsubashi University",
     "verified": true
   },
-  "54": {
+  "hokkaido-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Hokkaido_University_Sapporo_Campus.jpg/1200px-Hokkaido_University_Sapporo_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hokkaido_University_Sapporo_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -23,7 +23,7 @@
     "altText": "Sapporo Campus, Hokkaido University",
     "verified": true
   },
-  "59": {
+  "institute-of-science-tokyo": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Tokyo_Institute_of_Technology_Main_Gate.jpg/1200px-Tokyo_Institute_of_Technology_Main_Gate.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tokyo_Institute_of_Technology_Main_Gate.jpg",
     "license": "CC BY-SA 4.0",
@@ -31,7 +31,7 @@
     "altText": "Main Gate, Institute of Science Tokyo (Tokyo Institute of Technology)",
     "verified": true
   },
-  "60": {
+  "international-christian-university-icu": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/International_Christian_University_Campus.jpg/1200px-International_Christian_University_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:International_Christian_University_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -39,7 +39,7 @@
     "altText": "Campus, International Christian University",
     "verified": true
   },
-  "84": {
+  "keio-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Keio_University_Mita_Campus.jpg/1200px-Keio_University_Mita_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Keio_University_Mita_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -47,7 +47,7 @@
     "altText": "Mita Campus, Keio University",
     "verified": true
   },
-  "89": {
+  "kobe-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Kobe_University_Rokkodai_Campus.jpg/1200px-Kobe_University_Rokkodai_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kobe_University_Rokkodai_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -55,7 +55,7 @@
     "altText": "Rokkodai Campus, Kobe University",
     "verified": true
   },
-  "103": {
+  "kyoto-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Kyoto_University_Clock_Tower.jpg/1200px-Kyoto_University_Clock_Tower.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyoto_University_Clock_Tower.jpg",
     "license": "CC BY-SA 3.0",
@@ -63,7 +63,7 @@
     "altText": "Clock Tower, Kyoto University",
     "verified": true
   },
-  "106": {
+  "kyushu-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Kyushu_University_Ito_Campus.jpg/1200px-Kyushu_University_Ito_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyushu_University_Ito_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -71,7 +71,7 @@
     "altText": "Ito Campus, Kyushu University",
     "verified": true
   },
-  "124": {
+  "nagoya-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Nagoya_University_Higashiyama_Campus.jpg/1200px-Nagoya_University_Higashiyama_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nagoya_University_Higashiyama_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -79,7 +79,7 @@
     "altText": "Higashiyama Campus, Nagoya University",
     "verified": true
   },
-  "158": {
+  "rikkyo-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Rikkyo_University_Ikebukuro_Campus.jpg/1200px-Rikkyo_University_Ikebukuro_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rikkyo_University_Ikebukuro_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -87,7 +87,7 @@
     "altText": "Ikebukuro Campus, Rikkyo University",
     "verified": true
   },
-  "181": {
+  "sophia-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Sophia_University_Yotsuya_Campus.jpg/1200px-Sophia_University_Yotsuya_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sophia_University_Yotsuya_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -95,7 +95,7 @@
     "altText": "Yotsuya Campus, Sophia University",
     "verified": true
   },
-  "193": {
+  "the-university-of-tokyo": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Yasuda_Auditorium.jpg/1200px-Yasuda_Auditorium.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yasuda_Auditorium.jpg",
     "license": "CC BY-SA 4.0",
@@ -103,7 +103,7 @@
     "altText": "Yasuda Auditorium, University of Tokyo",
     "verified": true
   },
-  "194": {
+  "the-universtiy-of-osaka": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Osaka_University_Suita_Campus.jpg/1200px-Osaka_University_Suita_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Osaka_University_Suita_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -111,7 +111,7 @@
     "altText": "Suita Campus, The University of Osaka",
     "verified": true
   },
-  "199": {
+  "tohoku-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Tohoku_University_Katahira_Campus.jpg/1200px-Tohoku_University_Katahira_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tohoku_University_Katahira_Campus.jpg",
     "license": "CC BY-SA 4.0",
@@ -119,7 +119,7 @@
     "altText": "Katahira Campus, Tohoku University",
     "verified": true
   },
-  "224": {
+  "university-of-tsukuba": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Tsukuba_University_Main_Gate.jpg/1200px-Tsukuba_University_Main_Gate.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tsukuba_University_Main_Gate.jpg",
     "license": "CC BY-SA 4.0",
@@ -127,7 +127,7 @@
     "altText": "Main Gate, University of Tsukuba",
     "verified": true
   },
-  "228": {
+  "waseda-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Waseda_University_Okuma_Auditorium.jpg/1200px-Waseda_University_Okuma_Auditorium.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Waseda_University_Okuma_Auditorium.jpg",
     "license": "CC BY-SA 3.0",
@@ -135,7 +135,7 @@
     "altText": "Okuma Auditorium, Waseda University",
     "verified": true
   },
-  "233": {
+  "yokohama-national-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Yokohama_National_University_Tokiwadai_Campus.jpg/1200px-Yokohama_National_University_Tokiwadai_Campus.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yokohama_National_University_Tokiwadai_Campus.jpg",
     "license": "CC BY-SA 4.0",
