@@ -30,6 +30,8 @@ interface UniversityDetailProps {
 
 export default function UniversityDetail({ university }: UniversityDetailProps) {
   const { user } = useAuth()
+  const photoUrl = getPhotoUrl(university)
+  const isPlaceholder = university.imageIsPlaceholder ?? !photoUrl
   const [reviews, setReviews] = useState<Review[]>([])
   const [error, setError] = useState('')
   const [reviewsUnavailable, setReviewsUnavailable] = useState(false)
@@ -87,8 +89,6 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
 
   const programs = splitCatalogItems(university.programs)
   const faculties = splitCatalogItems(university.faculty)
-
-  const photoUrl = getPhotoUrl(university)
 
   // Stat cards data
   const stats = [
@@ -166,7 +166,7 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                 }}
                 aria-hidden="true"
               >
-                {!photoUrl && (
+                {isPlaceholder && (
                   <div className="flex h-full items-center justify-center bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#f8e6df] via-[#f3eee8] to-[#e8ece5] px-6 text-center">
                     <div>
                       <p className="font-['Playfair_Display'] text-3xl text-[#343c36] md:text-5xl">{university.name}</p>
@@ -184,7 +184,7 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                   JAPAN / {university.institutionType?.toUpperCase() || 'NATIONAL'} UNIVERSITY
                 </span>
               </div>
-              {photoUrl && university.imageSourceUrl ? (
+              {!isPlaceholder && university.imageSourceUrl ? (
                 <a href={university.imageSourceUrl} target="_blank" rel="noreferrer" className="text-right text-xs text-[#67716a] underline underline-offset-2 hover:text-accent">
                   {university.imageIsIllustrative ? 'Illustrative campus photo' : 'Campus photo'}
                   {university.imageAttribution ? ` · ${university.imageAttribution}` : ''}

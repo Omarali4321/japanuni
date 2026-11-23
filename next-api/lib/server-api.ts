@@ -11,6 +11,7 @@ export type University = {
   websiteUrl: string | null
   sourceUrl: string | null
   images: string[]
+  imageIsPlaceholder: boolean
   imageIsIllustrative: boolean
   imageSourceUrl: string | null
   imageAttribution: string | null

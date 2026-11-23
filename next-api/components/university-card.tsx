@@ -45,7 +45,7 @@ export function UniversityCard({ university, showCompare = true }: { university:
                     'bg-purple-500/10 text-purple-600'
 
   const imageUrl = university.images?.[0]
-  const isPlaceholder = !imageUrl
+  const isPlaceholder = university.imageIsPlaceholder ?? !imageUrl
 
   return (
     <Link href={`/universities/${university.id}`} className="block">

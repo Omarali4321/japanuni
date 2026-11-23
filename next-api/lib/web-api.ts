@@ -12,6 +12,7 @@ export type University = {
   mediumOfInstruction: string | null
   preArrivalAdmission: string | null
   images: string[]
+  imageIsPlaceholder: boolean
   imageIsIllustrative: boolean
   imageSourceUrl: string | null
   imageAttribution: string | null

@@ -107,16 +107,6 @@ try {
   console.warn('No verified photos mapping found; universities will use the designed UI placeholder')
 }
 
-// Return only a real, verified photo. Missing images are rendered as a designed
-// placeholder in the UI instead of storing an image-shaped placeholder as data.
-function getUniversityPhoto(universityId) {
-  const mapping = photosMapping[String(universityId)]
-  if (mapping?.photoUrl && (mapping.verified || mapping.illustrative)) {
-    return mapping
-  }
-  return null
-}
-
 // Normalize medium of instruction for consistent display
 function normalizeMediumOfInstruction(value) {
   if (!value) return null
@@ -137,6 +127,53 @@ function normalizeMediumOfInstruction(value) {
   text = text.replace(/Japanese, English \(Supplementary\)/gi, 'Japanese & English')
   text = text.replace(/English, Japanese \(Supplementary\)/gi, 'Japanese & English')
   return text
+}
+
+// Generate SVG placeholder with university initials and deterministic color
+// Uses inline SVG data URLs - no external dependencies, fast, free, clearly identifiable as placeholders
+function generateImageUrl(universityName) {
+  // Get initials (first letter of first two words, or first two letters of single word)
+  const words = universityName.trim().split(/\s+/).filter(Boolean)
+  let initials = ''
+  if (words.length >= 2) {
+    initials = (words[0][0] + words[1][0]).toUpperCase()
+  } else if (words.length === 1) {
+    initials = words[0].slice(0, 2).toUpperCase()
+  } else {
+    initials = 'UN'
+  }
+
+  // Deterministic color based on university name hash
+  const hash = createHash('md5').update(universityName).digest('hex')
+  const hue = parseInt(hash.slice(0, 4), 16) % 360
+  const bgColor = `hsl(${hue}, 55%, 45%)`
+  const textColor = '#ffffff'
+
+  // SVG placeholder (400x225 for 16:9 aspect ratio)
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
+    <rect width="400" height="225" fill="${bgColor}"/>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+          font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="600" fill="${textColor}" opacity="0.9">
+      ${initials}
+    </text>
+    <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" 
+          font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="${textColor}" opacity="0.6">
+      University placeholder
+    </text>
+  </svg>`
+
+  // Return as data URL
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
+}
+
+// Return verified photo if available, otherwise generate SVG placeholder with initials
+function getUniversityPhoto(universityId, universityName) {
+  const mapping = photosMapping[String(universityId)]
+  if (mapping?.photoUrl && (mapping.verified || mapping.illustrative)) {
+    return { photoUrl: mapping.photoUrl, isPlaceholder: false, ...mapping }
+  }
+  // Generate unique SVG placeholder with university initials
+  return { photoUrl: generateImageUrl(universityName), isPlaceholder: true }
 }
 
 // Normalize intake for consistent display
@@ -235,13 +272,15 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     cityId: null,
     cityName: null,
     costOfLivingMonthly: null,
-    images: getUniversityPhoto(index + 1)?.photoUrl
-      ? [getUniversityPhoto(index + 1).photoUrl]
-      : [],
-    imageIsIllustrative: Boolean(getUniversityPhoto(index + 1)?.illustrative),
-    imageSourceUrl: getUniversityPhoto(index + 1)?.sourceUrl ?? null,
-    imageAttribution: getUniversityPhoto(index + 1)?.attribution ?? null,
-    imageLicense: getUniversityPhoto(index + 1)?.license ?? null,
+    images: (() => {
+      const photo = getUniversityPhoto(index + 1, cleanName)
+      return [photo.photoUrl]
+    })(),
+    imageIsPlaceholder: getUniversityPhoto(index + 1, cleanName).isPlaceholder,
+    imageIsIllustrative: Boolean(getUniversityPhoto(index + 1, cleanName).illustrative),
+    imageSourceUrl: getUniversityPhoto(index + 1, cleanName).sourceUrl ?? null,
+    imageAttribution: getUniversityPhoto(index + 1, cleanName).attribution ?? null,
+    imageLicense: getUniversityPhoto(index + 1, cleanName).license ?? null,
     scholarships: [],
   }
 })
@@ -255,7 +294,7 @@ const indexFields = [
   'faculty', // first 3 faculty names for display
   'tuitionFeeYearly', 'ieltsRequirement', 'jlptRequirement', 'ranking', 'programs', 'majorSpeciality',
   'images',
-  'imageIsIllustrative', 'imageSourceUrl', 'imageAttribution', 'imageLicense',
+  'imageIsPlaceholder', 'imageIsIllustrative', 'imageSourceUrl', 'imageAttribution', 'imageLicense',
 ]
 
 const index = records.map((r) => {
