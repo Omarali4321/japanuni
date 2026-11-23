@@ -139,7 +139,7 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
   const showingText = result.data.length > 0 ? `Showing ${startItem}–${endItem} of ${result.meta.totalElements}` : `0 universities found`
 
   return (
-    <div className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10 2xl:px-16">
       {/* Hero Section */}
       <FadeIn className="mb-12">
         <div className="relative rounded-3xl bg-gradient-to-br from-accent/5 via-white to-white p-8 sm:p-12 lg:p-16 overflow-hidden">
@@ -449,8 +449,8 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
                   <span className="font-medium text-purple-600">{result.data.filter(u => u.institutionType === 'Private').length}</span>
                 </div>
                 <div className="pt-4 border-t border-border/50 flex items-center justify-between">
-                  <span className="text-sm text-muted">With Images</span>
-                  <span className="font-medium text-emerald-600">{result.data.filter(u => u.images?.[0]).length}</span>
+                  <span className="text-sm text-muted">Verified Photos</span>
+                  <span className="font-medium text-emerald-600">{result.data.filter(u => u.images?.[0] && !u.imageIsIllustrative).length} / {result.meta.totalElements}</span>
                 </div>
               </div>
             </div>

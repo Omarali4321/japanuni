@@ -64,7 +64,8 @@ const config: Config = {
         'rhythm-64': '64px',
       },
       maxWidth: {
-        'content': '1312px',
+        'content': '1680px',
+        '7xl': '1680px',
       },
       height: {
         'nav': '96px',

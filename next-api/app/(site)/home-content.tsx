@@ -54,16 +54,19 @@ export default function HomeContent() {
   }, [])
 
   return (
-    <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 lg:px-8 relative">
+    <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-10 2xl:px-16 relative">
       {/* Hero Section - Campus photo on left, content on right */}
       <section className="relative mb-24" aria-labelledby="hero-heading">
-        <div className="relative grid gap-8 lg:grid-cols-[664px_1fr] items-start">
+        <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-start">
           {/* Campus Image - Left side */}
-          <div className="relative aspect-[664/650] lg:aspect-auto lg:h-[650px]">
-            <div className="absolute inset-0 rounded-bl-xl rounded-br-[180px] rounded-tl-xl rounded-tr-xl overflow-hidden bg-cover bg-center" style={{ backgroundImage: 'url(/images/hero-campus.jpg)' }} />
-            <div className="absolute bottom-4 left-6 text-xs text-muted/70">Illustrative campus imagery</div>
+          <div className="relative">
+            <div
+              className="aspect-[1/1] lg:aspect-[1/1] 2xl:aspect-[1.04/1] rounded-bl-xl rounded-br-[180px] rounded-tl-xl rounded-tr-xl overflow-hidden bg-cover"
+              role="img"
+              aria-label="Mount Fuji, cherry blossoms, and Chureito Pagoda in Fujiyoshida, Japan"
+              style={{ backgroundImage: 'url(https://plus.unsplash.com/premium_photo-1661964177687-57387c2cbd14?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D)', backgroundPosition: '70% center' }}
+            />
           </div>
-
           {/* Hero Content - Right side */}
           <div className="flex flex-col justify-center pt-12 lg:pt-0">
             <FadeIn>

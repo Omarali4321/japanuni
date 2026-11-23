@@ -144,12 +144,12 @@
 
   /* Layout */
   .max-w-content {
-    max-width: 1312px;
+    max-width: 1680px;
   }
 
   .container-main {
     @apply mx-auto px-4 sm:px-6 lg:px-8;
-    max-width: 1312px;
+    max-width: 1680px;
   }
 }
 

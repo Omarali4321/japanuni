@@ -34,28 +34,6 @@ function getIntakeBadge(intake: string | null) {
   return { text: 'Multi', className: 'bg-muted/20 text-muted' }
 }
 
-// Neutral placeholder generator (matches build script)
-function generateNeutralPlaceholder(universityName: string): string {
-  const displayName = universityName.length > 40 ? universityName.slice(0, 37) + '...' : universityName
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
-    <rect width="400" height="225" fill="#e5e7eb"/>
-    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-          font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#6b7280">
-      ${displayName}
-    </text>
-    <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" 
-          font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#9ca3af">
-      Campus photo not yet verified
-    </text>
-  </svg>`
-  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
-}
-
-// Check if image URL is a neutral placeholder (data URL SVG)
-function isNeutralPlaceholder(url: string): boolean {
-  return url.startsWith('data:image/svg+xml')
-}
-
 export function UniversityCard({ university, showCompare = true }: { university: University; showCompare?: boolean }) {
   const { selectedIds, toggleSelection, isSelected } = useCompare()
   const selected = isSelected(university.id)
@@ -66,26 +44,42 @@ export function UniversityCard({ university, showCompare = true }: { university:
                     university.institutionType === 'Public' ? 'bg-blue-500/10 text-blue-600' :
                     'bg-purple-500/10 text-purple-600'
 
-  const imageUrl = university.images?.[0] || generateNeutralPlaceholder(university.name)
-  const isPlaceholder = isNeutralPlaceholder(imageUrl)
+  const imageUrl = university.images?.[0]
+  const isPlaceholder = !imageUrl
 
   return (
     <Link href={`/universities/${university.id}`} className="block">
       <article className="card overflow-hidden p-0 flex flex-col border-border transition-shadow hover:shadow-lg">
-        <div className="relative h-48 bg-muted/30">
-          <img
-            src={imageUrl}
-            alt={isPlaceholder ? `${university.name} - campus photo not yet verified` : `${university.name} campus`}
-            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-            onError={(e) => {
-              // Only fall back for external URLs (Wikimedia Commons), not for neutral placeholders
-              if (!isPlaceholder) {
+        <div className={`relative h-48 overflow-hidden ${isPlaceholder ? 'bg-[#f3eee8]' : 'bg-muted/30'}`}>
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={university.imageIsIllustrative
+                ? `${university.name} — illustrative photo of a university campus in Japan`
+                : `${university.name} campus`}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+              onError={(e) => {
                 e.currentTarget.onerror = null
-                e.currentTarget.src = generateNeutralPlaceholder(university.name)
-              }
-            }}
-          />
+                e.currentTarget.style.display = 'none'
+              }}
+            />
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#f8e6df] via-[#f3eee8] to-[#e8ece5] px-6 text-center">
+              <span className="font-['Playfair_Display'] text-3xl leading-tight text-[#343c36]">
+                {university.name}
+              </span>
+              <span className="mt-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[#748078]">
+                Campus photo coming soon
+              </span>
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" />
+          {university.imageIsIllustrative && (
+            <span className="absolute bottom-3 left-3 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-medium tracking-wide text-white">
+              Illustrative campus photo
+            </span>
+          )}
           <div className="absolute left-3 top-3 right-3 flex justify-between">
             {university.ranking && (
               <span className="rounded-lg bg-accent/90 px-2 py-1 text-xs font-medium text-white">#{university.ranking}</span>

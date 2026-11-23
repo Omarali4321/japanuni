@@ -102,42 +102,19 @@ const PHOTOS_MAPPING_PATH = join(DATA_DIR, 'university-photos-mapping.json')
 let photosMapping = {}
 try {
   photosMapping = JSON.parse(readFileSync(PHOTOS_MAPPING_PATH, 'utf8'))
-  console.log(`Loaded verified photos mapping for ${Object.keys(photosMapping).length} universities`)
+  console.log(`Loaded photo records for ${Object.keys(photosMapping).length} universities`)
 } catch (e) {
-  console.warn('No verified photos mapping found, will use neutral placeholders for all universities')
+  console.warn('No verified photos mapping found; universities will use the designed UI placeholder')
 }
 
-// Generate neutral SVG placeholder with university name (no random colors, no initials)
-// Used when no verified photo is available - clearly identifiable as placeholder
-function generateNeutralPlaceholder(universityName) {
-  // Clean name for display
-  const displayName = universityName.length > 40 ? universityName.slice(0, 37) + '...' : universityName
-
-  // Neutral gray placeholder (400x225 for 16:9 aspect ratio)
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
-    <rect width="400" height="225" fill="#e5e7eb"/>
-    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-          font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#6b7280">
-      ${displayName}
-    </text>
-    <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" 
-          font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#9ca3af">
-      Campus photo not yet verified
-    </text>
-  </svg>`
-
-  // Return as data URL
-  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
-}
-
-// Get verified photo URL for university, or generate neutral placeholder
-function getUniversityPhoto(universityId, universityName) {
+// Return only a real, verified photo. Missing images are rendered as a designed
+// placeholder in the UI instead of storing an image-shaped placeholder as data.
+function getUniversityPhoto(universityId) {
   const mapping = photosMapping[String(universityId)]
-  if (mapping && mapping.verified && mapping.photoUrl) {
-    return mapping.photoUrl
+  if (mapping?.photoUrl && (mapping.verified || mapping.illustrative)) {
+    return mapping
   }
-  // No verified photo - return neutral placeholder
-  return generateNeutralPlaceholder(universityName)
+  return null
 }
 
 // Normalize medium of instruction for consistent display
@@ -258,7 +235,13 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     cityId: null,
     cityName: null,
     costOfLivingMonthly: null,
-    images: [getUniversityPhoto(index + 1, cleanName)],
+    images: getUniversityPhoto(index + 1)?.photoUrl
+      ? [getUniversityPhoto(index + 1).photoUrl]
+      : [],
+    imageIsIllustrative: Boolean(getUniversityPhoto(index + 1)?.illustrative),
+    imageSourceUrl: getUniversityPhoto(index + 1)?.sourceUrl ?? null,
+    imageAttribution: getUniversityPhoto(index + 1)?.attribution ?? null,
+    imageLicense: getUniversityPhoto(index + 1)?.license ?? null,
     scholarships: [],
   }
 })
@@ -272,6 +255,7 @@ const indexFields = [
   'faculty', // first 3 faculty names for display
   'tuitionFeeYearly', 'ieltsRequirement', 'jlptRequirement', 'ranking', 'programs', 'majorSpeciality',
   'images',
+  'imageIsIllustrative', 'imageSourceUrl', 'imageAttribution', 'imageLicense',
 ]
 
 const index = records.map((r) => {

@@ -1,10 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/components/auth-provider'
-import { ErrorState } from '@/components/public-states'
 import { addFavorite, createReview, deleteReview, getReviews, removeFavorite, type University } from '@/lib/web-api'
 import { FadeIn, SlideUp } from '@/components/ui/Motion'
 
@@ -15,43 +14,8 @@ function splitCatalogItems(value: string | null) {
   return [...new Map(value.split('|').map((item) => item.trim()).filter(Boolean).map((item) => [item.toLocaleLowerCase(), item])).values()]
 }
 
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase()
-}
-
-// Neutral placeholder generator (matches build script)
-function generateNeutralPlaceholder(universityName: string): string {
-  const displayName = universityName.length > 40 ? universityName.slice(0, 37) + '...' : universityName
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
-    <rect width="400" height="225" fill="#e5e7eb"/>
-    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-          font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#6b7280">
-      ${displayName}
-    </text>
-    <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" 
-          font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#9ca3af">
-      Campus photo not yet verified
-    </text>
-  </svg>`
-  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
-}
-
-// Check if image URL is a neutral placeholder (data URL SVG)
-function isNeutralPlaceholder(url: string): boolean {
-  return url.startsWith('data:image/svg+xml')
-}
-
-function getPhotoUrl(university: University): string {
-  if (university.images && university.images.length > 0) {
-    return university.images[0]
-  }
-  // Use neutral placeholder instead of random campus photo
-  return generateNeutralPlaceholder(university.name)
+function getPhotoUrl(university: University): string | null {
+  return university.images?.[0] ?? null
 }
 
 function formatProgramCount(count: number) {
@@ -68,28 +32,20 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
   const { user } = useAuth()
   const [reviews, setReviews] = useState<Review[]>([])
   const [error, setError] = useState('')
+  const [reviewsUnavailable, setReviewsUnavailable] = useState(false)
   const [form, setForm] = useState({ rating: 5, comment: '' })
   const [pending, setPending] = useState(false)
   
-  const [scrollY, setScrollY] = useState(0)
   const [activeTab, setActiveTab] = useState<'overview' | 'programs' | 'faculties' | 'reviews'>('overview')
-  const photoRef = useRef<HTMLDivElement>(null)
-
-  // Photo blur on scroll: start after 80px, ramp 0→12px over 360px
-  useEffect(() => {
-    function handleScroll() {
-      const y = window.scrollY
-      setScrollY(y)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   // Fetch reviews on mount
   useEffect(() => {
     getReviews(String(university.id))
-      .then(setReviews)
-      .catch((reason) => setError(reason instanceof Error ? reason.message : 'Could not load reviews'))
+      .then((items) => {
+        setReviews(items)
+        setReviewsUnavailable(false)
+      })
+      .catch(() => setReviewsUnavailable(true))
   }, [university.id])
 
   async function toggleFavorite() {
@@ -129,13 +85,8 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
     }
   }
 
-  if (error) return <div className="mx-auto max-w-7xl px-4 py-16"><ErrorState message={error} /></div>
-
   const programs = splitCatalogItems(university.programs)
   const faculties = splitCatalogItems(university.faculty)
-
-  // Photo blur calculation: progress = clamp((scrollY - 80) / 360, 0, 1); radius = 12 × progress px
-  const blurRadius = Math.min(Math.max((scrollY - 80) / 360, 0), 1) * 12
 
   const photoUrl = getPhotoUrl(university)
 
@@ -149,6 +100,11 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
 
   return (
     <>
+      {error && (
+        <div role="alert" className="mx-auto max-w-7xl px-4 pt-4 text-sm text-red-700">
+          {error}
+        </div>
+      )}
       {/* Large photo header with blur on scroll and stat cards */}
       <div className="relative w-full bg-[#fdfdfc]">
         {/* Hero Section */}
@@ -203,15 +159,22 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
             {/* Campus photo with rounded corners */}
             <div className="relative overflow-hidden rounded-bl-[20px] rounded-br-[100px] rounded-tl-[20px] rounded-tr-[20px] aspect-[1440/390] max-h-[420px]">
               <div
-                ref={photoRef}
-                className="absolute inset-0 bg-cover bg-center transition-all duration-700"
+                className="absolute inset-0 bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${photoUrl})`,
-                  filter: `blur(${blurRadius}px)`,
-                  transform: `translateY(${scrollY * 0.3}px)`
+                  backgroundImage: photoUrl ? `url(${photoUrl})` : undefined,
+                  backgroundColor: photoUrl ? undefined : '#f3eee8',
                 }}
                 aria-hidden="true"
-              />
+              >
+                {!photoUrl && (
+                  <div className="flex h-full items-center justify-center bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#f8e6df] via-[#f3eee8] to-[#e8ece5] px-6 text-center">
+                    <div>
+                      <p className="font-['Playfair_Display'] text-3xl text-[#343c36] md:text-5xl">{university.name}</p>
+                      <p className="mt-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[#748078]">Campus photo coming soon</p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Badge and note */}
@@ -221,7 +184,16 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                   JAPAN / {university.institutionType?.toUpperCase() || 'NATIONAL'} UNIVERSITY
                 </span>
               </div>
-              <p className="text-xs text-[#67716a]">Campus imagery is illustrative</p>
+              {photoUrl && university.imageSourceUrl ? (
+                <a href={university.imageSourceUrl} target="_blank" rel="noreferrer" className="text-right text-xs text-[#67716a] underline underline-offset-2 hover:text-accent">
+                  {university.imageIsIllustrative ? 'Illustrative campus photo' : 'Campus photo'}
+                  {university.imageAttribution ? ` · ${university.imageAttribution}` : ''}
+                  {university.imageLicense ? ` · ${university.imageLicense}` : ''}
+                  {' · Wikimedia Commons'}
+                </a>
+              ) : (
+                <p className="text-xs text-[#67716a]">Campus photo coming soon</p>
+              )}
             </div>
 
             {/* Stat Cards */}
@@ -480,7 +452,9 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                       ) : (
                         <p className="text-sm text-[#67716a]">Sign in to leave a review.</p>
                       )}
-                      {reviews.length ? (
+                      {reviewsUnavailable ? (
+                        <p role="status" className="mt-3 text-sm text-[#67716a]">Reviews are temporarily unavailable. The university information is still available.</p>
+                      ) : reviews.length ? (
                         reviews.map((review) => (
                           <div key={review.id} className="border-t border-[#e0e5df] pt-4">
                             <div className="flex justify-between">
@@ -538,7 +512,9 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                 {/* Reviews Panel */}
                 <div className="border border-[#e0e5df] rounded-[20px] p-6">
                   <h3 className="font-['Playfair_Display'] font-normal text-2xl text-[#252c28]">Reviews ({reviews.length})</h3>
-                  {reviews.length > 0 ? (
+                  {reviewsUnavailable ? (
+                    <p className="mt-4 text-sm text-[#67716a]">Reviews are temporarily unavailable.</p>
+                  ) : reviews.length > 0 ? (
                     <p className="mt-4 text-sm text-[#67716a]">Based on {reviews.length} review{reviews.length !== 1 ? 's' : ''}.</p>
                   ) : (
                     <p className="mt-4 text-sm text-[#67716a]">No reviews yet.</p>

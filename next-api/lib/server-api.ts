@@ -11,6 +11,10 @@ export type University = {
   websiteUrl: string | null
   sourceUrl: string | null
   images: string[]
+  imageIsIllustrative: boolean
+  imageSourceUrl: string | null
+  imageAttribution: string | null
+  imageLicense: string | null
   cityName: string | null
   cityId: number | null
   costOfLivingMonthly: number | null
