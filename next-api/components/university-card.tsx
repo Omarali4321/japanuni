@@ -34,6 +34,10 @@ function getIntakeBadge(intake: string | null) {
   return { text: 'Multi', className: 'bg-muted/20 text-muted' }
 }
 
+function isNeutralPlaceholder(url: string | undefined) {
+  return url?.startsWith('data:image/svg+xml') ?? false
+}
+
 export function UniversityCard({ university, showCompare = true }: { university: University; showCompare?: boolean }) {
   const { selectedIds, toggleSelection, isSelected } = useCompare()
   const selected = isSelected(university.id)
@@ -46,20 +50,23 @@ export function UniversityCard({ university, showCompare = true }: { university:
 
   const imageUrl = university.images?.[0]
   const isPlaceholder = !imageUrl
+  const isNeutral = isNeutralPlaceholder(imageUrl)
 
   return (
     <Link href={`/universities/${university.id}`} className="block">
       <article className="card overflow-hidden p-0 flex flex-col border-border transition-shadow hover:shadow-lg">
-        <div className={`relative h-48 overflow-hidden ${isPlaceholder ? 'bg-[#f3eee8]' : 'bg-muted/30'}`}>
+        <div className={`relative h-48 overflow-hidden ${isPlaceholder ? 'bg-[#f3eee8]' : isNeutral ? 'bg-[#e5e7eb]' : 'bg-muted/30'}`}>
           {imageUrl ? (
             <img
               src={imageUrl}
-              alt={university.imageIsIllustrative
-                ? `${university.name} — illustrative photo of a university campus in Japan`
-                : `${university.name} campus`}
+              alt={isNeutral
+                ? `${university.name} — campus photo not yet verified`
+                : university.imageIsIllustrative
+                  ? `${university.name} — illustrative photo of a university campus in Japan`
+                  : `${university.name} campus`}
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-              onError={(e) => {
+              onError={isNeutral ? undefined : (e) => {
                 e.currentTarget.onerror = null
                 e.currentTarget.style.display = 'none'
               }}
@@ -75,7 +82,7 @@ export function UniversityCard({ university, showCompare = true }: { university:
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" />
-          {university.imageIsIllustrative && (
+          {university.imageIsIllustrative && !isNeutral && (
             <span className="absolute bottom-3 left-3 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-medium tracking-wide text-white">
               Illustrative campus photo
             </span>

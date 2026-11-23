@@ -18,6 +18,10 @@ function getPhotoUrl(university: University): string | null {
   return university.images?.[0] ?? null
 }
 
+function isNeutralPlaceholder(url: string | null | undefined) {
+  return url?.startsWith('data:image/svg+xml') ?? false
+}
+
 function formatProgramCount(count: number) {
   if (count > 10) return `${count} listed`
   if (count > 0) return `${count} listed`
@@ -162,7 +166,7 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                 className="absolute inset-0 bg-cover bg-center"
                 style={{
                   backgroundImage: photoUrl ? `url(${photoUrl})` : undefined,
-                  backgroundColor: photoUrl ? undefined : '#f3eee8',
+                  backgroundColor: isNeutralPlaceholder(photoUrl) ? '#e5e7eb' : photoUrl ? undefined : '#f3eee8',
                 }}
                 aria-hidden="true"
               >
@@ -184,13 +188,15 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                   JAPAN / {university.institutionType?.toUpperCase() || 'NATIONAL'} UNIVERSITY
                 </span>
               </div>
-              {photoUrl && university.imageSourceUrl ? (
+              {photoUrl && university.imageSourceUrl && !isNeutralPlaceholder(photoUrl) ? (
                 <a href={university.imageSourceUrl} target="_blank" rel="noreferrer" className="text-right text-xs text-[#67716a] underline underline-offset-2 hover:text-accent">
                   {university.imageIsIllustrative ? 'Illustrative campus photo' : 'Campus photo'}
                   {university.imageAttribution ? ` · ${university.imageAttribution}` : ''}
                   {university.imageLicense ? ` · ${university.imageLicense}` : ''}
                   {' · Wikimedia Commons'}
                 </a>
+              ) : isNeutralPlaceholder(photoUrl) ? (
+                <p className="text-xs text-[#67716a]">Campus photo not yet verified</p>
               ) : (
                 <p className="text-xs text-[#67716a]">Campus photo coming soon</p>
               )}
