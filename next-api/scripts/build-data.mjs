@@ -91,6 +91,7 @@ function cleanText(value) {
     .replace(/&bull;/g, '•')
     .replace(/&hellip;/g, '…')
   // Remove control characters (e.g., \u0002)
+  // eslint-disable-next-line no-control-regex -- intentional: strip control chars
   text = text.replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
   // Normalize whitespace
   text = text.replace(/\s+/g, ' ').trim()
@@ -103,7 +104,7 @@ let photosMapping = {}
 try {
   photosMapping = JSON.parse(readFileSync(PHOTOS_MAPPING_PATH, 'utf8'))
   console.log(`Loaded photo records for ${Object.keys(photosMapping).length} universities`)
-} catch (e) {
+} catch {
   console.warn('No verified photos mapping found; universities will use the designed UI placeholder')
 }
 
@@ -226,10 +227,6 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
   const cleanPrograms = joinValues(programValues.map(cleanText))
   const cleanDegree = joinValues(schoolRows.map((row) => cleanText(row[headers.degree])))
   const cleanInstitutionType = joinValues(schoolRows.map((row) => cleanText(row[headers.type])))
-  const cleanIntake = joinValues(schoolRows.flatMap((row) => [
-    cleanText(row[headers.begins1]),
-    cleanText(row[headers.begins2]),
-  ]))
   const cleanMedium = joinValues(schoolRows.map((row) => normalizeMediumOfInstruction(cleanText(row[headers.medium]))))
   const cleanIntakeNormalized = joinValues(schoolRows.flatMap((row) => [
     normalizeIntake(cleanText(row[headers.begins1])),
@@ -274,7 +271,8 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     costOfLivingMonthly: null,
     images: (() => {
       const photo = getUniversityPhoto(key, cleanName)
-      return [photo.photoUrl]
+      // Real photo first; initials placeholder second as a client-side fallback if the photo fails to load
+      return photo.isPlaceholder ? [photo.photoUrl] : [photo.photoUrl, generateImageUrl(cleanName)]
     })(),
     imageIsPlaceholder: getUniversityPhoto(key, cleanName).isPlaceholder,
     imageIsIllustrative: Boolean(getUniversityPhoto(key, cleanName).illustrative),

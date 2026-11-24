@@ -4,8 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/components/auth-provider'
-import { addFavorite, createReview, deleteReview, getReviews, removeFavorite, type University } from '@/lib/web-api'
-import { FadeIn, SlideUp } from '@/components/ui/Motion'
+import { addFavorite, createReview, deleteReview, getFavorites, getReviews, removeFavorite, type University } from '@/lib/web-api'
 
 type Review = { id: number; rating: number; comment: string | null; userName: string }
 
@@ -37,6 +36,8 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
   const [reviewsUnavailable, setReviewsUnavailable] = useState(false)
   const [form, setForm] = useState({ rating: 5, comment: '' })
   const [pending, setPending] = useState(false)
+  const [favorited, setFavorited] = useState(university.favorited ?? false)
+  const [favoritePending, setFavoritePending] = useState(false)
   
   const [activeTab, setActiveTab] = useState<'overview' | 'programs' | 'faculties' | 'reviews'>('overview')
 
@@ -50,15 +51,24 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
       .catch(() => setReviewsUnavailable(true))
   }, [university.id])
 
+  // Static page: load favorite status on the client for signed-in users
+  useEffect(() => {
+    if (!user) return
+    getFavorites()
+      .then((items) => setFavorited(items.some((item) => item.id === university.id)))
+      .catch(() => {})
+  }, [user, university.id])
+
   async function toggleFavorite() {
-    setPending(true)
+    setFavoritePending(true)
     try {
-      if (university.favorited) await removeFavorite(university.id)
+      if (favorited) await removeFavorite(university.id)
       else await addFavorite(university.id)
+      setFavorited(!favorited)
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : 'Could not update favorite')
     } finally {
-      setPending(false)
+      setFavoritePending(false)
     }
   }
 
@@ -161,7 +171,9 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
               <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{
-                  backgroundImage: photoUrl ? `url(${photoUrl})` : undefined,
+                  backgroundImage: photoUrl
+                    ? [photoUrl, university.images?.[1]].filter(Boolean).map((src) => `url(${src})`).join(', ')
+                    : undefined,
                   backgroundColor: photoUrl ? undefined : '#f3eee8',
                 }}
                 aria-hidden="true"
@@ -481,6 +493,21 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
             {/* Sidebar - Official Source & Reviews */}
             <aside>
               <div className="sticky top-[120px] space-y-6">
+                {user ? (
+                  <button
+                    type="button"
+                    className="btn-secondary w-full"
+                    disabled={favoritePending}
+                    aria-pressed={favorited}
+                    onClick={() => void toggleFavorite()}
+                  >
+                    {favorited ? '\u2764\uFE0F Saved to favorites' : '\u{1F90D} Save to favorites'}
+                  </button>
+                ) : (
+                  <Link href="/login" className="btn-secondary block w-full text-center">
+                    Sign in to save to favorites
+                  </Link>
+                )}
                 {/* Official Source Panel */}
                 <div className="bg-[#f5f7f3] rounded-[20px] p-6">
                   <h3 className="font-['Playfair_Display'] font-normal text-2xl text-[#252c28]">Official source</h3>

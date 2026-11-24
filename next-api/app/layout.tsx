@@ -2,8 +2,10 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ToastProvider } from '@/components/toast-provider'
+import { SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'JapanUni',
   description: 'Explore Japanese universities, scholarships, and study abroad resources.',
 }

@@ -13,7 +13,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   const [form, setForm] = useState({ email: '', password: '', fullName: '' })
   const [error, setError] = useState('')
   const [pending, setPending] = useState(false)
-  const [focusedField, setFocusedField] = useState<string | null>(null)
+  const [, setFocusedField] = useState<string | null>(null)
 
   async function submit(event: React.FormEvent) {
     event.preventDefault()
