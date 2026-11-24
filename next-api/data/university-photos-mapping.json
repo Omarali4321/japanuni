@@ -1,4 +1,12 @@
 {
+  "aichi-medical-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Aichi_Medical_University_-_%E6%B7%B1%E5%BF%97.jpg/1280px-Aichi_Medical_University_-_%E6%B7%B1%E5%BF%97.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aichi_Medical_University_-_%E6%B7%B1%E5%BF%97.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "The original uploader was 深志 at Japanese Wikipedia., CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Aichi Medical University campus",
+    "verified": true
+  },
   "aichi-shukutoku-university": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Aichi_Shukutoku_University_Hoshigaoka_Campus.JPG/1280px-Aichi_Shukutoku_University_Hoshigaoka_Campus.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aichi_Shukutoku_University_Hoshigaoka_Campus.JPG",
@@ -359,6 +367,14 @@
     "altText": "Higashi-Hiroshima Campus, Hiroshima University",
     "verified": true
   },
+  "hitotsubashi-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Kanematsu_auditorium.jpg/1280px-Kanematsu_auditorium.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kanematsu_auditorium.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Wiiii, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Hitotsubashi University campus",
+    "verified": true
+  },
   "hokkai-gakuen-university": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Hokkai_Gakuen_campus_November_2025.jpg/1280px-Hokkai_Gakuen_campus_November_2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hokkai_Gakuen_campus_November_2025.jpg",
@@ -381,6 +397,14 @@
     "license": "CC BY-SA 4.0",
     "attribution": "Skarmathupstan, CC BY-SA 4.0, via Wikimedia Commons",
     "altText": "Hokkaido Information University campus",
+    "verified": true
+  },
+  "hokkaido-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/6/60/HokkaidoDaigakuSapporoKyanpasuSeimon2005-2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:HokkaidoDaigakuSapporoKyanpasuSeimon2005-2.jpg",
+    "license": "Public domain",
+    "attribution": "Unknown author, Public domain, via Wikimedia Commons",
+    "altText": "Hokkaido University campus",
     "verified": true
   },
   "hokkaido-university-of-science": {
@@ -415,6 +439,30 @@
     "altText": "Ibaraki University Hitachi Campus N1 Building",
     "verified": true
   },
+  "institute-of-science-tokyo": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Main_Building_-_Tokyo_Institute_of_Technology.jpg/1280px-Main_Building_-_Tokyo_Institute_of_Technology.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Main_Building_-_Tokyo_Institute_of_Technology.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Kakidai, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Institute of Science Tokyo campus",
+    "verified": true
+  },
+  "international-christian-university-icu": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e6/International_Christian_University_Church.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:International_Christian_University_Church.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "John Paul Antes, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "International Christian University ( ICU ) campus",
+    "verified": true
+  },
+  "international-college-for-postgraduate-buddhist-studies": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/International_College_for_Postgraduate_Buddhist_Studies.JPG/1280px-International_College_for_Postgraduate_Buddhist_Studies.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:International_College_for_Postgraduate_Buddhist_Studies.JPG",
+    "license": "Public domain",
+    "attribution": "Abasaa, Public domain, via Wikimedia Commons",
+    "altText": "International College for Postgraduate Buddhist Studies campus",
+    "verified": true
+  },
   "international-university-of-japan": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/IUJ_Campus_winter.jpg/1280px-IUJ_Campus_winter.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:IUJ_Campus_winter.jpg",
@@ -429,6 +477,14 @@
     "license": "CC BY-SA 4.0",
     "attribution": "掬茶, CC BY-SA 4.0, via Wikimedia Commons",
     "altText": "Iwate Prefectural University Takizawa Campus media center",
+    "verified": true
+  },
+  "iwate-prefectural-university-miyako-junior-college": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Miyako-Junior-College-2024021801.jpg/1280px-Miyako-Junior-College-2024021801.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Miyako-Junior-College-2024021801.jpg",
+    "license": "CC0",
+    "attribution": "Hasec, CC0, via Wikimedia Commons",
+    "altText": "Iwate Prefectural University, Miyako Junior College campus",
     "verified": true
   },
   "japan-advanced-institute-of-science-and-technology": {
@@ -447,6 +503,14 @@
     "altText": "Japan Nutrition University Komagome Campus",
     "verified": true
   },
+  "jichi-medical-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Health_Care_Center%2C_Jichi_Med._Univ._Hospital_2.jpg/1280px-Health_Care_Center%2C_Jichi_Med._Univ._Hospital_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Health_Care_Center,_Jichi_Med._Univ._Hospital_2.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Miyuki Meinaka, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Jichi Medical University campus",
+    "verified": true
+  },
   "josai-international-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Jiu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jiu.jpg",
@@ -461,6 +525,22 @@
     "license": "CC BY-SA 2.5",
     "attribution": "Unknown author, CC BY-SA 2.5, via Wikimedia Commons",
     "altText": "Josai University Sakado Campus",
+    "verified": true
+  },
+  "joshibi-university-of-art-and-design": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Joshibi_UNIV_01.jpg/1280px-Joshibi_UNIV_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Joshibi_UNIV_01.jpg",
+    "license": "Copyrighted free use",
+    "attribution": "IZUMI SAKAI, Copyrighted free use, via Wikimedia Commons",
+    "altText": "Joshibi University of Art and Design campus",
+    "verified": true
+  },
+  "juntendo-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Juntendo_University.jpg/1280px-Juntendo_University.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Juntendo_University.jpg",
+    "license": "Public domain",
+    "attribution": "EXECUTOR, Public domain, via Wikimedia Commons",
+    "altText": "Juntendo University campus",
     "verified": true
   },
   "kagawa-university": {
@@ -479,6 +559,38 @@
     "altText": "Central Library, Kagoshima University",
     "verified": true
   },
+  "kanagawa-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/d/db/Ku-yokohama-campus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ku-yokohama-campus.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Matsuri shonan at Japanese Wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Kanagawa University campus",
+    "verified": true
+  },
+  "kanagawa-university-of-human-services": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/4/48/Kanagawa_University_of_Human_Services.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kanagawa_University_of_Human_Services.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Drifter at Japanese Wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Kanagawa University of Human Services campus",
+    "verified": true
+  },
+  "kanazawa-institute-of-technology": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/KIT_Yumekobo.jpg/1280px-KIT_Yumekobo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:KIT_Yumekobo.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Hirorinmasa, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Kanazawa Institute of Technology campus",
+    "verified": true
+  },
+  "kanazawa-medical-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Kanazawa_Medical_University.jpg/1280px-Kanazawa_Medical_University.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kanazawa_Medical_University.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Hirorinmasa, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Kanazawa Medical University campus",
+    "verified": true
+  },
   "kanazawa-university": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Kanazawa_Univ._Kakuma_campus_North-area.JPG/1280px-Kanazawa_Univ._Kakuma_campus_North-area.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kanazawa_Univ._Kakuma_campus_North-area.JPG",
@@ -493,6 +605,14 @@
     "license": "CC BY-SA 4.0",
     "attribution": "Tokumeigakarinoaoshima, CC BY-SA 4.0, via Wikimedia Commons",
     "altText": "Kansai University Senriyama Campus",
+    "verified": true
+  },
+  "keio-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Old_Keio_University_Library_3.jpg/1280px-Old_Keio_University_Library_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Old_Keio_University_Library_3.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Kakidai, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Keio University campus",
     "verified": true
   },
   "kinjo-gakuin-university": {
@@ -527,12 +647,44 @@
     "altText": "Kobe Gakuin University Port Island Campus Building A",
     "verified": true
   },
+  "kobe-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Kobe_University_Rokkodai_Main_Building.JPG/1280px-Kobe_University_Rokkodai_Main_Building.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kobe_University_Rokkodai_Main_Building.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "0-0t, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "KOBE UNIVERSITY campus",
+    "verified": true
+  },
   "kochi-university": {
     "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Kochi_University.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kochi_University.jpg",
     "license": "CC BY-SA 3.0",
     "attribution": "Bakkai at Japanese Wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
     "altText": "Asakura Campus, Kochi University",
+    "verified": true
+  },
+  "kochi-university-of-technology": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/Kochi_university_of_technology.jpg/1280px-Kochi_university_of_technology.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kochi_university_of_technology.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Realkheven, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Kochi University of Technology campus",
+    "verified": true
+  },
+  "kokugakuin-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Kokugakuin_University.jpg/1280px-Kokugakuin_University.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kokugakuin_University.jpg",
+    "license": "CC0",
+    "attribution": "Syced, CC0, via Wikimedia Commons",
+    "altText": "Kokugakuin University campus",
+    "verified": true
+  },
+  "komazawa-women-039-s-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Komazawa_Women%27s_University_in_2009.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Komazawa_Women%27s_University_in_2009.jpg",
+    "license": "Public domain",
+    "attribution": "Nikm, Public domain, via Wikimedia Commons",
+    "altText": "Komazawa Women&#039;s University campus",
     "verified": true
   },
   "kumamoto-university": {
@@ -543,12 +695,172 @@
     "altText": "Memorial Hall of the old Fifth Higher School, Kumamoto University",
     "verified": true
   },
+  "kwansei-gakuin-university-kgu": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/170311_Kwansei_Gakuin_University_Nishinomiya_Hyogo_pref_Japan08n.jpg/1280px-170311_Kwansei_Gakuin_University_Nishinomiya_Hyogo_pref_Japan08n.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:170311_Kwansei_Gakuin_University_Nishinomiya_Hyogo_pref_Japan08n.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "663highland, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Kwansei Gakuin University (KGU) campus",
+    "verified": true
+  },
+  "kyorin-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Kyorin_University_Hospital.JPG/1280px-Kyorin_University_Hospital.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyorin_University_Hospital.JPG",
+    "license": "Public domain",
+    "attribution": "Abasaa, Public domain, via Wikimedia Commons",
+    "altText": "Kyorin University campus",
+    "verified": true
+  },
+  "kyoto-institute-of-technology": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Kyu-Kyotokotokogeigakko-Honkan-20071215.jpg/1280px-Kyu-Kyotokotokogeigakko-Honkan-20071215.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyu-Kyotokotokogeigakko-Honkan-20071215.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "The original uploader was Otraff at Japanese Wikipedia., CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Kyoto Institute of Technology campus",
+    "verified": true
+  },
+  "kyoto-notre-dame-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Kyoto_Norte_Dame_University140524NI1.JPG/1280px-Kyoto_Norte_Dame_University140524NI1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyoto_Norte_Dame_University140524NI1.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Atelier Verde, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Kyoto Notre Dame University campus",
+    "verified": true
+  },
   "kyoto-university": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Kyoto_University_Clock_Tower.jpg/1280px-Kyoto_University_Clock_Tower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyoto_University_Clock_Tower.jpg",
     "license": "CC BY-SA 4.0",
     "attribution": "Soraie8288, CC BY-SA 4.0, via Wikimedia Commons",
     "altText": "Clock Tower, Kyoto University",
+    "verified": true
+  },
+  "kyoto-university-of-foreign-studies": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Kyoto_University_of_Foreign_Studies140512NI1.JPG/1280px-Kyoto_University_of_Foreign_Studies140512NI1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyoto_University_of_Foreign_Studies140512NI1.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Atelier Verde, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Kyoto University Of Foreign Studies campus",
+    "verified": true
+  },
+  "kyushu-institute-of-technology": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/0/01/Kit_front_gate.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kit_front_gate.jpg",
+    "license": "CC BY 2.5",
+    "attribution": "No machine-readable author provided. Historian~commonswiki assumed (based on copyright claims)., CC BY 2.5, via Wikimedia Commons",
+    "altText": "Kyushu Institute of Technology campus",
+    "verified": true
+  },
+  "kyushu-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Kyushu_University_Ito_Campus_Center_Zone_and_East_Zone_20180808.jpg/1280px-Kyushu_University_Ito_Campus_Center_Zone_and_East_Zone_20180808.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyushu_University_Ito_Campus_Center_Zone_and_East_Zone_20180808.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "新幹線, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Kyushu University campus",
+    "verified": true
+  },
+  "matsumoto-dental-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Matsumoto_Dental_University_01.JPG/1280px-Matsumoto_Dental_University_01.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Matsumoto_Dental_University_01.JPG",
+    "license": "Public domain",
+    "attribution": "Abasaa, Public domain, via Wikimedia Commons",
+    "altText": "Matsumoto Dental University campus",
+    "verified": true
+  },
+  "meiji-gakuin-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Meigaku_university.jpg/1280px-Meigaku_university.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Meigaku_university.jpg",
+    "license": "CC0",
+    "attribution": "JCI-1127, CC0, via Wikimedia Commons",
+    "altText": "Meiji Gakuin University campus",
+    "verified": true
+  },
+  "meiji-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Meiji_University_%28Liberty_Tower%29.jpg/1280px-Meiji_University_%28Liberty_Tower%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Meiji_University_(Liberty_Tower).jpg",
+    "license": "Public domain",
+    "attribution": "Lombroso, Public domain, via Wikimedia Commons",
+    "altText": "Meiji University campus",
+    "verified": true
+  },
+  "meikai-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/MeikaiJI1.jpg/1280px-MeikaiJI1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:MeikaiJI1.jpg",
+    "license": "CC BY 3.0",
+    "attribution": "Joi, CC BY 3.0, via Wikimedia Commons",
+    "altText": "Meikai University campus",
+    "verified": true
+  },
+  "meio-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Meio_University_Main_Building.jpg/1280px-Meio_University_Main_Building.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Meio_University_Main_Building.jpg",
+    "license": "CC0",
+    "attribution": "Mzaki, CC0, via Wikimedia Commons",
+    "altText": "Meio University campus",
+    "verified": true
+  },
+  "mejiro-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/Sign%2C_Mejiro_University%2C_Shinjuku%2C_Tokyo_-_Oct_26%2C_2014.jpg/1280px-Sign%2C_Mejiro_University%2C_Shinjuku%2C_Tokyo_-_Oct_26%2C_2014.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sign,_Mejiro_University,_Shinjuku,_Tokyo_-_Oct_26,_2014.jpg",
+    "license": "CC BY 2.0",
+    "attribution": "Dick Thomas Johnson, CC BY 2.0, via Wikimedia Commons",
+    "altText": "Mejiro University campus",
+    "verified": true
+  },
+  "mie-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/Mie-Dai_Factulty_of_Bioresources.jpg/1280px-Mie-Dai_Factulty_of_Bioresources.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mie-Dai_Factulty_of_Bioresources.jpg",
+    "license": "Public domain",
+    "attribution": "Miyuki Meinaka, Public domain, via Wikimedia Commons",
+    "altText": "Mie University campus",
+    "verified": true
+  },
+  "miyagi-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Myu2008.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Myu2008.jpg",
+    "license": "Public domain",
+    "attribution": "The original uploader was Maquazy at Japanese Wikipedia., Public domain, via Wikimedia Commons",
+    "altText": "MIYAGI UNIVERSITY campus",
+    "verified": true
+  },
+  "muroran-institute-of-technology": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Muroran_kogyo_daigaku_seimon.jpg/1280px-Muroran_kogyo_daigaku_seimon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Muroran_kogyo_daigaku_seimon.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "De juppy at Japanese Wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "MURORAN INSTITUTE OF TECHNOLOGY campus",
+    "verified": true
+  },
+  "musashino-art-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Musashino_Art_University.jpg/1280px-Musashino_Art_University.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Musashino_Art_University.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "The original uploader was Hykw-a4 at Japanese Wikipedia., CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Musashino Art University campus",
+    "verified": true
+  },
+  "musashino-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Ariake_Campus%2C_Musashino_University.jpg/1280px-Ariake_Campus%2C_Musashino_University.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ariake_Campus,_Musashino_University.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Kakidai, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Musashino University campus",
+    "verified": true
+  },
+  "nagaoka-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Nagaoka_University_2019%2C05.jpg/1280px-Nagaoka_University_2019%2C05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nagaoka_University_2019,05.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Rebirth10, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Nagaoka University campus",
+    "verified": true
+  },
+  "nagaoka-university-of-technology": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Nagaoka_University_of_Technology.jpg/1280px-Nagaoka_University_of_Technology.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nagaoka_University_of_Technology.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Original uploader was Umatake at ja.wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Nagaoka University of Technology campus",
     "verified": true
   },
   "nagoya-city-university": {
@@ -559,12 +871,76 @@
     "altText": "Kawasumi Campus (hospital), Nagoya City University",
     "verified": true
   },
+  "nagoya-future-culture-college": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Nagoya_Future_Culture_College_1.JPG/1280px-Nagoya_Future_Culture_College_1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nagoya_Future_Culture_College_1.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "WDS487, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Nagoya Future Culture College campus",
+    "verified": true
+  },
+  "nagoya-institute-of-technology": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/Nagoya_Institute_of_Technology.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nagoya_Institute_of_Technology.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Gnsin at Japanese Wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Nagoya Institute of Technology campus",
+    "verified": true
+  },
   "nagoya-university": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Nagoya_University_Higashiyama_Campus.jpg/1280px-Nagoya_University_Higashiyama_Campus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nagoya_University_Higashiyama_Campus.jpg",
     "license": "CC BY-SA 3.0",
     "attribution": "Unknown author, CC BY-SA 3.0, via Wikimedia Commons",
     "altText": "Higashiyama Campus, Nagoya University",
+    "verified": true
+  },
+  "nagoya-university-of-economics-nue": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Nagoya_Keizai_University_ac_%281%29.jpg/1280px-Nagoya_Keizai_University_ac_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nagoya_Keizai_University_ac_(1).jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Asturio Cantabrio, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Nagoya University of Economics (NUE) campus",
+    "verified": true
+  },
+  "nagoya-university-of-foreign-studies": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/Nagoya_University_of_Foreign_Studies.JPG/1280px-Nagoya_University_of_Foreign_Studies.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nagoya_University_of_Foreign_Studies.JPG",
+    "license": "CC0",
+    "attribution": "Keroobean, CC0, via Wikimedia Commons",
+    "altText": "Nagoya University of Foreign Studies campus",
+    "verified": true
+  },
+  "nanzan-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ec/Nanzan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nanzan.jpg",
+    "license": "CC BY 3.0",
+    "attribution": "Masabb at Japanese Wikipedia, CC BY 3.0, via Wikimedia Commons",
+    "altText": "Nanzan University campus",
+    "verified": true
+  },
+  "nara-institute-of-science-and-technology": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/NAIST_Gate.jpg/1280px-NAIST_Gate.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:NAIST_Gate.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Helito, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Nara Institute of Science and Technology campus",
+    "verified": true
+  },
+  "nara-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Nara_University_background.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nara_University_background.JPG",
+    "license": "CC0",
+    "attribution": "mti, CC0, via Wikimedia Commons",
+    "altText": "NARA UNIVERSITY campus",
+    "verified": true
+  },
+  "nara-university-of-education": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/Nara-edu2.JPG/1280px-Nara-edu2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nara-edu2.JPG",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Fukufuku1, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Nara University of Education campus",
     "verified": true
   },
   "nara-women-s-university": {
@@ -575,12 +951,124 @@
     "altText": "Main Gate, Nara Women's University",
     "verified": true
   },
+  "naruto-university-of-education": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Naruto_University_of_Education.jpg/1280px-Naruto_University_of_Education.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Naruto_University_of_Education.jpg",
+    "license": "Public domain",
+    "attribution": "油谷サトシ at Japanese Wikipedia, Public domain, via Wikimedia Commons",
+    "altText": "Naruto University of Education campus",
+    "verified": true
+  },
+  "national-graduate-institute-for-policy-studies": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/National-Graduate-Institute-for-Policy-Studies-01.jpg/1280px-National-Graduate-Institute-for-Policy-Studies-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:National-Graduate-Institute-for-Policy-Studies-01.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Rs1421, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "National Graduate Institute for Policy Studies campus",
+    "verified": true
+  },
+  "national-institute-of-fitness-and-sports-in-kanoya": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/NIFS_in_Kanoya_2010.JPG/1280px-NIFS_in_Kanoya_2010.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:NIFS_in_Kanoya_2010.JPG",
+    "license": "Public domain",
+    "attribution": "ja:User:Sanjo, Public domain, via Wikimedia Commons",
+    "altText": "National Institute of Fitness and Sports in KANOYA campus",
+    "verified": true
+  },
   "nihon-university": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/170312_Nihon_University_Ochanomizu_Square_Building_Tokyo_Japan01s3.jpg/1280px-170312_Nihon_University_Ochanomizu_Square_Building_Tokyo_Japan01s3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:170312_Nihon_University_Ochanomizu_Square_Building_Tokyo_Japan01s3.jpg",
     "license": "CC BY-SA 4.0",
     "attribution": "663highland, CC BY-SA 4.0, via Wikimedia Commons",
     "altText": "Ochanomizu Square Building, Nihon University",
+    "verified": true
+  },
+  "niigata-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Niigata-u_edu.jpg/1280px-Niigata-u_edu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Niigata-u_edu.jpg",
+    "license": "Public domain",
+    "attribution": "Unknown author, Public domain, via Wikimedia Commons",
+    "altText": "Niigata University campus",
+    "verified": true
+  },
+  "niigata-university-of-health-and-welfare": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Niigata_University_of_Health_and_Welfare_-_Sep_9%2C_2019.jpg/1280px-Niigata_University_of_Health_and_Welfare_-_Sep_9%2C_2019.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Niigata_University_of_Health_and_Welfare_-_Sep_9,_2019.jpg",
+    "license": "Public domain",
+    "attribution": "Annie HARADA VIOT, Public domain, via Wikimedia Commons",
+    "altText": "Niigata University of Health and Welfare campus",
+    "verified": true
+  },
+  "nippon-sport-science-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Nippon_Sport_Science_University_Fukasawa_Campus.JPG/1280px-Nippon_Sport_Science_University_Fukasawa_Campus.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nippon_Sport_Science_University_Fukasawa_Campus.JPG",
+    "license": "Public domain",
+    "attribution": "Abasaa, Public domain, via Wikimedia Commons",
+    "altText": "Nippon Sport Science University campus",
+    "verified": true
+  },
+  "nippon-veterinary-and-life-science-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/4/45/Jyuuitikusanuniv.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jyuuitikusanuniv.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "The original uploader was Hykw-a4 at Japanese Wikipedia., CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Nippon Veterinary and Life Science University campus",
+    "verified": true
+  },
+  "okayama-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/Okayama_University.jpg/1280px-Okayama_University.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Okayama_University.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Original uploader was Setouchi at ja.wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Okayama University campus",
+    "verified": true
+  },
+  "okinawa-christian-junior-college": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/OCU_courtyard.JPG/1280px-OCU_courtyard.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:OCU_courtyard.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Sashiki777, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Okinawa Christian Junior College campus",
+    "verified": true
+  },
+  "okinawa-institute-of-science-and-technology-graduate-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Aerial_View_of_Campus_Buildings_%2826348429827%29.jpg/1280px-Aerial_View_of_Campus_Buildings_%2826348429827%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aerial_View_of_Campus_Buildings_(26348429827).jpg",
+    "license": "CC BY 2.0",
+    "attribution": "OIST from Onna Village, Japan, CC BY 2.0, via Wikimedia Commons",
+    "altText": "Okinawa Institute of Science and Technology Graduate University campus",
+    "verified": true
+  },
+  "okinawa-international-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Okinawa_Intl_Univ.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Okinawa_Intl_Univ.jpg",
+    "license": "Public domain",
+    "attribution": "Unknown author, Public domain, via Wikimedia Commons",
+    "altText": "Okinawa International University campus",
+    "verified": true
+  },
+  "onomichi-city-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Onomichiuniv_maingate.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Onomichiuniv_maingate.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Original uploader was Lightslateblue at ja.wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Onomichi City University campus",
+    "verified": true
+  },
+  "osaka-shoin-women-s-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Osaka_Shoin_Women%27s_Univ.jpg/1280px-Osaka_Shoin_Women%27s_Univ.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Osaka_Shoin_Women%27s_Univ.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Mr.ちゅらさん, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Osaka Shoin Women's University campus",
+    "verified": true
+  },
+  "otaru-university-of-commerce-otaru-shoka-daigaku": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Syodai001.JPG/1280px-Syodai001.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Syodai001.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Shain2006 at Japanese Wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Otaru University of Commerce (Otaru Shoka Daigaku) campus",
     "verified": true
   },
   "otsuma-women-s-university": {
@@ -599,12 +1087,108 @@
     "altText": "Otsuma Women's University Chiyoda Campus",
     "verified": true
   },
+  "professional-institute-of-international-fashion": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/6/66/Cocoontower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cocoontower.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Wiiii, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Professional Institute of International Fashion campus",
+    "verified": true
+  },
+  "rissho-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Kumagaya_Campus_Rissho_University_20070405.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kumagaya_Campus_Rissho_University_20070405.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "mayutan, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Rissho University campus",
+    "verified": true
+  },
+  "ritsumeikan-asia-pacific-university-apu": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Ritsumeikan_Asia_Pacific_University_-_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ritsumeikan_Asia_Pacific_University_-_01.jpg",
+    "license": "CC BY 3.0",
+    "attribution": "JKT-c, CC BY 3.0, via Wikimedia Commons",
+    "altText": "Ritsumeikan Asia Pacific University (APU) campus",
+    "verified": true
+  },
+  "ritsumeikan-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Zonshinkan_Hall_at_Ritsumeikan_Univ.jpg/1280px-Zonshinkan_Hall_at_Ritsumeikan_Univ.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zonshinkan_Hall_at_Ritsumeikan_Univ.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "AngloFrench91, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Ritsumeikan University campus",
+    "verified": true
+  },
+  "ryukoku-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/170128_Ryukoku_University_Omiya_Campus_Kyoto_Japan02s3.jpg/1280px-170128_Ryukoku_University_Omiya_Campus_Kyoto_Japan02s3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:170128_Ryukoku_University_Omiya_Campus_Kyoto_Japan02s3.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "663highland, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Ryukoku University campus",
+    "verified": true
+  },
   "saga-university": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Saga_University_Honj%C5%8D_Campus_front_gate.JPG/1280px-Saga_University_Honj%C5%8D_Campus_front_gate.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Saga_University_Honj%C5%8D_Campus_front_gate.JPG",
     "license": "CC BY-SA 4.0",
     "attribution": "Pekachu, CC BY-SA 4.0, via Wikimedia Commons",
     "altText": "Honjō Campus front gate, Saga University",
+    "verified": true
+  },
+  "saitama-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/Saitama-Univ-Library.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Saitama-Univ-Library.jpg",
+    "license": "Public domain",
+    "attribution": "Unknown author, Public domain, via Wikimedia Commons",
+    "altText": "Saitama University campus",
+    "verified": true
+  },
+  "sapporo-city-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Sapporo_City_University2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sapporo_City_University2.jpg",
+    "license": "Copyrighted free use",
+    "attribution": "scu, Copyrighted free use, via Wikimedia Commons",
+    "altText": "Sapporo City University campus",
+    "verified": true
+  },
+  "seirei-christopher-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Seirei_college1.JPG/1280px-Seirei_college1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Seirei_college1.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Warunya, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Seirei Christopher University campus",
+    "verified": true
+  },
+  "sendai-shirayuri-women-039-s-college": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Sendai_shirayuri_auditorium.JPG/1280px-Sendai_shirayuri_auditorium.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sendai_shirayuri_auditorium.JPG",
+    "license": "CC BY-SA 4.0",
+    "attribution": "マスール, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Sendai Shirayuri Women&#039;s College campus",
+    "verified": true
+  },
+  "senshu-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Senshu_University_Kanda_Campus_2012.JPG/1280px-Senshu_University_Kanda_Campus_2012.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Senshu_University_Kanda_Campus_2012.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Kakidai, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Senshu University campus",
+    "verified": true
+  },
+  "setsunan-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Setsunan_University_Neyagawa_Campus.JPG/1280px-Setsunan_University_Neyagawa_Campus.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Setsunan_University_Neyagawa_Campus.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "KUZUHA PROJECT, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Setsunan University campus",
+    "verified": true
+  },
+  "shibaura-institute-of-technology": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Shibaura_Institute_of_Technology.JPG/1280px-Shibaura_Institute_of_Technology.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shibaura_Institute_of_Technology.JPG",
+    "license": "CC0",
+    "attribution": "Waka77, CC0, via Wikimedia Commons",
+    "altText": "Shibaura Institute of Technology campus",
     "verified": true
   },
   "shimane-university": {
@@ -615,12 +1199,76 @@
     "altText": "Main entrance to Matsue Campus, Shimane University",
     "verified": true
   },
+  "shinshu-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/%E6%97%A7%E4%B8%8A%E7%94%B0%E8%9A%95%E7%B3%B8%E5%B0%82%E9%96%80%E5%AD%A6%E6%A0%A1%E8%AC%9B%E5%A0%82.JPG/1280px-%E6%97%A7%E4%B8%8A%E7%94%B0%E8%9A%95%E7%B3%B8%E5%B0%82%E9%96%80%E5%AD%A6%E6%A0%A1%E8%AC%9B%E5%A0%82.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%97%A7%E4%B8%8A%E7%94%B0%E8%9A%95%E7%B3%B8%E5%B0%82%E9%96%80%E5%AD%A6%E6%A0%A1%E8%AC%9B%E5%A0%82.JPG",
+    "license": "CC0",
+    "attribution": "Yoit, CC0, via Wikimedia Commons",
+    "altText": "Shinshu University campus",
+    "verified": true
+  },
+  "shobi-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/25/Shobi-Univ-20120901.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shobi-Univ-20120901.jpg",
+    "license": "CC0",
+    "attribution": "Hasec, CC0, via Wikimedia Commons",
+    "altText": "SHOBI UNIVERSITY campus",
+    "verified": true
+  },
+  "showa-women-039-s-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/%E6%98%AD%E5%92%8C%E5%A5%B3%E5%AD%90%E5%A4%A7%E5%AD%A6_%2814885665097%29.jpg/1280px-%E6%98%AD%E5%92%8C%E5%A5%B3%E5%AD%90%E5%A4%A7%E5%AD%A6_%2814885665097%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%98%AD%E5%92%8C%E5%A5%B3%E5%AD%90%E5%A4%A7%E5%AD%A6_(14885665097).jpg",
+    "license": "CC BY 2.0",
+    "attribution": "Dick Thomas Johnson, CC BY 2.0, via Wikimedia Commons",
+    "altText": "Showa Women&#039;s University campus",
+    "verified": true
+  },
   "sophia-university": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Sophia_University_Yotsuya_Campus.jpg/1280px-Sophia_University_Yotsuya_Campus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sophia_University_Yotsuya_Campus.jpg",
     "license": "CC BY 2.0",
     "attribution": "Dick Thomas Johnson, CC BY 2.0, via Wikimedia Commons",
     "altText": "Yotsuya Campus, Sophia University",
+    "verified": true
+  },
+  "st-luke-039-s-international-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3f/StLukeCollege.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:StLukeCollege.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Chikumaya, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "St. Luke&#039;s International University campus",
+    "verified": true
+  },
+  "takasaki-university-of-commerce": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Takasaki_University_of_Commerce.JPG/1280px-Takasaki_University_of_Commerce.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Takasaki_University_of_Commerce.JPG",
+    "license": "CC0",
+    "attribution": "WAKA77, CC0, via Wikimedia Commons",
+    "altText": "Takasaki University of Commerce campus",
+    "verified": true
+  },
+  "tama-art-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Tama_Art_University_Library2.JPG/1280px-Tama_Art_University_Library2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tama_Art_University_Library2.JPG",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Wiiii, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Tama Art University campus",
+    "verified": true
+  },
+  "teikyo-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Teikyo_University_Itabashi_Campus_Main_Building.JPG/1280px-Teikyo_University_Itabashi_Campus_Main_Building.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Teikyo_University_Itabashi_Campus_Main_Building.JPG",
+    "license": "CC BY 2.5",
+    "attribution": "ペン太, CC BY 2.5, via Wikimedia Commons",
+    "altText": "Teikyo University campus",
+    "verified": true
+  },
+  "the-university-of-nagano": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Univ-of-Nagano-Cafeteria-2018052601.jpg/1280px-Univ-of-Nagano-Cafeteria-2018052601.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Univ-of-Nagano-Cafeteria-2018052601.jpg",
+    "license": "CC0",
+    "attribution": "Hasec, CC0, via Wikimedia Commons",
+    "altText": "The University of Nagano campus",
     "verified": true
   },
   "the-university-of-tokyo": {
@@ -631,12 +1279,172 @@
     "altText": "Yasuda Auditorium, University of Tokyo",
     "verified": true
   },
+  "the-universtiy-of-osaka": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Osaka_University_Faculty_of_Medicine.jpg/1280px-Osaka_University_Faculty_of_Medicine.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Osaka_University_Faculty_of_Medicine.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "ignis, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "The Universtiy of Osaka campus",
+    "verified": true
+  },
+  "toho-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Toho_University_Main_Building.jpg/1280px-Toho_University_Main_Building.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Toho_University_Main_Building.jpg",
+    "license": "CC0",
+    "attribution": "654321, CC0, via Wikimedia Commons",
+    "altText": "Toho University campus",
+    "verified": true
+  },
+  "tohoku-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Kawauchi_campus_of_Tohoku_University_20220910a.jpg/1280px-Kawauchi_campus_of_Tohoku_University_20220910a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kawauchi_campus_of_Tohoku_University_20220910a.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "掬茶, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Tohoku University campus",
+    "verified": true
+  },
+  "tokiwa-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Tokiwa_University_01.JPG/1280px-Tokiwa_University_01.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tokiwa_University_01.JPG",
+    "license": "Public domain",
+    "attribution": "Abasaa, Public domain, via Wikimedia Commons",
+    "altText": "Tokiwa University campus",
+    "verified": true
+  },
+  "tokushima-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/3/34/The_University_of_Tokushima.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_University_of_Tokushima.jpg",
+    "license": "Public domain",
+    "attribution": "No machine-readable source provided. Own work assumed (based on copyright claims)., Public domain, via Wikimedia Commons",
+    "altText": "Tokushima University campus",
+    "verified": true
+  },
+  "tokyo-gakugei-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Tokyo-Gakugei-univ.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tokyo-Gakugei-univ.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Ans~jawiki at Japanese Wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Tokyo Gakugei University campus",
+    "verified": true
+  },
+  "tokyo-international-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Tokyo_International_University_campus1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tokyo_International_University_campus1.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "TIU kouhou, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Tokyo International University campus",
+    "verified": true
+  },
+  "tokyo-keizai-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/Tokyokeizaiuniv.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tokyokeizaiuniv.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Original uploader was Hykw-a4 at ja.wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Tokyo Keizai University campus",
+    "verified": true
+  },
+  "tokyo-metropolitan-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/4/45/Syutodaigaku_Tokyo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Syutodaigaku_Tokyo.jpg",
+    "license": "Public domain",
+    "attribution": "Lover of Romance, Public domain, via Wikimedia Commons",
+    "altText": "Tokyo Metropolitan University campus",
+    "verified": true
+  },
+  "tokyo-union-theological-seminary": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/22/Tokyo_Union_Theological_Seminary.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tokyo_Union_Theological_Seminary.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Evangelical, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Tokyo Union Theological Seminary campus",
+    "verified": true
+  },
+  "tokyo-university-of-foreign-studies": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/%E6%9D%B1%E4%BA%AC%E5%A4%96%E5%9B%BD%E8%AA%9E%E5%A4%A7%E5%AD%A6_-_panoramio_%2816%29.jpg/1280px-%E6%9D%B1%E4%BA%AC%E5%A4%96%E5%9B%BD%E8%AA%9E%E5%A4%A7%E5%AD%A6_-_panoramio_%2816%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E5%A4%96%E5%9B%BD%E8%AA%9E%E5%A4%A7%E5%AD%A6_-_panoramio_(16).jpg",
+    "license": "CC BY 3.0",
+    "attribution": "kanesue, CC BY 3.0, via Wikimedia Commons",
+    "altText": "Tokyo University of Foreign Studies campus",
+    "verified": true
+  },
+  "tokyo-university-of-technology": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/3/34/Tokyo_university_of_technology_kenkyuto.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tokyo_university_of_technology_kenkyuto.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "The original uploader was Oga at Japanese Wikipedia., CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Tokyo University of Technology campus",
+    "verified": true
+  },
+  "tokyo-woman-039-s-christian-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/TWCU_Main_Building2023.jpg/1280px-TWCU_Main_Building2023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:TWCU_Main_Building2023.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Charlie fong, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Tokyo Woman&#039;s Christian University campus",
+    "verified": true
+  },
+  "tottori-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Tottori_university_tottori_campus.JPG/1280px-Tottori_university_tottori_campus.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tottori_university_tottori_campus.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Fuma913, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Tottori University campus",
+    "verified": true
+  },
+  "toyama-prefectural-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Toyama_Prefectural_University.jpg/1280px-Toyama_Prefectural_University.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Toyama_Prefectural_University.jpg",
+    "license": "Public domain",
+    "attribution": "RESPITE, Public domain, via Wikimedia Commons",
+    "altText": "Toyama Prefectural University campus",
+    "verified": true
+  },
+  "toyo-gakuen-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Toyo_Gakuen_University%2C_Bunkyo.jpg/1280px-Toyo_Gakuen_University%2C_Bunkyo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Toyo_Gakuen_University,_Bunkyo.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Braveheart, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "TOYO GAKUEN UNIVERSITY campus",
+    "verified": true
+  },
+  "toyo-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b3/ToyoUniv.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:ToyoUniv.jpg",
+    "license": "CC BY-SA 1.0",
+    "attribution": "SHIBATANI Tomohiro, CC BY-SA 1.0, via Wikimedia Commons",
+    "altText": "Toyo University campus",
+    "verified": true
+  },
+  "toyota-technological-institute": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Distant_View_of_Toyota_Technological_Institute%2C_Horagai_Narumi-cho_Midori_Ward_Nagoya_2020.jpg/1280px-Distant_View_of_Toyota_Technological_Institute%2C_Horagai_Narumi-cho_Midori_Ward_Nagoya_2020.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Distant_View_of_Toyota_Technological_Institute,_Horagai_Narumi-cho_Midori_Ward_Nagoya_2020.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Tomio344456, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Toyota Technological Institute campus",
+    "verified": true
+  },
+  "ueno-gakuen-junior-college": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Ueno_Gakuen.JPG/1280px-Ueno_Gakuen.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ueno_Gakuen.JPG",
+    "license": "Public domain",
+    "attribution": "Abasaa, Public domain, via Wikimedia Commons",
+    "altText": "Ueno Gakuen Junior College campus",
+    "verified": true
+  },
   "university-of-fukui": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Fukui_university.jpg/1280px-Fukui_university.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fukui_university.jpg",
     "license": "CC BY-SA 3.0",
     "attribution": "Bakkai at Japanese Wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
     "altText": "Main gate, University of Fukui",
+    "verified": true
+  },
+  "university-of-kochi": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Kochi_Womens_University02s3200.jpg/1280px-Kochi_Womens_University02s3200.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kochi_Womens_University02s3200.jpg",
+    "license": "CC BY 2.5",
+    "attribution": "663highland, CC BY 2.5, via Wikimedia Commons",
+    "altText": "University of Kochi campus",
     "verified": true
   },
   "university-of-miyazaki": {
@@ -647,12 +1455,84 @@
     "altText": "Main campus, University of Miyazaki",
     "verified": true
   },
+  "university-of-shizuoka-junior-college": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Shizuokakenritsu-Tandai.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shizuokakenritsu-Tandai.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Niba, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "University of Shizuoka, Junior College campus",
+    "verified": true
+  },
+  "university-of-the-ryukyus": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Ryuukyuudaigaku.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ryuukyuudaigaku.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Hykw-a4 at ja.Wikipedia, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "UNIVERSITY OF THE RYUKYUS campus",
+    "verified": true
+  },
+  "university-of-tsukuba": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/5C_building.JPG/1280px-5C_building.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:5C_building.JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "On-chan, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "University of Tsukuba campus",
+    "verified": true
+  },
+  "university-of-yamanashi": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/University_of_Yamanashi_Kofu_Campus%281%29.JPG/1280px-University_of_Yamanashi_Kofu_Campus%281%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:University_of_Yamanashi_Kofu_Campus(1).JPG",
+    "license": "CC BY-SA 3.0",
+    "attribution": "さかおり (talk), CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "University of Yamanashi campus",
+    "verified": true
+  },
+  "utsunomiya-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/51/Utsunomiya-Univ-Old-Auditorium2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Utsunomiya-Univ-Old-Auditorium2.jpg",
+    "license": "Public domain",
+    "attribution": "Hasec, Public domain, via Wikimedia Commons",
+    "altText": "Utsunomiya University campus",
+    "verified": true
+  },
+  "wakayama-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Wakayama_Univ._Dept._System_Engineering.jpg/1280px-Wakayama_Univ._Dept._System_Engineering.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wakayama_Univ._Dept._System_Engineering.jpg",
+    "license": "CC BY 3.0",
+    "attribution": "Flow in edgewise, CC BY 3.0, via Wikimedia Commons",
+    "altText": "Wakayama University campus",
+    "verified": true
+  },
   "waseda-university": {
     "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Waseda_University_Okuma_Auditorium.jpg/1280px-Waseda_University_Okuma_Auditorium.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Waseda_University_Okuma_Auditorium.jpg",
     "license": "CC0",
     "attribution": "Seiichi Miyashita, CC0, via Wikimedia Commons",
     "altText": "Okuma Auditorium, Waseda University",
+    "verified": true
+  },
+  "yamaguchi-prefectural-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Yamaguchi_Prefectural_University.JPG/1280px-Yamaguchi_Prefectural_University.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yamaguchi_Prefectural_University.JPG",
+    "license": "CC BY-SA 4.0",
+    "attribution": "hyolee2, CC BY-SA 4.0, via Wikimedia Commons",
+    "altText": "Yamaguchi Prefectural University campus",
+    "verified": true
+  },
+  "yokkaichi-university": {
+    "photoUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Yokkaichi_Univ._01.jpg/1280px-Yokkaichi_Univ._01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yokkaichi_Univ._01.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Miyuki Meinaka, CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Yokkaichi University campus",
+    "verified": true
+  },
+  "yokohama-national-university": {
+    "photoUrl": "https://upload.wikimedia.org/wikipedia/commons/4/42/Yokoyoku.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yokoyoku.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "The original uploader was Hykw-a4 at Japanese Wikipedia., CC BY-SA 3.0, via Wikimedia Commons",
+    "altText": "Yokohama National University campus",
     "verified": true
   }
 }
