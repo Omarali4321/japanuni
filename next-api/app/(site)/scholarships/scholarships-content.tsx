@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ErrorState } from '@/components/public-states'
 import { FadeIn, SlideUp, StaggerContainer, StaggerItem, HoverLift } from '@/components/ui/Motion'
 import { ListItemSkeleton } from '@/components/ui/Skeleton'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 
 interface Scholarship {
   id: number
@@ -24,8 +23,8 @@ interface ScholarshipsContentProps {
 export default function ScholarshipsContent({ initialScholarships }: ScholarshipsContentProps) {
   const [search, setSearch] = useState('')
   const [items, setItems] = useState<Scholarship[]>(initialScholarships)
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [error] = useState('')
+  const [isLoading] = useState(false)
   const [activeFilter, setActiveFilter] = useState<'all' | 'government' | 'university'>('all')
 
   // Client-side search filtering

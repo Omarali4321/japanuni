@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/components/auth-provider'
 import { addFavorite, createReview, deleteReview, getReviews, removeFavorite, type University } from '@/lib/web-api'
-import { FadeIn, SlideUp } from '@/components/ui/Motion'
 
 type Review = { id: number; rating: number; comment: string | null; userName: string }
 

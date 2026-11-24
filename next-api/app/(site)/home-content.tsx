@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { UniversityCard } from '@/components/university-card'
 import { ErrorState } from '@/components/public-states'
 import { listUniversities, type University } from '@/lib/web-api'

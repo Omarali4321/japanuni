@@ -35,7 +35,7 @@ function getIntakeBadge(intake: string | null) {
 }
 
 export function UniversityCard({ university, showCompare = true }: { university: University; showCompare?: boolean }) {
-  const { selectedIds, toggleSelection, isSelected } = useCompare()
+  const { toggleSelection, isSelected } = useCompare()
   const selected = isSelected(university.id)
 
   const languageBadge = getLanguageBadge(university.mediumOfInstruction)

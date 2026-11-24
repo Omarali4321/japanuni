@@ -1,4 +1,4 @@
-import { getUniversityById, findUniversitiesByIds } from '@/lib/data'
+import { getUniversityById } from '@/lib/data'
 import { notFound } from 'next/navigation'
 import UniversityDetail from './university-detail'
 

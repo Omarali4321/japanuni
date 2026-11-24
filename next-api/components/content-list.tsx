@@ -1,10 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { ErrorState } from './public-states'
-import { FadeIn, SlideUp, StaggerContainer, StaggerItem, HoverLift } from '@/components/ui/Motion'
-import { ListItemSkeleton } from '@/components/ui/Skeleton'
-import { motion, AnimatePresence } from 'framer-motion'
+import { FadeIn, StaggerContainer, StaggerItem, HoverLift } from '@/components/ui/Motion'
+import { AnimatePresence } from 'framer-motion'
 
 interface Guide {
   id: number
