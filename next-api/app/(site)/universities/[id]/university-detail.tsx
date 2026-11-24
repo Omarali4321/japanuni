@@ -171,7 +171,9 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
               <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{
-                  backgroundImage: photoUrl ? `url(${photoUrl})` : undefined,
+                  backgroundImage: photoUrl
+                    ? [photoUrl, university.images?.[1]].filter(Boolean).map((src) => `url(${src})`).join(', ')
+                    : undefined,
                   backgroundColor: photoUrl ? undefined : '#f3eee8',
                 }}
                 aria-hidden="true"

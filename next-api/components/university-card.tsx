@@ -60,8 +60,10 @@ export function UniversityCard({ university, showCompare = true }: { university:
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
               onError={(e) => {
+                const fallback = university.images?.[1]
                 e.currentTarget.onerror = null
-                e.currentTarget.style.display = 'none'
+                if (fallback) e.currentTarget.src = fallback
+                else e.currentTarget.style.display = 'none'
               }}
             />
           ) : (

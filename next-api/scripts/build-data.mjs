@@ -271,7 +271,8 @@ const records = [...grouped.entries()].map(([key, schoolRows], index) => {
     costOfLivingMonthly: null,
     images: (() => {
       const photo = getUniversityPhoto(key, cleanName)
-      return [photo.photoUrl]
+      // Real photo first; initials placeholder second as a client-side fallback if the photo fails to load
+      return photo.isPlaceholder ? [photo.photoUrl] : [photo.photoUrl, generateImageUrl(cleanName)]
     })(),
     imageIsPlaceholder: getUniversityPhoto(key, cleanName).isPlaceholder,
     imageIsIllustrative: Boolean(getUniversityPhoto(key, cleanName).illustrative),
