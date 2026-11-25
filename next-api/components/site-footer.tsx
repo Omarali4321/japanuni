@@ -23,7 +23,6 @@ const footerLinks = {
     ['/help', 'helpCenter'],
     ['/contact', 'contactUs'],
     ['/faq', 'faq'],
-    ['/api-docs', 'apiDocs'],
   ],
   legal: [
     ['/privacy', 'privacy'],

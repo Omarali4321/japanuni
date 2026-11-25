@@ -299,7 +299,15 @@
     "delete": "Удалить",
     "empty": "Ничего не найдено.",
     "confirmDeleteUser": "Удалить {email} вместе с отзывами и избранным? Это нельзя отменить.",
-    "confirmDeleteReview": "Удалить этот отзыв?"
+    "confirmDeleteReview": "Удалить этот отзыв?",
+    "tab_messages": "Сообщения",
+    "confirmDeleteMessage": "Удалить это сообщение?",
+    "topic_general": "Общий вопрос",
+    "topic_partnership": "Сотрудничество",
+    "topic_press": "Пресса",
+    "topic_technical": "Техподдержка",
+    "topic_feedback": "Отзыв",
+    "topic_other": "Другое"
   },
   "Universities": {
     "metaTitle": "Университеты Японии",

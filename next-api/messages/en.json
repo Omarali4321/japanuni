@@ -299,7 +299,15 @@
     "delete": "Delete",
     "empty": "Nothing found.",
     "confirmDeleteUser": "Delete {email} with all their reviews and favorites? This cannot be undone.",
-    "confirmDeleteReview": "Delete this review?"
+    "confirmDeleteReview": "Delete this review?",
+    "tab_messages": "Messages",
+    "confirmDeleteMessage": "Delete this message?",
+    "topic_general": "General",
+    "topic_partnership": "Partnership",
+    "topic_press": "Press",
+    "topic_technical": "Technical support",
+    "topic_feedback": "Feedback",
+    "topic_other": "Other"
   },
   "Universities": {
     "metaTitle": "Universities in Japan",
