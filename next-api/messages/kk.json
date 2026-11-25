@@ -299,7 +299,15 @@
     "delete": "Жою",
     "empty": "Ештеңе табылмады.",
     "confirmDeleteUser": "{email} пайдаланушысын пікірлері мен таңдаулыларымен жою керек пе? Қайтару мүмкін емес.",
-    "confirmDeleteReview": "Бұл пікірді жою керек пе?"
+    "confirmDeleteReview": "Бұл пікірді жою керек пе?",
+    "tab_messages": "Хабарламалар",
+    "confirmDeleteMessage": "Бұл хабарламаны жою керек пе?",
+    "topic_general": "Жалпы сұрақ",
+    "topic_partnership": "Серіктестік",
+    "topic_press": "Баспасөз",
+    "topic_technical": "Техникалық қолдау",
+    "topic_feedback": "Пікір",
+    "topic_other": "Басқа"
   },
   "Universities": {
     "metaTitle": "Жапония университеттері",

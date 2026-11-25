@@ -11,7 +11,8 @@ import { ErrorState, LoadingState } from '@/components/public-states'
 type Stats = { users: number; universities: number; scholarships: number; reviews: number; favorites: number }
 type AdminUser = { id: number; email: string; fullName: string; role: 'USER' | 'ADMIN'; createdAt: string; reviews: number; favorites: number }
 type AdminReview = { id: number; rating: number; comment: string | null; userName: string; userEmail: string; universityId: number; universityName: string; createdAt: string }
-type Tab = 'overview' | 'users' | 'reviews'
+type AdminMessage = { id: number; name: string; email: string; subject: string; message: string; createdAt: string }
+type Tab = 'overview' | 'users' | 'reviews' | 'messages'
 
 async function api<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, { credentials: 'include', cache: 'no-store', ...init })
@@ -32,6 +33,7 @@ export default function AdminContent() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [users, setUsers] = useState<AdminUser[] | null>(null)
   const [reviews, setReviews] = useState<AdminReview[] | null>(null)
+  const [messages, setMessages] = useState<AdminMessage[] | null>(null)
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
 
@@ -48,6 +50,7 @@ export default function AdminContent() {
   useEffect(() => {
     if (!isAdmin) return
     if (tab === 'users' && !users) api<{ data: AdminUser[] }>('/api/admin/users').then((r) => setUsers(r.data)).catch(fail)
+    if (tab === 'messages' && !messages) api<{ data: AdminMessage[] }>('/api/admin/messages').then((r) => setMessages(r.data)).catch(fail)
     if (tab === 'reviews' && !reviews) api<{ data: AdminReview[] }>('/api/admin/reviews').then((r) => setReviews(r.data)).catch(fail)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab, isAdmin])
@@ -84,16 +87,25 @@ export default function AdminContent() {
     })
   }
 
+  const removeMessage = (target: AdminMessage) => {
+    if (!window.confirm(t('confirmDeleteMessage'))) return
+    return run(async () => {
+      await api(`/api/admin/messages/${target.id}`, { method: 'DELETE' })
+      setMessages((list) => list?.filter((m) => m.id !== target.id) ?? null)
+    })
+  }
+
   const q = query.trim().toLowerCase()
   const shownUsers = users?.filter((u) => !q || u.email.toLowerCase().includes(q) || u.fullName.toLowerCase().includes(q))
   const shownReviews = reviews?.filter((r) => !q || r.universityName.toLowerCase().includes(q) || r.userEmail.toLowerCase().includes(q) || (r.comment ?? '').toLowerCase().includes(q))
+  const shownMessages = messages?.filter((m) => !q || m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q) || m.message.toLowerCase().includes(q))
   const date = (iso: string) => new Date(iso).toLocaleDateString()
 
   const cards: [string, number | undefined][] = [
     [t('users'), stats?.users], [t('universities'), stats?.universities], [t('scholarships'), stats?.scholarships],
     [t('reviews'), stats?.reviews], [t('favorites'), stats?.favorites],
   ]
-  const tabs: Tab[] = ['overview', 'users', 'reviews']
+  const tabs: Tab[] = ['overview', 'users', 'reviews', 'messages']
   const btn = 'rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-soft-surface disabled:opacity-40'
 
   return (
@@ -182,6 +194,22 @@ export default function AdminContent() {
             </div>
           ))}
           {shownReviews.length === 0 && <p className={`py-6 text-center ${muted}`}>{t('empty')}</p>}
+        </div>
+      ) : !error && <div className="mt-6"><LoadingState /></div>)}
+
+      {tab === 'messages' && (shownMessages ? (
+        <div className="mt-6 space-y-3">
+          {shownMessages.map((m) => (
+            <div key={m.id} className="glass-card flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
+                <p className="font-medium">{m.name} · <a className="text-sakura-500 hover:underline" href={`mailto:${m.email}`}>{m.email}</a></p>
+                <p className={`mt-1 text-xs ${muted}`}>{t(`topic_${m.subject}`)} · {date(m.createdAt)}</p>
+                <p className="mt-2 whitespace-pre-wrap break-words text-sm">{m.message}</p>
+              </div>
+              <button className={`${btn} shrink-0 text-accent`} onClick={() => removeMessage(m)}>{t('delete')}</button>
+            </div>
+          ))}
+          {shownMessages.length === 0 && <p className={`py-6 text-center ${muted}`}>{t('empty')}</p>}
         </div>
       ) : !error && <div className="mt-6"><LoadingState /></div>)}
     </section>
