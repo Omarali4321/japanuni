@@ -16,7 +16,8 @@
     "signUp": "Sign up",
     "toggleMenu": "Toggle menu",
     "defaultUser": "User",
-    "language": "Language"
+    "language": "Language",
+    "admin": "Admin"
   },
   "Footer": {
     "tagline": "Your gateway to studying in Japan. Explore universities, scholarships, visa guides, and student life.",
@@ -279,13 +280,26 @@
   },
   "Admin": {
     "title": "Admin Panel",
-    "intro": "Read-only platform statistics.",
+    "intro": "Platform statistics, user and review management.",
     "accessRequired": "Admin access is required.",
     "users": "Users",
     "universities": "Universities",
     "scholarships": "Scholarships",
     "reviews": "Reviews",
-    "favorites": "Favorites"
+    "favorites": "Favorites",
+    "tab_overview": "Overview",
+    "tab_users": "Users",
+    "tab_reviews": "Reviews",
+    "search": "Search…",
+    "name": "Name",
+    "role": "Role",
+    "joined": "Joined",
+    "makeAdmin": "Make admin",
+    "makeUser": "Remove admin",
+    "delete": "Delete",
+    "empty": "Nothing found.",
+    "confirmDeleteUser": "Delete {email} with all their reviews and favorites? This cannot be undone.",
+    "confirmDeleteReview": "Delete this review?"
   },
   "Universities": {
     "metaTitle": "Universities in Japan",

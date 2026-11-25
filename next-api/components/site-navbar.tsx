@@ -105,6 +105,16 @@ export function SiteNavbar() {
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg>
                         {t('favorites')}
                       </Link>
+                      {user.role === 'ADMIN' && (
+                        <Link
+                          href="/admin"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-muted hover:text-accent hover:bg-soft-surface"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.6-4A12 12 0 0112 3a12 12 0 01-8.6 3A12 12 0 003 12c0 5.6 3.8 10.3 9 11.6 5.2-1.3 9-6 9-11.6 0-1.9-.3-3.7-.4-6z" /></svg>
+                          {t('admin')}
+                        </Link>
+                      )}
                       <hr className="my-2 border-border" />
                       <button
                         onClick={logout}
@@ -160,6 +170,11 @@ export function SiteNavbar() {
                   {t(label)}
                 </Link>
               ))}
+              {user?.role === 'ADMIN' && (
+                <Link href="/admin" className="block py-3 text-lg font-medium text-muted hover:text-accent focus-visible-ring rounded-lg" onClick={() => setOpen(false)}>
+                  {t('admin')}
+                </Link>
+              )}
               <LanguageSwitcher className="mt-2" />
               {!user && (
                 <div className="flex flex-col gap-2 pt-4 border-t border-border">
