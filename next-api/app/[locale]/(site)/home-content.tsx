@@ -63,7 +63,7 @@ export default function HomeContent() {
               className="aspect-[1/1] lg:aspect-[1/1] 2xl:aspect-[1.04/1] rounded-bl-xl rounded-br-[180px] rounded-tl-xl rounded-tr-xl overflow-hidden bg-cover"
               role="img"
               aria-label={t('heroAlt')}
-              style={{ backgroundImage: 'url(https://plus.unsplash.com/premium_photo-1661964177687-57387c2cbd14?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D)', backgroundPosition: '70% center' }}
+              style={{ backgroundImage: 'url(/images/hero-fuji.jpg)', backgroundPosition: '50% center' }}
             />
           </div>
           {/* Hero Content - Right side */}
