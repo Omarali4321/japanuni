@@ -400,12 +400,13 @@
     "reviewsUnavailableShort": "Reviews are temporarily unavailable.",
     "basedOn": "{count, plural, one {Based on # review.} other {Based on # reviews.}}",
     "signInLink": "Sign in to leave a review ↗",
-    "preArrival": "Pre-arrival admission information available on the university website."
+    "preArrival": "Pre-arrival admission information available on the university website.",
+    "googleLink": "Reviews on Google Maps"
   },
   "Match": {
     "metaTitle": "Smart Match",
     "metaDescription": "Find the best-fit Japanese university for your goals, budget and language level.",
-    "badge": "AI-Powered Matching",
+    "badge": "Smart Match",
     "titleA": "Find Your ",
     "titleB": "Best-Fit",
     "titleC": " University",
@@ -438,12 +439,14 @@
     "rankedBy": "Ranked by fit score. Click any university to explore programs, faculties, and admission details.",
     "rank": "Rank #{rank}",
     "score": "Score: {score}/100",
-    "fitExcellent": "Excellent",
-    "fitGood": "Good",
+    "fitExcellent": "Excellent fit",
+    "fitGood": "Good fit",
     "fitFair": "Fair",
     "whyFits": "Why it fits",
     "watch": "Watch points",
-    "viewDetails": "View University Details"
+    "viewDetails": "View University Details",
+    "fitPossible": "Possible fit",
+    "fitStretch": "Stretch option"
   },
   "FAQ": {
     "metaTitle": "FAQ",
@@ -707,5 +710,38 @@
     "s7b": "We may update this Cookie Policy to reflect changes in our practices. We will post any changes on this page with an updated date.",
     "s8": "Contact Us",
     "s8b": "If you have questions about our use of cookies, please <contact>contact us</contact>."
+  },
+  "Specialties": {
+    "Computer Science": "Computer Science",
+    "Information Science": "Information Science",
+    "Engineering": "Engineering",
+    "Robotics": "Robotics",
+    "Materials Science": "Materials Science",
+    "Architecture": "Architecture",
+    "Medicine": "Medicine",
+    "Dentistry": "Dentistry",
+    "Pharmacy": "Pharmacy",
+    "Nursing": "Nursing",
+    "Biology": "Biology",
+    "Chemistry": "Chemistry",
+    "Physics": "Physics",
+    "Mathematics": "Mathematics",
+    "Business": "Business",
+    "Economics": "Economics",
+    "Management": "Management",
+    "Law": "Law",
+    "Political Science": "Political Science",
+    "International Relations": "International Relations",
+    "Education": "Education",
+    "Psychology": "Psychology",
+    "Sociology": "Sociology",
+    "Linguistics": "Linguistics",
+    "Literature": "Literature",
+    "History": "History",
+    "Arts": "Arts",
+    "Agriculture": "Agriculture",
+    "Fisheries": "Fisheries",
+    "Environmental Science": "Environmental Science",
+    "Energy": "Energy"
   }
 }

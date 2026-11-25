@@ -234,8 +234,39 @@ export function matchUniversities(input: MatchInput) {
   const all = getUniversitiesIndex() ?? []
   return all
     .map((uni) => scoreUniversity(uni, input))
-    .sort((a, b) => b.score - a.score || (a.university.ranking ?? 999999) - (b.university.ranking ?? 999999))
-    .slice(0, 5)
+    .sort((a, b) => b.score - a.score || prestigeOrder(b.university.name) - prestigeOrder(a.university.name) || a.university.name.localeCompare(b.university.name))
+    .slice(0, 10)
+}
+
+// Editorial prestige tiers (3 = top, 2 = strong, 1 = rest). Data has no rankings.
+const TIER_3 = ['the university of tokyo', 'kyoto university', 'the universtiy of osaka', 'tohoku university', 'institute of science tokyo', 'nagoya university', 'kyushu university', 'hokkaido university', 'keio university', 'waseda university']
+const TIER_2 = ['university of tsukuba', 'hitotsubashi university', 'kobe university', 'hiroshima university', 'okayama university', 'kanazawa university', 'yokohama national university', 'tokyo university of foreign studies', 'international christian university', 'sophia university', 'ritsumeikan university', 'ritsumeikan asia pacific university', 'nara institute of science and technology', 'japan advanced institute of science and technology', 'tokyo metropolitan university', 'nagoya institute of technology', 'kyoto institute of technology', 'akita international university', 'the university of aizu', 'meiji university', 'rikkyo university', 'aoyama gakuin university']
+
+function prestigeTier(name: string) {
+  const n = name.toLowerCase().replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+/g, ' ').trim()
+  if (TIER_3.includes(n)) return 3
+  if (TIER_2.some((t) => n === t || n.startsWith(t))) return 2
+  return 1
+}
+
+// Higher = more prestigious; used only to break score ties
+function prestigeOrder(name: string) {
+  const i = TIER_3.indexOf(name.toLowerCase())
+  return i >= 0 ? 100 - i : prestigeTier(name)
+}
+
+// 0..1 strength of the applicant's profile from provided inputs (0.5 if none)
+function profileStrength(input: MatchInput) {
+  const parts: number[] = []
+  if (input.ieltsScore != null) parts.push(input.ieltsScore >= 7 ? 1 : input.ieltsScore >= 6.5 ? 0.8 : input.ieltsScore >= 6 ? 0.6 : input.ieltsScore >= 5.5 ? 0.4 : 0.2)
+  if (input.jlptLevel) parts.push(({ n1: 1, n2: 0.8, n3: 0.5, n4: 0.3, n5: 0.2 } as Record<string, number>)[normalize(input.jlptLevel)] ?? 0.3)
+  if (input.budgetYearly != null) parts.push(input.budgetYearly >= 2000000 ? 1 : input.budgetYearly >= 1200000 ? 0.7 : input.budgetYearly >= 700000 ? 0.5 : 0.3)
+  return parts.length ? parts.reduce((a, b) => a + b, 0) / parts.length : 0.5
+}
+
+// Rough yearly tuition when the data has none: national/public ~¥540k, private ~¥1.1M
+function estimateTuition(type: string | null) {
+  return type === 'Private' ? 1100000 : 540000
 }
 
 function normalize(value: string | null | undefined) {
@@ -297,29 +328,41 @@ function scoreUniversity(university: UniversityIndex, input: MatchInput) {
   const majorSpeciality = normalize(university.majorSpeciality)
   const faculty = normalize(university.faculty)
   const field = normalize(input.field)
-  const tuition = university.tuitionFeeYearly ? Number(university.tuitionFeeYearly) : null
+  const tuitionKnown = university.tuitionFeeYearly ? Number(university.tuitionFeeYearly) : null
+  const tuition = tuitionKnown ?? estimateTuition(university.institutionType)
   const allProgramText = [programs, majorSpeciality, faculty].filter(Boolean).join(' ')
 
   // 1. Field of study match (most important factor)
   if (field) {
-    const fieldScore = calculateFieldMatch(field, allProgramText)
+    const fieldScore = calculateFieldMatch(withEnglishAliases(field), allProgramText)
     value += fieldScore.score
     reasons.push(...fieldScore.reasons)
     gaps.push(...fieldScore.gaps)
   }
 
   // 2. Budget match (if both provided)
-  if (input.budgetYearly != null && tuition != null) {
+  if (input.budgetYearly != null) {
+    const label = tuitionKnown != null ? 'Tuition' : 'Estimated tuition'
     if (input.budgetYearly >= tuition) {
-      value += 15
-      reasons.push(`Tuition ¥${tuition.toLocaleString()}/year fits your budget (¥${input.budgetYearly.toLocaleString()}).`)
+      value += 12
+      reasons.push(`${label} ¥${tuition.toLocaleString()}/year fits your budget (¥${input.budgetYearly.toLocaleString()}).`)
     } else {
-      value -= 10
-      gaps.push(`Tuition ¥${tuition.toLocaleString()}/year exceeds your budget (¥${input.budgetYearly.toLocaleString()}).`)
+      value -= 15
+      gaps.push(`${label} ¥${tuition.toLocaleString()}/year exceeds your budget (¥${input.budgetYearly.toLocaleString()}).`)
     }
-  } else if (input.budgetYearly != null) {
-    gaps.push('Tuition data not available for this university.')
   }
+
+  // 2b. Prestige vs. profile: strong profile -> top universities first, weaker -> more accessible ones
+  const tier = prestigeTier(university.name)
+  const strength = profileStrength(input)
+  const gapToProfile = tier - (1 + 2 * strength)
+  value += 15 - 8 * Math.abs(gapToProfile)
+  // Within the top tier, list order is prestige order (matters for strong profiles)
+  const topIndex = TIER_3.indexOf(university.name.toLowerCase())
+  if (topIndex >= 0) value += (TIER_3.length - topIndex) * 1.2 * strength
+  if (tier === 3 && strength >= 0.8) reasons.push('Top-tier university that matches your strong profile.')
+  else if (tier === 3 && strength < 0.5) gaps.push('Highly competitive — a stretch for your current profile.')
+  else if (tier === 1 && strength < 0.5) reasons.push('Accessible admission for your current profile.')
 
   // 3. IELTS match
   if (input.ieltsScore != null && university.ieltsRequirement != null) {
@@ -333,8 +376,6 @@ function scoreUniversity(university: UniversityIndex, input: MatchInput) {
       value -= 8
       gaps.push(`IELTS ${input.ieltsScore} below requirement (${university.ieltsRequirement}).`)
     }
-  } else if (input.ieltsScore != null) {
-    gaps.push('IELTS requirement data not available.')
   }
 
   // 4. JLPT match
@@ -349,8 +390,6 @@ function scoreUniversity(university: UniversityIndex, input: MatchInput) {
       value -= 5
       gaps.push(`JLPT ${input.jlptLevel.toUpperCase()} may need improvement for requirement (${university.jlptRequirement.toUpperCase()}).`)
     }
-  } else if (input.jlptLevel) {
-    gaps.push('JLPT requirement data not available.')
   }
 
   // 5. Language of instruction match
@@ -413,7 +452,7 @@ function scoreUniversity(university: UniversityIndex, input: MatchInput) {
     value += Math.min(2, university.programCount / 100)
   }
 
-  value = Math.max(0, Math.min(100, value))
+  value = Math.round(Math.max(0, Math.min(100, value)) * 10) / 10
   return {
     university: { ...university, favorited: false, averageRating: null, reviewCount: 0 },
     score: value,
@@ -421,6 +460,29 @@ function scoreUniversity(university: UniversityIndex, input: MatchInput) {
     reasons: reasons.length > 0 ? reasons : ['Limited data available for detailed matching.'],
     gaps,
   }
+}
+
+// Russian/Kazakh stems -> English keywords (program data is English)
+const FIELD_ALIASES: Record<string, string> = {
+  'информат': 'computer', 'программ': 'computer', 'компьютер': 'computer', 'it': 'computer', 'есептеу': 'computer', 'бағдарлама': 'computer',
+  'инженер': 'engineering', 'техни': 'engineering', 'механ': 'engineering', 'инженерия': 'engineering',
+  'бизнес': 'business', 'экономик': 'business', 'менеджмент': 'business', 'финанс': 'business', 'экономика': 'business',
+  'медицин': 'medicine', 'врач': 'medicine', 'стомат': 'medicine', 'фармац': 'medicine', 'дәрігер': 'medicine',
+  'наук': 'science', 'физик': 'science', 'хим': 'science', 'биолог': 'science', 'математ': 'science', 'ғылым': 'science',
+  'юрид': 'law', 'право': 'law', 'құқық': 'law',
+  'искусств': 'arts', 'гуманитар': 'arts', 'язык': 'arts', 'лингвист': 'arts', 'истори': 'arts', 'өнер': 'arts', 'тіл': 'arts',
+  'образован': 'education', 'педагог': 'education', 'білім': 'education',
+  'сельск': 'agriculture', 'агр': 'agriculture', 'ауыл': 'agriculture',
+  'социал': 'social', 'психолог': 'social', 'әлеумет': 'social',
+  'экологи': 'environment', 'окружающ': 'environment', 'энерг': 'environment', 'қоршаған': 'environment',
+}
+
+function withEnglishAliases(field: string) {
+  const extra = new Set<string>()
+  for (const [stem, en] of Object.entries(FIELD_ALIASES)) {
+    if (stem === 'it' ? /\bit\b/.test(field) : field.includes(stem)) extra.add(en)
+  }
+  return extra.size ? `${field} ${[...extra].join(' ')}` : field
 }
 
 function calculateFieldMatch(field: string, programText: string) {
@@ -490,14 +552,16 @@ function calculateLanguageMatch(mediumOfInstruction: string | null, ieltsScore: 
     score.score += 5
     score.reasons.push('Programs offered in both Japanese and English.')
   } else if (hasEnglish && ieltsScore != null) {
-    score.score += 5
+    score.score += 8
     score.reasons.push('English-taught programs available.')
   } else if (hasJapanese && jlptLevel) {
-    score.score += 5
+    score.score += 8
     score.reasons.push('Japanese-taught programs available.')
   } else if (hasJapanese && ieltsScore != null) {
+    score.score -= 12
     score.gaps.push('Primarily Japanese-taught; English programs may be limited.')
   } else if (hasEnglish && jlptLevel) {
+    score.score -= 12
     score.gaps.push('Primarily English-taught; Japanese programs may be limited.')
   }
   return score

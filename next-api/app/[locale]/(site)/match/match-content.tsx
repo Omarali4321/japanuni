@@ -8,6 +8,7 @@ import { ApiError } from '@/lib/web-api'
 import { FadeIn, SlideUp, StaggerContainer, StaggerItem, HoverLift } from '@/components/ui/Motion'
 import { MatchResultSkeleton } from '@/components/ui/Skeleton'
 import { AnimatePresence } from 'framer-motion'
+import { SpecialtyDatalist } from '@/components/specialty-datalist'
 
 type MatchResult = {
   university: { id: number; name: string; cityName: string | null; ranking: number | null; tuitionFeeYearly: string | null; ieltsRequirement: number | null; jlptRequirement: string | null }
@@ -55,7 +56,7 @@ export default function MatchContent() {
   const tc = useTranslations('UniversityCard')
   const fitLabel = (level: string) => {
     const l = level.toLowerCase()
-    return l === 'excellent' ? t('fitExcellent') : l === 'good' ? t('fitGood') : l === 'fair' ? t('fitFair') : level
+    return l.startsWith('excellent') ? t('fitExcellent') : l.startsWith('good') ? t('fitGood') : l.startsWith('possible') ? t('fitPossible') : l.startsWith('stretch') ? t('fitStretch') : level
   }
 
   const getScoreColor = (score: number) => {
@@ -136,8 +137,10 @@ export default function MatchContent() {
                         placeholder={t('interestPlaceholder')}
                         required
                         autoComplete="off"
+                        list="specialty-suggestions"
                         aria-describedby="field-hint"
                       />
+                      <SpecialtyDatalist id="specialty-suggestions" />
                     </div>
                     <p id="field-hint" className="text-xs text-ink-800/40 dark:text-ink-50/40">{t('interestHint')}</p>
                   </div>

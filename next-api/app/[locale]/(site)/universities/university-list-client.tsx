@@ -11,6 +11,7 @@ import { StaggerContainer, StaggerItem, FadeIn, SlideUp } from '@/components/ui/
 interface UniversityListClientProps {
   initialData: { data: University[]; meta: { totalPages: number; totalElements: number } }
   buildDate: string
+  names: string[]
 }
 
 const institutionTypes = ['National', 'Private', 'Public']
@@ -72,7 +73,7 @@ function FilterSelect({
   )
 }
 
-export function UniversityListClient({ initialData, buildDate }: UniversityListClientProps) {
+export function UniversityListClient({ initialData, buildDate, names }: UniversityListClientProps) {
   const t = useTranslations('Universities')
   const tc = useTranslations('UniversityCard')
   const apiError = useApiError()
@@ -81,6 +82,11 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
   const typeOpts = [{ value: '', label: t('allTypes') }, ...institutionTypes.map((v) => ({ value: v, label: typeLabel(v, tc) }))]
   const [search, setSearch] = useState('')
   const [submitted, setSubmitted] = useState('')
+  // Suggest university names only once the user has typed something; words starting with the input first
+  const q = search.trim().toLowerCase()
+  const suggestions = q
+    ? names.filter((n) => n.toLowerCase().split(/[\s,()]+/).some((w) => w.startsWith(q)) || n.toLowerCase().startsWith(q)).slice(0, 8)
+    : []
   const [page, setPage] = useState(0)
   const [result, setResult] = useState(initialData)
   const [error, setError] = useState('')
@@ -186,6 +192,8 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
               placeholder={t('searchPlaceholder')}
               disabled={isLoading}
               aria-label={t('searchLabel')}
+              list="university-suggestions"
+              autoComplete="off"
             />
             <button
               type="submit"
@@ -202,6 +210,9 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
               )}
             </button>
           </div>
+          <datalist id="university-suggestions">
+            {suggestions.map((n) => <option key={n} value={n} />)}
+          </datalist>
         </form>
       </SlideUp>
 
@@ -354,7 +365,7 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
       )}
 
       {/* Results Section */}
-      <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
+      <div className="grid gap-8">
         {/* University Grid */}
         <div className="min-w-0">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
@@ -380,7 +391,7 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
             </FadeIn>
           ) : (
             <>
-              <StaggerContainer staggerDelay={0.08} delayChildren={0.3} className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <StaggerContainer staggerDelay={0.08} delayChildren={0.3} className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {result.data.map((university, index) => (
                   <StaggerItem key={university.id} customDelay={index * 0.05}>
                     <UniversityCard university={university} />
@@ -433,37 +444,6 @@ export function UniversityListClient({ initialData, buildDate }: UniversityListC
             </>
           )}
         </div>
-
-        {/* Sidebar - Quick Stats */}
-        <aside className="hidden lg:block">
-          <FadeIn delay={0.5}>
-            <div className="rounded-2xl bg-soft-surface p-6 h-fit sticky top-24 border border-border/50">
-              <h3 className="text-lg font-medium text-ink mb-4">{t('quickStats')}</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted">{t('totalUniversities')}</span>
-                  <span className="font-display text-xl font-bold text-ink">{result.meta.totalElements}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted">{typeLabel('National', tc)}</span>
-                  <span className="font-medium text-red-600">{result.data.filter(u => u.institutionType === 'National').length}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted">{typeLabel('Public', tc)}</span>
-                  <span className="font-medium text-blue-600">{result.data.filter(u => u.institutionType === 'Public').length}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted">{typeLabel('Private', tc)}</span>
-                  <span className="font-medium text-purple-600">{result.data.filter(u => u.institutionType === 'Private').length}</span>
-                </div>
-                <div className="pt-4 border-t border-border/50 flex items-center justify-between">
-                  <span className="text-sm text-muted">{t('verifiedPhotos')}</span>
-                  <span className="font-medium text-emerald-600">{result.data.filter(u => u.images?.[0] && !u.imageIsIllustrative).length} / {result.meta.totalElements}</span>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-        </aside>
       </div>
     </div>
   )

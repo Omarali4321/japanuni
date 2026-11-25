@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server'
 import { listUniversitiesServer } from '@/lib/server-api'
+import { getUniversitiesIndex } from '@/lib/data'
 import { seoAlternates } from '@/lib/seo'
 import { UniversityListClient } from './university-list-client'
 import { UniversityCardSkeleton } from '@/components/ui/Skeleton'
@@ -32,12 +33,13 @@ function UniversitiesSkeleton() {
 export default async function Page({ params: { locale } }: Props) {
   setRequestLocale(locale)
   const initialData = await getInitialData()
+  const names = (getUniversitiesIndex() ?? []).map((u) => u.name).sort((a, b) => a.localeCompare(b))
   const format = await getFormatter()
   // Current build date for data freshness indicator
   const buildDate = format.dateTime(new Date(), { year: 'numeric', month: 'long', day: 'numeric' })
   return (
     <Suspense fallback={<UniversitiesSkeleton />}>
-      <UniversityListClient initialData={initialData} buildDate={buildDate} />
+      <UniversityListClient initialData={initialData} buildDate={buildDate} names={names} />
     </Suspense>
   )
 }

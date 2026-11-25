@@ -118,10 +118,10 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
       {/* Large photo header with blur on scroll and stat cards */}
       <div className="relative w-full bg-[#fdfdfc]">
         {/* Hero Section */}
-        <section className="relative pt-[96px] pb-20">
+        <section className="relative pt-[56px] pb-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {/* Back link and tagline */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-5">
               <Link href="/universities" className="inline-flex items-center gap-1 text-xs font-medium text-[#67716a] hover:text-accent transition-colors uppercase tracking-wide">
                 {t('allUniversities')}
               </Link>
@@ -131,7 +131,7 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
             </div>
 
             {/* University name and description */}
-            <div className="mb-8">
+            <div className="mb-6">
               <h1 className="font-['Playfair_Display'] font-normal leading-[1.1] text-[52px] md:text-[72px] lg:text-[80px] text-[#252c28] max-w-4xl">
                 {university.name}.
               </h1>
@@ -140,34 +140,8 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
               </p>
             </div>
 
-            {/* Programs description and actions */}
-            <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="text-[#67716a] text-base md:text-lg leading-relaxed max-w-2xl">
-                <p>{t('exploreText1', { count: programs.length })}</p>
-                <p>{t('exploreText2')}</p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                <Link
-                  href="#programs"
-                  className="inline-flex items-center justify-center gap-2 h-[52px] px-8 rounded-[26px] bg-accent text-white font-medium text-base transition-colors hover:bg-accent/90"
-                >
-                  {t('exploreCta', { count: programs.length })}
-                </Link>
-                {university.sourceUrl && (
-                  <a
-                    href={university.sourceUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 h-[52px] px-8 rounded-[26px] border border-[#e0e5df] text-[#252c28] font-medium text-base transition-colors hover:bg-[#f5f7f3]"
-                  >
-                    {t('website')}
-                  </a>
-                )}
-              </div>
-            </div>
-
             {/* Campus photo with rounded corners */}
-            <div className="relative overflow-hidden rounded-bl-[20px] rounded-br-[100px] rounded-tl-[20px] rounded-tr-[20px] aspect-[1440/390] max-h-[420px]">
+            <div className="relative overflow-hidden rounded-bl-[20px] rounded-br-[100px] rounded-tl-[20px] rounded-tr-[20px] aspect-[1440/560] min-h-[280px] max-h-[640px]">
               <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{
@@ -189,23 +163,31 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
               </div>
             </div>
 
-            {/* Badge and note */}
-            <div className="mt-4 flex items-center justify-between">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[20px] bg-[#fdfdfc] border border-[#e0e5df]">
+            {/* Badge and actions */}
+            <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="inline-flex w-fit items-center gap-2 px-4 py-2 rounded-[20px] bg-[#fdfdfc] border border-[#e0e5df]">
                 <span className="text-xs font-medium text-[#252c28]">
                   {t('badgeUniversity', { type: typeLabel(university.institutionType || 'National', tc).toLocaleUpperCase() })}
                 </span>
               </div>
-              {!isPlaceholder && university.imageSourceUrl ? (
-                <a href={university.imageSourceUrl} target="_blank" rel="noreferrer" className="text-right text-xs text-[#67716a] underline underline-offset-2 hover:text-accent">
-                  {university.imageIsIllustrative ? t('photoIllustrative') : t('photoCampus')}
-                  {university.imageAttribution ? ` · ${university.imageAttribution}` : ''}
-                  {university.imageLicense ? ` · ${university.imageLicense}` : ''}
-                  {' · Wikimedia Commons'}
-                </a>
-              ) : (
-                <p className="text-xs text-[#67716a]">{t('photoSoon')}</p>
-              )}
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <Link
+                  href="#programs"
+                  className="inline-flex items-center justify-center gap-2 h-[44px] px-6 rounded-[22px] bg-accent text-white font-medium text-sm transition-colors hover:bg-accent/90"
+                >
+                  {t('exploreCta', { count: programs.length })}
+                </Link>
+                {university.sourceUrl && (
+                  <a
+                    href={university.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 h-[44px] px-6 rounded-[22px] border border-[#e0e5df] text-[#252c28] font-medium text-sm transition-colors hover:bg-[#f5f7f3]"
+                  >
+                    {t('website')}
+                  </a>
+                )}
+              </div>
             </div>
 
             {/* Stat Cards */}
@@ -218,6 +200,18 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                 </div>
               ))}
             </div>
+
+            {/* Photo credit (license attribution), kept small at the bottom */}
+            {!isPlaceholder && university.imageSourceUrl && (
+              <p className="mt-6 text-[10px] text-[#67716a]/70">
+                <a href={university.imageSourceUrl} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-accent">
+                  {university.imageIsIllustrative ? t('photoIllustrative') : t('photoCampus')}
+                  {university.imageAttribution ? ` · ${university.imageAttribution}` : ''}
+                  {university.imageLicense ? ` · ${university.imageLicense}` : ''}
+                  {' · Wikimedia Commons'}
+                </a>
+              </p>
+            )}
           </div>
         </section>
 
@@ -485,6 +479,15 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                         <p className="mt-3 text-sm text-[#67716a]">{t('noReviews')}</p>
                       )}
                     </div>
+
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${university.name}, Japan`)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-[#252c28] underline underline-offset-2 hover:text-accent"
+                    >
+                      {t('googleLink')} ↗
+                    </a>
                   </motion.div>
                 )}
               </AnimatePresence>
