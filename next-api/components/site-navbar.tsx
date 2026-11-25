@@ -1,24 +1,26 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { useAuth } from './auth-provider'
 import { CommandPalette } from './command-palette'
+import { LanguageSwitcher } from './language-switcher'
 
 const navLinks = [
-  ['/universities', 'Universities'],
-  ['/match', 'Smart Match'],
-  ['/scholarships', 'Scholarships'],
-  ['/admission', 'Admission'],
-  ['/visa', 'Visa'],
-  ['/student-life', 'Student Life'],
-]
+  ['/universities', 'universities'],
+  ['/match', 'smartMatch'],
+  ['/scholarships', 'scholarships'],
+  ['/admission', 'admission'],
+  ['/visa', 'visa'],
+  ['/student-life', 'studentLife'],
+] as const
 
 const authLinks = [
-  ['/dashboard', 'Dashboard'],
-  ['/favorites', 'Favorites'],
-]
+  ['/dashboard', 'dashboard'],
+  ['/favorites', 'favorites'],
+] as const
 
 export function SiteNavbar() {
   const [open, setOpen] = useState(false)
@@ -26,6 +28,7 @@ export function SiteNavbar() {
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userMenuRef = useRef<HTMLDivElement>(null)
   const { user, logout } = useAuth()
+  const t = useTranslations('Nav')
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10)
@@ -50,19 +53,20 @@ export function SiteNavbar() {
           <Link href="/" className="font-display text-xl font-bold text-accent">
             JapanUni
           </Link>
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-5 xl:gap-8 xl:flex">
             {navLinks.map(([href, label]) => (
-              <Link key={href} href={href} className="text-sm font-medium text-muted transition-colors hover:text-accent relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full focus-visible-ring rounded-sm">
-                {label}
+              <Link key={href} href={href} className="whitespace-nowrap text-sm font-medium text-muted transition-colors hover:text-accent relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full focus-visible-ring rounded-sm">
+                {t(label)}
               </Link>
             ))}
             {user && authLinks.map(([href, label]) => (
-              <Link key={href} href={href} className="text-sm font-medium text-muted transition-colors hover:text-accent relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full focus-visible-ring rounded-sm">
-                {label}
+              <Link key={href} href={href} className="whitespace-nowrap text-sm font-medium text-muted transition-colors hover:text-accent relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full focus-visible-ring rounded-sm">
+                {t(label)}
               </Link>
             ))}
           </div>
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-3 xl:flex">
+            <LanguageSwitcher />
             {user ? (
               <div className="relative" ref={userMenuRef}>
                 <button
@@ -75,7 +79,7 @@ export function SiteNavbar() {
                   <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent font-medium text-sm">
                     {user.fullName?.[0]?.toUpperCase() || 'U'}
                   </div>
-                  <span className="text-sm font-medium text-ink hidden sm:block">{user.fullName || 'User'}</span>
+                  <span className="text-sm font-medium text-ink hidden sm:block">{user.fullName || t('defaultUser')}</span>
                 </button>
                 <AnimatePresence>
                   {userMenuOpen && (
@@ -91,7 +95,7 @@ export function SiteNavbar() {
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-                        Dashboard
+                        {t('dashboard')}
                       </Link>
                       <Link
                         href="/favorites"
@@ -99,7 +103,7 @@ export function SiteNavbar() {
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg>
-                        Favorites
+                        {t('favorites')}
                       </Link>
                       <hr className="my-2 border-border" />
                       <button
@@ -107,7 +111,7 @@ export function SiteNavbar() {
                         className="flex items-center gap-3 w-full px-4 py-2 text-sm text-accent hover:bg-soft-surface"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                        Logout
+                        {t('logout')}
                       </button>
                     </motion.div>
                   )}
@@ -115,16 +119,16 @@ export function SiteNavbar() {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Link href="/login" className="btn-ghost text-sm">Log in</Link>
-                <Link href="/register" className="btn-primary text-sm">Sign up</Link>
+                <Link href="/login" className="btn-ghost text-sm">{t('logIn')}</Link>
+                <Link href="/register" className="btn-primary text-sm">{t('signUp')}</Link>
               </div>
             )}
           </div>
           <button
             type="button"
             onClick={() => setOpen(!open)}
-            className="md:hidden p-2 rounded-lg card transition-colors hover:bg-soft-surface focus-visible-ring"
-            aria-label="Toggle menu"
+            className="xl:hidden p-2 rounded-lg card transition-colors hover:bg-soft-surface focus-visible-ring"
+            aria-label={t('toggleMenu')}
             aria-expanded={open}
           >
             <svg className="w-6 h-6 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,23 +147,24 @@ export function SiteNavbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden fixed inset-x-0 top-0 z-40 pt-16 bg-background border-b border-border shadow-lg"
+            className="xl:hidden fixed inset-x-0 top-0 z-40 pt-16 bg-background border-b border-border shadow-lg"
           >
             <nav className="mx-auto max-w-content px-4 py-6 space-y-4">
               {navLinks.map(([href, label]) => (
                 <Link key={href} href={href} className="block py-3 text-lg font-medium text-muted hover:text-accent focus-visible-ring rounded-lg" onClick={() => setOpen(false)}>
-                  {label}
+                  {t(label)}
                 </Link>
               ))}
               {user && authLinks.map(([href, label]) => (
                 <Link key={href} href={href} className="block py-3 text-lg font-medium text-muted hover:text-accent focus-visible-ring rounded-lg" onClick={() => setOpen(false)}>
-                  {label}
+                  {t(label)}
                 </Link>
               ))}
+              <LanguageSwitcher className="mt-2" />
               {!user && (
                 <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                  <Link href="/login" className="btn-ghost text-center">Log in</Link>
-                  <Link href="/register" className="btn-primary text-center">Sign up</Link>
+                  <Link href="/login" className="btn-ghost text-center">{t('logIn')}</Link>
+                  <Link href="/register" className="btn-primary text-center">{t('signUp')}</Link>
                 </div>
               )}
             </nav>

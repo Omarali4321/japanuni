@@ -1,8 +1,9 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { FadeIn, StaggerContainer, StaggerItem, HoverLift } from '@/components/ui/Motion'
 import { AnimatePresence } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 
 interface Guide {
   id: number
@@ -61,6 +62,7 @@ const kindConfig = {
 }
 
 export function ContentList({ items, title, description, kind }: ContentListProps) {
+  const t = useTranslations('ContentList')
   const basePath = kind === 'student' ? '/student-life' : `/${kind}`
   const config = kindConfig[kind]
 
@@ -77,7 +79,7 @@ export function ContentList({ items, title, description, kind }: ContentListProp
             <div className="mx-auto max-w-3xl text-center">
               <span className={`inline-flex items-center gap-2 rounded-full ${config.bgColor} px-4 py-1.5 text-sm font-medium ${config.textColor} dark:${config.darkTextColor} mb-6`}>
                 {config.icon}
-                {kind === 'student' ? 'Student Life' : `${kind.charAt(0).toUpperCase() + kind.slice(1)} Guide`}
+                {kind === 'student' ? t('kindStudent') : kind === 'visa' ? t('kindVisa') : t('kindAdmission')}
               </span>
               <h1 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl">
                 {title}
@@ -99,8 +101,8 @@ export function ContentList({ items, title, description, kind }: ContentListProp
                 <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-[var(--accent-color)]/10 flex items-center justify-center" style={{ '--accent-color': `rgb(var(--${config.accent}-rgb))` } as React.CSSProperties}>
                   {config.icon}
                 </div>
-                <h3 className="font-display text-xl font-semibold text-ink">No guides published yet</h3>
-                <p className="mt-2 text-ink-800/60 dark:text-ink-50/60">Check back soon for comprehensive {kind} guides.</p>
+                <h3 className="font-display text-xl font-semibold text-ink">{t('emptyTitle')}</h3>
+                <p className="mt-2 text-ink-800/60 dark:text-ink-50/60">{t('emptyText')}</p>
               </div>
             </FadeIn>
           )}
@@ -108,7 +110,7 @@ export function ContentList({ items, title, description, kind }: ContentListProp
           {items && items.length > 0 && (
             <FadeIn key="results">
               <div className="mb-4 text-sm text-ink-800/60 dark:text-ink-50/60">
-                {items.length} guide{items.length !== 1 ? 's' : ''} available
+                {t('count', { count: items.length })}
               </div>
               <StaggerContainer staggerDelay={0.06} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {items.map((item, index) => (
@@ -132,13 +134,13 @@ export function ContentList({ items, title, description, kind }: ContentListProp
                           )}
                           <div className="flex-1 flex flex-col">
                             <span className={`text-xs font-semibold uppercase tracking-wider ${config.textColor} dark:${config.darkTextColor}`}>
-                              {item.category || item.visaType || 'General'}
+                              {item.category || item.visaType || t('general')}
                             </span>
                             <h2 className="mt-2 font-display text-xl font-semibold text-ink truncate">
                               {item.title}
                             </h2>
                             <p className="mt-auto text-sm leading-relaxed text-ink-800/60 dark:text-ink-50/60 flex items-center gap-1">
-                              Read more
+                              {t('readMore')}
                               <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                               </svg>
