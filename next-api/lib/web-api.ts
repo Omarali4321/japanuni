@@ -28,10 +28,17 @@ export type University = {
   reviewCount: number
 }
 
+export class ApiError extends Error {
+  constructor(public code: string | undefined, message: string) {
+    super(message)
+    this.name = 'ApiError'
+  }
+}
+
 async function get<T>(path: string): Promise<T> {
   const response = await fetch(path, { cache: 'no-store' })
   const body = await response.json()
-  if (!response.ok) throw new Error(body.error?.message || 'Request failed')
+  if (!response.ok) throw new ApiError(body.error?.code, 'Request failed')
   return body.data ?? body
 }
 
@@ -45,11 +52,11 @@ export async function listUniversities(params: URLSearchParams) {
       signal: controller.signal
     })
     const body = await response.json()
-    if (!response.ok) throw new Error(body.error?.message || 'Could not load universities')
+    if (!response.ok) throw new ApiError(body.error?.code, 'Could not load universities')
     return body as { data: University[]; meta: { page: number; size: number; totalElements: number; totalPages: number } }
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error('Request timed out. Please try again.')
+      throw new ApiError('TIMEOUT', 'Request timed out. Please try again.')
     }
     throw error
   } finally {
@@ -64,11 +71,11 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}, timeout 
   try {
     const response = await fetch(url, { ...options, signal: controller.signal })
     const body = await response.json()
-    if (!response.ok) throw new Error(body.error?.message || 'Request failed')
+    if (!response.ok) throw new ApiError(body.error?.code, 'Request failed')
     return body
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error('Request timed out. Please try again.')
+      throw new ApiError('TIMEOUT', 'Request timed out. Please try again.')
     }
     throw error
   } finally {
@@ -102,43 +109,43 @@ export function listContent(path: string) {
 
 export async function addFavorite(id: number) {
   const response = await fetch(`/api/favorites/${id}`, { method: 'POST', credentials: 'include' })
-  if (!response.ok) throw new Error((await response.json()).error?.message || 'Could not save favorite')
+  if (!response.ok) throw new ApiError((await response.json()).error?.code, 'Could not save favorite')
 }
 
 export async function removeFavorite(id: number) {
   const response = await fetch(`/api/favorites/${id}`, { method: 'DELETE', credentials: 'include' })
-  if (!response.ok) throw new Error((await response.json()).error?.message || 'Could not remove favorite')
+  if (!response.ok) throw new ApiError((await response.json()).error?.code, 'Could not remove favorite')
 }
 
 export async function createReview(id: string, input: { rating: number; comment: string }) {
   const response = await fetch(`/api/universities/${id}/reviews`, { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) })
   const body = await response.json()
-  if (!response.ok) throw new Error(body.error?.message || 'Could not create review')
+  if (!response.ok) throw new ApiError(body.error?.code, 'Could not create review')
   return body
 }
 
 export async function updateReview(id: number, input: { rating: number; comment: string }) {
   const response = await fetch(`/api/reviews/${id}`, { method: 'PUT', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) })
   const body = await response.json()
-  if (!response.ok) throw new Error(body.error?.message || 'Could not update review')
+  if (!response.ok) throw new ApiError(body.error?.code, 'Could not update review')
   return body
 }
 
 export async function deleteReview(id: number) {
   const response = await fetch(`/api/reviews/${id}`, { method: 'DELETE', credentials: 'include' })
-  if (!response.ok) throw new Error((await response.json()).error?.message || 'Could not delete review')
+  if (!response.ok) throw new ApiError((await response.json()).error?.code, 'Could not delete review')
 }
 
 export async function getFavorites() {
   const response = await fetch('/api/favorites', { credentials: 'include', cache: 'no-store' })
   const body = await response.json()
-  if (!response.ok) throw new Error(body.error?.message || 'Could not load favorites')
+  if (!response.ok) throw new ApiError(body.error?.code, 'Could not load favorites')
   return body as University[]
 }
 
 export async function updateProfile(input: Record<string, string | null>) {
   const response = await fetch('/api/users/me', { method: 'PUT', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) })
   const body = await response.json()
-  if (!response.ok) throw new Error(body.error?.message || 'Could not update profile')
+  if (!response.ok) throw new ApiError(body.error?.code, 'Could not update profile')
   return body
 }

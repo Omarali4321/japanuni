@@ -1,14 +1,19 @@
 'use client'
 
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { Link } from '@/i18n/navigation'
+import { useRouter } from '@/i18n/navigation'
 import { useState } from 'react'
 import { useAuth } from './auth-provider'
 import { FadeIn, SlideUp } from '@/components/ui/Motion'
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
+import { useApiError } from '@/lib/use-api-error'
+import { ApiError } from '@/lib/web-api'
 
 export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   const router = useRouter()
+  const t = useTranslations('Auth')
+  const apiError = useApiError()
   const { refresh } = useAuth()
   const [form, setForm] = useState({ email: '', password: '', fullName: '' })
   const [error, setError] = useState('')
@@ -27,12 +32,12 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
         body: JSON.stringify(form),
       })
       const body = await response.json()
-      if (!response.ok) throw new Error(body.error?.message || 'Authentication failed')
+      if (!response.ok) throw new ApiError(body.error?.code, 'Authentication failed')
       await refresh()
       router.push('/dashboard')
       router.refresh()
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'Authentication failed')
+      setError(apiError(reason))
     } finally {
       setPending(false)
     }
@@ -48,12 +53,12 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
       </svg>
     ),
-    title: 'Welcome Back',
-    subtitle: 'Sign in to save favorites, compare universities, and track your applications.',
-    ctaText: 'Sign In',
-    switchText: "Don't have an account?",
+    title: t('loginTitle'),
+    subtitle: t('loginSubtitle'),
+    ctaText: t('loginCta'),
+    switchText: t('loginSwitchText'),
     switchLink: '/register',
-    switchLinkText: 'Create one',
+    switchLinkText: t('loginSwitchLink'),
   } : {
     accent: 'sakura',
     bgColor: 'sakura-500/10',
@@ -64,12 +69,12 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
       </svg>
     ),
-    title: 'Create Your Account',
-    subtitle: 'Start planning your study journey in Japan. Save universities, compare programs, and get personalized matches.',
-    ctaText: 'Create Account',
-    switchText: 'Already have an account?',
+    title: t('registerTitle'),
+    subtitle: t('registerSubtitle'),
+    ctaText: t('registerCta'),
+    switchText: t('registerSwitchText'),
     switchLink: '/login',
-    switchLinkText: 'Sign in',
+    switchLinkText: t('registerSwitchLink'),
   }
 
   return (
@@ -127,7 +132,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                 {mode === 'register' && (
                   <div className="space-y-1.5 mb-5">
                     <label htmlFor="fullName" className="block text-sm font-medium text-ink-800 dark:text-ink-50">
-                      Full Name
+                      {t('fullName')}
                     </label>
                     <div className="relative">
                       <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-800/30 dark:text-ink-50/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,7 +145,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                         required
                         minLength={2}
                         maxLength={100}
-                        placeholder="Your full name"
+                        placeholder={t('fullNamePlaceholder')}
                         value={form.fullName}
                         onChange={(e) => setForm({ ...form, fullName: e.target.value })}
                         onFocus={() => setFocusedField('fullName')}
@@ -153,7 +158,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
 
                 <div className="space-y-1.5 mb-5">
                   <label htmlFor="email" className="block text-sm font-medium text-ink-800 dark:text-ink-50">
-                    Email Address
+                    {t('email')}
                   </label>
                   <div className="relative">
                     <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-800/30 dark:text-ink-50/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,7 +181,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
 
                 <div className="space-y-1.5 mb-6">
                   <label htmlFor="password" className="block text-sm font-medium text-ink-800 dark:text-ink-50">
-                    Password
+                    {t('password')}
                   </label>
                   <div className="relative">
                     <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-800/30 dark:text-ink-50/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,7 +215,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
-                      {mode === 'login' ? 'Signing in...' : 'Creating account...'}
+                      {mode === 'login' ? t('signingIn') : t('creating')}
                     </span>
                   ) : (
                     config.ctaText
@@ -237,32 +242,32 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                 <svg className="w-5 h-5 text-sakura-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Why join JapanUni?
+                {t('whyJoin')}
               </h3>
               <ul className="space-y-2 text-sm text-ink-800/60 dark:text-ink-50/60">
                 <li className="flex items-start gap-2">
                   <svg className="flex-shrink-0 mt-0.5 w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Save & compare universities
+                  {t('benefit1')}
                 </li>
                 <li className="flex items-start gap-2">
                   <svg className="flex-shrink-0 mt-0.5 w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Get personalized AI matches
+                  {t('benefit2')}
                 </li>
                 <li className="flex items-start gap-2">
                   <svg className="flex-shrink-0 mt-0.5 w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Access admission guides & visa info
+                  {t('benefit3')}
                 </li>
                 <li className="flex items-start gap-2">
                   <svg className="flex-shrink-0 mt-0.5 w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Track applications & deadlines
+                  {t('benefit4')}
                 </li>
               </ul>
             </div>

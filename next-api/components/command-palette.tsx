@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { Link } from '@/i18n/navigation'
+import { useRouter } from '@/i18n/navigation'
 import { debounce } from 'lodash-es'
+import { useTranslations } from 'next-intl'
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/Motion'
 import { UniversityCardSkeleton } from '@/components/ui/Skeleton'
 
@@ -29,6 +30,8 @@ export function CommandPalette() {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const t = useTranslations('Palette')
+  const tn = useTranslations('Nav')
 
   const search = useCallback(
     debounce(async (q: string) => {
@@ -122,7 +125,7 @@ export function CommandPalette() {
         onClick={() => { setOpen(false); setQuery('') }}
         role="dialog"
         aria-modal="true"
-        aria-label="Command palette"
+        aria-label={t('dialog')}
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: -20 }}
@@ -135,7 +138,7 @@ export function CommandPalette() {
             <div className="flex items-center gap-3">
               <kbd className="px-2 py-1 text-xs bg-muted-100 dark:bg-muted-800 rounded font-mono">⌘</kbd>
               <kbd className="px-2 py-1 text-xs bg-muted-100 dark:bg-muted-800 rounded font-mono">K</kbd>
-              <span className="text-sm text-ink-800/50 dark:text-ink-50/50">Open command palette</span>
+              <span className="text-sm text-ink-800/50 dark:text-ink-50/50">{t('open')}</span>
             </div>
             <div className="relative mt-3">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-800/40 dark:text-ink-50/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,9 +150,9 @@ export function CommandPalette() {
                 value={query}
                 onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0) }}
                 onKeyDown={handleKeyNav}
-                placeholder="Search universities, guides..."
+                placeholder={t('placeholder')}
                 className="w-full px-10 py-3 pl-12 text-lg bg-muted-50 dark:bg-muted-800/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-sakura-500/50"
-                aria-label="Search"
+                aria-label={t('search')}
                 autoComplete="off"
               />
               {loading && (
@@ -173,7 +176,7 @@ export function CommandPalette() {
                 >
                   {results.guides.length > 0 && (
                     <div className="p-4">
-                      <h4 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-800/50 dark:text-ink-50/50">Guides</h4>
+                      <h4 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-800/50 dark:text-ink-50/50">{t('guides')}</h4>
                       {results.guides.map((guide, index) => (
                         <Link
                           key={guide.href}
@@ -187,7 +190,7 @@ export function CommandPalette() {
                           </span>
                           <div>
                             <p className="font-medium text-ink-800 dark:text-ink-50">{guide.title}</p>
-                            <p className="text-xs text-ink-800/50 dark:text-ink-50/50 capitalize">{guide.kind} guide</p>
+                            <p className="text-xs text-ink-800/50 dark:text-ink-50/50 capitalize">{t('guideKind', { kind: t.has(`kind${guide.kind}`) ? t(`kind${guide.kind}`) : guide.kind })}</p>
                           </div>
                         </Link>
                       ))}
@@ -196,7 +199,7 @@ export function CommandPalette() {
 
                   {results.universities.length > 0 && (
                     <div className="p-4">
-                      <h4 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-800/50 dark:text-ink-50/50">Universities</h4>
+                      <h4 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-800/50 dark:text-ink-50/50">{t('universities')}</h4>
                       {results.universities.map((uni, index) => {
                         const globalIndex = results.guides.length + index
                         return (
@@ -229,24 +232,24 @@ export function CommandPalette() {
 
             {(!loading && query.length >= 2 && totalResults === 0) && (
               <FadeIn className="p-8 text-center">
-                <p className="text-ink-800/60 dark:text-ink-50/60">No results found for "{query}"</p>
-                <p className="text-sm text-ink-800/40 dark:text-ink-50/40 mt-1">Try different keywords</p>
+                <p className="text-ink-800/60 dark:text-ink-50/60">{t('noResults', { query })}</p>
+                <p className="text-sm text-ink-800/40 dark:text-ink-50/40 mt-1">{t('tryDifferent')}</p>
               </FadeIn>
             )}
 
             {(!loading && query.length < 2) && (
               <FadeIn className="p-8">
-                <h4 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-800/50 dark:text-ink-50/50">Quick links</h4>
+                <h4 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-800/50 dark:text-ink-50/50">{t('quickLinks')}</h4>
                 <div className="grid grid-cols-2 gap-2 px-4">
                   {[
-                    ['/universities', '🎓', 'Universities'],
-                    ['/match', '🔍', 'Smart Match'],
-                    ['/scholarships', '💴', 'Scholarships'],
-                    ['/compare', '⚖️', 'Compare'],
-                    ['/admission', '📋', 'Admission'],
-                    ['/visa', '🛂', 'Visa'],
-                    ['/student-life', '🇯🇵', 'Student Life'],
-                    ['/dashboard', '📊', 'Dashboard'],
+                    ['/universities', '🎓', 'universities'],
+                    ['/match', '🔍', 'smartMatch'],
+                    ['/scholarships', '💴', 'scholarships'],
+                    ['/compare', '⚖️', 'compare'],
+                    ['/admission', '📋', 'admission'],
+                    ['/visa', '🛂', 'visa'],
+                    ['/student-life', '🇯🇵', 'studentLife'],
+                    ['/dashboard', '📊', 'dashboard'],
                   ].map(([href, icon, label]) => (
                     <Link
                       key={href}
@@ -255,7 +258,7 @@ export function CommandPalette() {
                       className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 dark:hover:bg-ink-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sakura-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 dark:focus-visible:ring-offset-ink-950"
                     >
                       <span className="text-lg">{icon}</span>
-                      <span className="font-medium text-ink-800 dark:text-ink-50">{label}</span>
+                      <span className="font-medium text-ink-800 dark:text-ink-50">{label === 'compare' ? t('compare') : tn(label as 'universities')}</span>
                     </Link>
                   ))}
                 </div>
@@ -274,8 +277,8 @@ export function CommandPalette() {
           </div>
 
           <div className="px-4 py-3 border-t border-white/10 flex items-center justify-between text-xs text-ink-800/40 dark:text-ink-50/40">
-            <span>⌘K to open • ↑↓ to navigate • Enter to select • Esc to close</span>
-            <span>{totalResults} result{totalResults !== 1 ? 's' : ''}</span>
+            <span>{t('hint')}</span>
+            <span>{t('results', { count: totalResults })}</span>
           </div>
         </motion.div>
       </motion.div>

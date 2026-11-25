@@ -1,5 +1,8 @@
+import { useTranslations } from 'next-intl'
+
 export function LoadingState() {
-  return <div className="card animate-pulse text-center text-muted py-8">Loading...</div>
+  const t = useTranslations('States')
+  return <div className="card animate-pulse text-center text-muted py-8">{t('loading')}</div>
 }
 
 export function ErrorState({ message }: { message: string }) {

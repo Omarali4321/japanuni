@@ -1,10 +1,12 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useCompare } from './compare-context'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 
 export function CompareBar() {
+  const t = useTranslations('CompareBar')
   const { selectedIds, selectionCount, canCompare, clearSelection, error, dismissError } = useCompare()
 
   if (selectionCount === 0 && !error) return null
@@ -30,7 +32,7 @@ export function CompareBar() {
                   type="button"
                   onClick={dismissError}
                   className="ml-auto text-sakura-500 hover:text-sakura-600 font-semibold"
-                  aria-label="Dismiss error"
+                  aria-label={t('dismissError')}
                 >
                   ×
                 </button>
@@ -51,14 +53,14 @@ export function CompareBar() {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="flex items-center gap-4 flex-wrap">
                   <span className="font-semibold text-ink-800 dark:text-ink-50">
-                    {selectionCount} universit{selectionCount === 1 ? 'y' : 'ies'} selected
+                    {t('selected', { count: selectionCount })}
                   </span>
                   {canCompare && (
                     <Link
                       href={`/compare?ids=${selectedIds.join(',')}`}
                       className="btn-primary whitespace-nowrap"
                     >
-                      Compare
+                      {t('compare')}
                     </Link>
                   )}
                 </div>
@@ -66,9 +68,9 @@ export function CompareBar() {
                   type="button"
                   onClick={clearSelection}
                   className="text-sm text-ink-800/60 dark:text-ink-50/60 hover:text-sakura-500 transition-colors self-end md:self-auto"
-                  aria-label="Clear all selected universities"
+                  aria-label={t('clearAllLabel')}
                 >
-                  Clear all
+                  {t('clearAll')}
                 </button>
               </div>
             </div>

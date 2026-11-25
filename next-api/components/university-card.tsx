@@ -1,45 +1,57 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
+import { useFormatter, useTranslations } from 'next-intl'
 import { useCompare } from '@/components/compare-context'
 import type { University } from '@/lib/web-api'
 
-function getLanguageBadge(mediumOfInstruction: string | null) {
+type TFn = (key: string, values?: Record<string, string | number>) => string
+
+function getLanguageBadge(mediumOfInstruction: string | null, t: TFn) {
   if (!mediumOfInstruction) return null
   const lower = mediumOfInstruction.toLowerCase()
   if (lower.includes('japanese (100%)') && lower.includes('english (100%)')) {
-    return { text: 'JP/EN', className: 'bg-emerald-500/10 text-emerald-600' }
+    return { text: t('langJpEn'), className: 'bg-emerald-500/10 text-emerald-600' }
   }
   if (lower.includes('japanese (100%)')) {
-    return { text: 'Japanese', className: 'bg-blue-500/10 text-blue-600' }
+    return { text: t('langJapanese'), className: 'bg-blue-500/10 text-blue-600' }
   }
   if (lower.includes('english (100%)')) {
-    return { text: 'English', className: 'bg-amber-500/10 text-amber-600' }
+    return { text: t('langEnglish'), className: 'bg-amber-500/10 text-amber-600' }
   }
-  return { text: 'Multiple', className: 'bg-violet-500/10 text-violet-600' }
+  return { text: t('langMultiple'), className: 'bg-violet-500/10 text-violet-600' }
 }
 
-function getIntakeBadge(intake: string | null) {
+function getIntakeBadge(intake: string | null, t: TFn) {
   if (!intake) return null
   const lower = intake.toLowerCase()
   if (lower.includes('april') && !lower.includes('october') && !lower.includes('september')) {
-    return { text: 'Apr', className: 'bg-accent/10 text-accent' }
+    return { text: t('intakeApr'), className: 'bg-accent/10 text-accent' }
   }
   if (lower.includes('october') && !lower.includes('april') && !lower.includes('september')) {
-    return { text: 'Oct', className: 'bg-indigo-500/10 text-indigo-600' }
+    return { text: t('intakeOct'), className: 'bg-indigo-500/10 text-indigo-600' }
   }
   if (lower.includes('september') && !lower.includes('april') && !lower.includes('october')) {
-    return { text: 'Sep', className: 'bg-orange-500/10 text-orange-600' }
+    return { text: t('intakeSep'), className: 'bg-orange-500/10 text-orange-600' }
   }
-  return { text: 'Multi', className: 'bg-muted/20 text-muted' }
+  return { text: t('intakeMulti'), className: 'bg-muted/20 text-muted' }
+}
+
+export function typeLabel(type: string, t: TFn) {
+  if (type === 'National') return t('typeNational')
+  if (type === 'Public') return t('typePublic')
+  if (type === 'Private') return t('typePrivate')
+  return type
 }
 
 export function UniversityCard({ university, showCompare = true }: { university: University; showCompare?: boolean }) {
   const { toggleSelection, isSelected } = useCompare()
+  const t = useTranslations('UniversityCard')
+  const format = useFormatter()
   const selected = isSelected(university.id)
 
-  const languageBadge = getLanguageBadge(university.mediumOfInstruction)
-  const intakeBadge = getIntakeBadge(university.intake)
+  const languageBadge = getLanguageBadge(university.mediumOfInstruction, t)
+  const intakeBadge = getIntakeBadge(university.intake, t)
   const typeColor = university.institutionType === 'National' ? 'bg-red-500/10 text-red-600' :
                     university.institutionType === 'Public' ? 'bg-blue-500/10 text-blue-600' :
                     'bg-purple-500/10 text-purple-600'
@@ -55,8 +67,8 @@ export function UniversityCard({ university, showCompare = true }: { university:
             <img
               src={imageUrl}
               alt={university.imageIsIllustrative
-                ? `${university.name} — illustrative photo of a university campus in Japan`
-                : `${university.name} campus`}
+                ? t('altIllustrative', { name: university.name })
+                : t('altCampus', { name: university.name })}
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
               onError={(e) => {
@@ -72,14 +84,14 @@ export function UniversityCard({ university, showCompare = true }: { university:
                 {university.name}
               </span>
               <span className="mt-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[#748078]">
-                Campus photo coming soon
+                {t('photoSoon')}
               </span>
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" />
           {university.imageIsIllustrative && (
             <span className="absolute bottom-3 left-3 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-medium tracking-wide text-white">
-              Illustrative campus photo
+              {t('illustrative')}
             </span>
           )}
           <div className="absolute left-3 top-3 right-3 flex justify-between">
@@ -95,7 +107,7 @@ export function UniversityCard({ university, showCompare = true }: { university:
                     : 'bg-white/90 text-ink hover:bg-accent/10'
                 }`}
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleSelection(university.id) }}
-                aria-label={selected ? `Remove ${university.name} from comparison` : `Add ${university.name} to comparison`}
+                aria-label={selected ? t('removeCompare', { name: university.name }) : t('addCompare', { name: university.name })}
                 aria-pressed={selected}
               >
                 {selected ? (
@@ -109,19 +121,19 @@ export function UniversityCard({ university, showCompare = true }: { university:
         </div>
         <div className="p-4 flex-1">
           <div className="flex flex-wrap gap-1.5 mb-2">
-            {university.institutionType && <span className={`text-xs px-2 py-0.5 rounded-full ${typeColor}`}>{university.institutionType}</span>}
+            {university.institutionType && <span className={`text-xs px-2 py-0.5 rounded-full ${typeColor}`}>{typeLabel(university.institutionType, t)}</span>}
             {languageBadge && <span className={`text-xs px-2 py-0.5 rounded-full ${languageBadge.className}`}>{languageBadge.text}</span>}
             {intakeBadge && <span className={`text-xs px-2 py-0.5 rounded-full ${intakeBadge.className}`}>{intakeBadge.text}</span>}
-            {university.programCount && <span className="text-xs px-2 py-0.5 rounded-full bg-muted/50 text-muted">{university.programCount} programs</span>}
+            {university.programCount && <span className="text-xs px-2 py-0.5 rounded-full bg-muted/50 text-muted">{t('programs', { count: university.programCount })}</span>}
             <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
-              {university.programCount && university.programCount > 0 ? 'Program-level data' : 'University-level data'}
+              {university.programCount && university.programCount > 0 ? t('programLevel') : t('universityLevel')}
             </span>
           </div>
           <h2 className="font-display text-lg font-medium hover:text-accent transition-colors">{university.name}</h2>
-          <p className="mt-1 text-sm text-muted">{university.cityName || 'Japan'}</p>
-          <p className="mt-2 line-clamp-2 text-sm text-ink/70">{university.faculty || university.majorSpeciality || 'Explore programs and admissions information.'}</p>
+          <p className="mt-1 text-sm text-muted">{university.cityName || t('japanFallback')}</p>
+          <p className="mt-2 line-clamp-2 text-sm text-ink/70">{university.faculty || university.majorSpeciality || t('descFallback')}</p>
           {university.tuitionFeeYearly && (
-            <p className="mt-3 text-sm font-medium text-accent">¥{university.tuitionFeeYearly.toLocaleString()}/year</p>
+            <p className="mt-3 text-sm font-medium text-accent">{t('perYear', { price: format.number(university.tuitionFeeYearly, { style: 'currency', currency: 'JPY', maximumFractionDigits: 0 }) })}</p>
           )}
         </div>
       </article>
