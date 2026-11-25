@@ -547,14 +547,14 @@ export default function UniversityDetail({ university }: UniversityDetailProps) 
                     <p className="mt-4 text-sm text-[#67716a]">{t('noReviews')}</p>
                   )}
                   {user ? (
-                    <a
-                      href="#reviews"
+                    <p className="mt-6 text-xs text-[#67716a]">{t('preArrival')}</p>
+                  ) : (
+                    <Link
+                      href="/login"
                       className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
                     >
                       {t('signInLink')}
-                    </a>
-                  ) : (
-                    <p className="mt-6 text-xs text-[#67716a]">{t('preArrival')}</p>
+                    </Link>
                   )}
                 </div>
               </div>
